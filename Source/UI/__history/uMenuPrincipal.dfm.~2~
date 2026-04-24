@@ -1,0 +1,38 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'TELA PRINCIPAL'
+  ClientHeight = 350
+  ClientWidth = 454
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Menu = mnPrincipal
+  TextHeight = 15
+  object mnPrincipal: TMainMenu
+    Left = 408
+    Top = 16
+    object CADASTRO1: TMenuItem
+      Caption = 'CADASTRO'
+      object CLIENTES1: TMenuItem
+        Caption = 'CLIENTES'
+      end
+      object PRODUTOS1: TMenuItem
+        Caption = 'PRODUTOS'
+      end
+      object PRODUTOS2: TMenuItem
+        Caption = 'PRODUTOS'
+      end
+    end
+    object RELATORIOS1: TMenuItem
+      Caption = 'RELATORIOS'
+    end
+    object SAIR1: TMenuItem
+      Caption = 'SAIR'
+      OnClick = SAIR1Click
+    end
+  end
+end

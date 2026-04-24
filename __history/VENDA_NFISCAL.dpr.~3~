@@ -1,0 +1,16 @@
+program VENDA_NFISCAL;
+
+uses
+  Vcl.Forms,
+  uMenuPrincipalUI in 'Source\UI\uMenuPrincipalUI.pas' {frmTelaPrincipal},
+  uTelaBaseCadastroUI in 'Source\UI\uTelaBaseCadastroUI.pas' {frmTelaBaseCadastro};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmTelaPrincipal, frmTelaPrincipal);
+  Application.CreateForm(TfrmTelaBaseCadastro, frmTelaBaseCadastro);
+  Application.Run;
+end.

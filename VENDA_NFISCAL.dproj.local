@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2026/02/08 20:49:07.000.671,=C:\Users\Carlos Zetti\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2026/04/23 22:30:23.000.187,=C:\Users\Carlos Zetti\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2026/04/24 00:06:02.955,=C:\Users\Carlos Zetti\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2026/04/24 00:06:38.403,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uMenuPrincipalUI.dfm=C:\Users\Carlos Zetti\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2026/04/24 00:06:38.403,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uMenuPrincipalUI.pas=C:\Users\Carlos Zetti\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2026/04/24 00:07:15.352,D:\DELPHI\DELPHI\VENDA_NFISCAL\VENDA_NFISCAL.dproj=C:\Users\Carlos Zetti\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2026/04/24 00:07:51.136,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit2.pas</Transaction>
+    <Transaction>2026/04/24 00:08:37.641,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uTelaBaseCadastroUI.dfm=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit2.dfm</Transaction>
+    <Transaction>2026/04/24 00:08:37.641,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uTelaBaseCadastroUI.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit2.pas</Transaction>
+    <Transaction>2026/04/24 00:17:01.409,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
+    <Transaction>2026/04/24 00:18:00.025,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uClientesUI.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
+    <Transaction>2026/04/24 00:18:00.025,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uClientesUI.dfm=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.dfm</Transaction>
+  </Transactions>
+</BorlandProject>

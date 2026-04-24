@@ -1,0 +1,14 @@
+program VENDA_NFISCAL;
+
+uses
+  Vcl.Forms,
+  uMenuPrincipalUI in 'Source\UI\uMenuPrincipalUI.pas' {Form1};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.
