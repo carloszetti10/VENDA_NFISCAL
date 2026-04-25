@@ -24,7 +24,6 @@ type
     btnNovo: TBitBtn;
     btnCancelar: TBitBtn;
     procedure btnNovoClick(Sender: TObject);
-    procedure qqClick(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
   private
      procedure ControlarBotoes(nInsert: Boolean);
@@ -44,10 +43,6 @@ implementation
 
 
 
-procedure TfrmTelaBaseCadastro.qqClick(Sender: TObject);
-begin
-   ControlarBotoes(true);
-end;
 
 procedure TfrmTelaBaseCadastro.btnCancelarClick(Sender: TObject);
 begin

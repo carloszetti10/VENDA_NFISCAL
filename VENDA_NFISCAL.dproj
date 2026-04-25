@@ -135,6 +135,8 @@
             <Form>frmCadastroCliente</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Source\Core\AppConfig\uAppConfigConexao.pas"/>
+        <DCCReference Include="Source\Core\AppService\uAppServiceConexao.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

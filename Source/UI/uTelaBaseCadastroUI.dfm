@@ -20,7 +20,6 @@ object frmTelaBaseCadastro: TfrmTelaBaseCadastro
     ActivePage = TabCadastro
     Align = alClient
     TabOrder = 0
-    ExplicitTop = 8
     object TabConsulta: TTabSheet
       Caption = 'Consulta'
       object Panel1: TPanel

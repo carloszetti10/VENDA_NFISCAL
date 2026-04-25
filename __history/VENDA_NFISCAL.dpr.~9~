@@ -1,0 +1,29 @@
+program VENDA_NFISCAL;
+
+uses
+  Vcl.Forms,
+  uMenuPrincipalUI in 'Source\UI\uMenuPrincipalUI.pas' {frmTelaPrincipal},
+  uTelaBaseCadastroUI in 'Source\UI\uTelaBaseCadastroUI.pas' {frmTelaBaseCadastro},
+  uClientesUI in 'Source\UI\uClientesUI.pas' {frmCadastroCliente},
+  uDataModule in 'Source\Conexao\uDataModule.pas' {DataModule1: TDataModule},
+  uAppConfigConexao in 'Source\Core\AppConfig\uAppConfigConexao.pas',
+  uAppServiceConexao in 'Source\Core\AppService\uAppServiceConexao.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+
+   AppConfigConexao.lerMbanco;
+   AppConfigConexao := TAppConfigConexao.Create;
+
+  
+  //AppServiceConexao := TAppServiceConexao.Create;
+
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmTelaPrincipal, frmTelaPrincipal);
+  Application.CreateForm(TfrmTelaBaseCadastro, frmTelaBaseCadastro);
+  Application.CreateForm(TfrmCadastroCliente, frmCadastroCliente);
+  Application.CreateForm(TDataModule1, DataModule1);
+  Application.Run;
+end.

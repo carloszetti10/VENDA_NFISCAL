@@ -1,0 +1,47 @@
+unit uAppServiceConexao;
+
+interface
+uses
+  SysUtils, ZConnection, uAppConfigConexao, Vcl.Dialogs;
+type
+  TAppServiceConexao = class
+    private
+       FConexao: TZConnection;
+    public
+       function getConexao : TZConnection;
+       constructor Create;
+       destructor Destroy; override;
+  end;
+
+var
+   AppServiceConexao : TAppServiceConexao;
+implementation
+
+{ TAppServiceConexao }
+
+constructor TAppServiceConexao.Create;
+begin
+   FConexao := TZConnection.Create(nil);
+   FConexao.Protocol := 'firebird-3.0';
+   FConexao.HostName :=  AppConfigConexao.Host;
+   FConexao.Database := AppConfigConexao.Database;
+   FConexao.User := AppConfigConexao.User;
+   FConexao.Password := AppConfigConexao.Senha;
+   FConexao.LoginPrompt := False;
+   FConexao.Connect;
+   if FConexao.Connected then
+      ShowMessage('Conectado');
+end;
+
+destructor TAppServiceConexao.Destroy;
+begin
+  FConexao.Free;
+  inherited;
+end;
+
+function TAppServiceConexao.getConexao: TZConnection;
+begin
+  result := FConexao;
+end;
+
+end.

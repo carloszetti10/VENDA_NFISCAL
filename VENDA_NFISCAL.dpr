@@ -4,12 +4,21 @@ uses
   Vcl.Forms,
   uMenuPrincipalUI in 'Source\UI\uMenuPrincipalUI.pas' {frmTelaPrincipal},
   uTelaBaseCadastroUI in 'Source\UI\uTelaBaseCadastroUI.pas' {frmTelaBaseCadastro},
-  uClientesUI in 'Source\UI\uClientesUI.pas' {frmCadastroCliente};
+  uClientesUI in 'Source\UI\uClientesUI.pas' {frmCadastroCliente},
+  uAppConfigConexao in 'Source\Core\AppConfig\uAppConfigConexao.pas',
+  uAppServiceConexao in 'Source\Core\AppService\uAppServiceConexao.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
+
+
+  AppConfigConexao := TAppConfigConexao.Create;
+  AppConfigConexao.lerMbanco;
+
+  AppServiceConexao := TAppServiceConexao.Create;
+
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmTelaPrincipal, frmTelaPrincipal);
   Application.CreateForm(TfrmTelaBaseCadastro, frmTelaBaseCadastro);
