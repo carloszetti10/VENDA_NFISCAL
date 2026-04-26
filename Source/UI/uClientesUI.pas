@@ -20,11 +20,14 @@ type
     tipoCliente: TRadioGroup;
     procedure tipoClienteClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure btnPesquisaClick(Sender: TObject);
+    procedure dtsDadosDataChange(Sender: TObject; Field: TField);
   private
     FService: IClienteServiceInterface;
     FTipoPessoa: TTipoPessoa;
+    FIDSelecionado: Integer;
     procedure Inserir;
-    procedure Alterar;
+    procedure Alterar;override;
   public
     constructor Create(AOwner: TComponent; AService: IClienteServiceInterface);
     procedure Gravar; override;
@@ -43,12 +46,40 @@ procedure TfrmCadastroCliente.FormShow(Sender: TObject);
 begin
   inherited;
   tipoCliente.ItemIndex := 0;
+  dtsDados.DataSet := FService.ListarVazia;
+end;
+
+procedure TfrmCadastroCliente.btnPesquisaClick(Sender: TObject);
+begin
+  inherited;
+  try
+    if Trim(mskPesquisar.Text) = '' then
+    begin
+      dtsDados.DataSet := FService.ListarVazia;
+    end
+    else
+      dtsDados.DataSet := FService.ListarPorNome(mskPesquisar.Text);
+  except
+  on E: Exception do
+  ShowMessage(E.Message);
+
+  end;
+
 end;
 
 constructor TfrmCadastroCliente.Create(AOwner: TComponent; AService: IClienteServiceInterface);
 begin
   inherited Create(AOwner);
   FService := AService;
+end;
+
+procedure TfrmCadastroCliente.dtsDadosDataChange(Sender: TObject; Field: TField);
+begin
+  inherited;
+  if (dtsDados.DataSet <> nil) and (not dtsDados.DataSet.IsEmpty) then
+  begin
+    FIDSelecionado := dtsDados.DataSet.FieldByName('ID_CLIENTE').AsInteger;
+  end;
 end;
 
 {$REGION 'METODOS INSERIR E ALTERAR'}
@@ -59,7 +90,7 @@ begin
      if EstadoCadastro = ecInserir then
         Inserir;  //metodo de inserir
      if EstadoCadastro = ecAlterar then
-        Alterar; //metodo alterar
+        //Alterar; //metodo alterar
   except
   on EApp: EAppException do
      ShowMessage(EApp.Message);
@@ -86,18 +117,50 @@ begin
      Cliente.CpfCnpj := mskCpfCnpj.Text;
      Cliente.TipoPessoa := FTipoPessoa;
      FService.Inserir(Cliente);
-     ShowMessage('Cadastro realizado!')
+     ShowMessage('Cadastro realizado!');
+     ControlarBotoes(true);
+     EstadoCadastro := ecNenhum;
   finally
      Cliente.Free;
   end
 end;
 
 procedure TfrmCadastroCliente.Alterar;
+var
+  CliBanco : TClienteModel;
 begin
+  try
+    if FIDSelecionado = 0  then
+      raise EAppException.Create('Nenhum Cliente selecionado');
+
+    CliBanco:= FService.BuscarPorId(FIDSelecionado);
+    try
+      mskNome.Text := CliBanco.Nome;
+      mskTelefone.Text := CliBanco.Telefone;
+      mskCpfCnpj.Text := CliBanco.CpfCnpj;
+      mskCpfCnpj.Enabled := false;
+      mskRazao.Text := CliBanco.RazaoSocial;
+      if CliBanco.TipoPessoa = TTipoPessoa.F then
+      begin
+        tipoCliente.ItemIndex := 0;
+      end
+      else
+         tipoCliente.ItemIndex := 1;
+      ControlarBotoes(false);
+      EstadoCadastro := ecAlterar;
+
+    finally
+       CliBanco.Free;
+    end;
+  except
+     on E: EAppException do
+      raise;
+    on E: Exception do
+      raise Exception.Create('Erro ao alterar cliente: ' + E.Message);
+  end;
 
 end;
 {$ENDREGION}
-
 
 procedure TfrmCadastroCliente.tipoClienteClick(Sender: TObject);
 begin

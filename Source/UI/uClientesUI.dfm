@@ -1,7 +1,6 @@
 inherited frmCadastroCliente: TfrmCadastroCliente
   Caption = 'CLIENTES'
   StyleElements = [seFont, seClient, seBorder]
-  OnShow = FormShow
   TextHeight = 15
   inherited PageControlHerenca: TPageControl
     inherited TabConsulta: TTabSheet
@@ -10,6 +9,12 @@ inherited frmCadastroCliente: TfrmCadastroCliente
         inherited mskPesquisar: TMaskEdit
           StyleElements = [seFont, seClient, seBorder]
         end
+        inherited btnPesquisa: TBitBtn
+          OnClick = btnPesquisaClick
+        end
+      end
+      inherited Panel2: TPanel
+        StyleElements = [seFont, seClient, seBorder]
       end
     end
     inherited TabCadastro: TTabSheet
@@ -91,5 +96,8 @@ inherited frmCadastroCliente: TfrmCadastroCliente
   end
   inherited pnlInferior: TPanel
     StyleElements = [seFont, seClient, seBorder]
+  end
+  inherited dtsDados: TDataSource
+    OnDataChange = dtsDadosDataChange
   end
 end

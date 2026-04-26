@@ -47,6 +47,7 @@ begin
   end;
 end;
 
+
 procedure TfrmTelaPrincipal.SAIR1Click(Sender: TObject);
 begin
    Application.Terminate;

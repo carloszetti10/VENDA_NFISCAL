@@ -26,13 +26,19 @@ type
     btnSair: TBitBtn;
     btnNovo: TBitBtn;
     btnCancelar: TBitBtn;
+    Panel2: TPanel;
+    dtsDados: TDataSource;
     procedure btnNovoClick(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
+    procedure btnAlterarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
      FEstadoCadastro : TEstadoCadastro;
-     procedure ControlarBotoes(nInsert: Boolean);
   protected
+    procedure ControlarBotoes(nInsert: Boolean);
     procedure Gravar; virtual; abstract;
     procedure Alterar; virtual; abstract;
   public
@@ -49,25 +55,8 @@ implementation
 
 { TForm2 }
 
-procedure TfrmTelaBaseCadastro.btnCancelarClick(Sender: TObject);
-begin
-  ControlarBotoes(true);
-  FEstadoCadastro := ecNenhum;
-end;
 
-procedure TfrmTelaBaseCadastro.btnGravarClick(Sender: TObject);
-begin
-   Gravar();
-   ControlarBotoes(true);
-   FEstadoCadastro := ecNenhum;
-end;
-
-procedure TfrmTelaBaseCadastro.btnNovoClick(Sender: TObject);
-begin
-   ControlarBotoes(false);
-   FEstadoCadastro := ecInserir;
-end;
-
+{$REGION 'METODOS CONTROLAR BOTOES'}
 procedure TfrmTelaBaseCadastro.ControlarBotoes(nInsert: Boolean);
 begin
   btnNovo.Enabled := nInsert;
@@ -87,6 +76,59 @@ begin
        PageControlHerenca.Pages[0].TabVisible := true; // ativar consulta
    end;
 end;
+
+
+procedure TfrmTelaBaseCadastro.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  if FEstadoCadastro <> ecNenhum then
+  begin
+    CanClose := False;
+    ShowMessage('Cancele o Processo');
+  end
+  else
+    CanClose := True;
+end;
+
+procedure TfrmTelaBaseCadastro.FormShow(Sender: TObject);
+begin
+  inherited;
+  ControlarBotoes(true);
+  FEstadoCadastro := ecNenhum;
+end;
+
+//NOVO
+procedure TfrmTelaBaseCadastro.btnNovoClick(Sender: TObject);
+begin
+   ControlarBotoes(false);
+   FEstadoCadastro := ecInserir;
+end;
+procedure TfrmTelaBaseCadastro.btnSairClick(Sender: TObject);
+begin
+
+end;
+
+//CANCELAR
+procedure TfrmTelaBaseCadastro.btnCancelarClick(Sender: TObject);
+begin
+  ControlarBotoes(true);
+  FEstadoCadastro := ecNenhum;
+end;
+//ALTERAR
+procedure TfrmTelaBaseCadastro.btnAlterarClick(Sender: TObject);
+begin
+  Alterar;
+  //ControlarBotoes(false);
+  //FEstadoCadastro := ecAlterar;
+end;
+//GRAVAR
+procedure TfrmTelaBaseCadastro.btnGravarClick(Sender: TObject);
+begin
+   Gravar();
+end;
+
+
+{$ENDREGION}
 
 
 end.

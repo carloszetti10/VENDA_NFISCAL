@@ -1,0 +1,14 @@
+unit IClienteDAO;
+
+interface
+uses
+ uClienteModel;
+type
+    IClienteDAOO = interface
+    procedure Insert(Cliente: TClienteModel);
+    procedure Update(Cliente: TClienteModel);
+   end;
+
+implementation
+
+end.

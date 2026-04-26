@@ -1,0 +1,17 @@
+unit IClienteDAO;
+
+interface
+uses
+ uClienteModel, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection;
+type
+    IClienteDAOO = interface
+    procedure Insert(Cliente: TClienteModel);
+    procedure Update(Cliente: TClienteModel);
+    function  FindByDocumento(Docum: string): TClienteModel;
+    function  Listar(Nome: string): TZQuery;
+   end;
+
+implementation
+
+end.

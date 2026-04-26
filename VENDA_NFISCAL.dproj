@@ -145,6 +145,10 @@
         <DCCReference Include="Source\Service\uClienteService.pas"/>
         <DCCReference Include="Source\Utils\uValidadorDocumento.pas"/>
         <DCCReference Include="Source\Interface\IRepositorio\IClienteDAO.pas"/>
+        <DCCReference Include="Source\Model\uProdutoModel.pas"/>
+        <DCCReference Include="Source\Model\uUsuarioModel.pas"/>
+        <DCCReference Include="Source\Interface\IService\IProdutoService.pas"/>
+        <DCCReference Include="Source\Interface\IRepositorio\IProdutoDAO.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
