@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, uClientesUI;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, uClientesUI,uAppServiceConexao;
 
 type
   TfrmTelaPrincipal = class(TForm)
@@ -26,20 +26,25 @@ var
   frmTelaPrincipal: TfrmTelaPrincipal;
 
 implementation
+uses
+   iClienteService, uClienteService, IClienteDAO, uClienteDao;
 
 {$R *.dfm}
 
 procedure TfrmTelaPrincipal.CLIENTES1Click(Sender: TObject);
+var
+  frm : TfrmCadastroCliente;
+  Service: IClienteServiceInterface;
+  Dao: IClienteDAOO;
 begin
-   var
-      frm : TfrmCadastroCliente;
-    try
-        frm := TfrmCadastroCliente.Create(nil);
-        frm.ShowModal;
-    finally
-        frm.Free;
-    end;
-
+  Dao := TClienteDao.Create(AppServiceConexao.getConexao);
+  Service := TClienteService.Create(Dao);  //pequisar depois uma forma de fazer para não precisar criar a implementação aqui
+  frm := TfrmCadastroCliente.Create(nil, Service);
+  try
+    frm.ShowModal;
+  finally
+    frm.Free;
+  end;
 end;
 
 procedure TfrmTelaPrincipal.SAIR1Click(Sender: TObject);

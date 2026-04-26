@@ -137,6 +137,14 @@
         </DCCReference>
         <DCCReference Include="Source\Core\AppConfig\uAppConfigConexao.pas"/>
         <DCCReference Include="Source\Core\AppService\uAppServiceConexao.pas"/>
+        <DCCReference Include="Source\Model\uClienteModel.pas"/>
+        <DCCReference Include="Source\Dao\uClienteDao.pas"/>
+        <DCCReference Include="Source\Utils\uValidarCampo.pas"/>
+        <DCCReference Include="Source\Utils\uException.pas"/>
+        <DCCReference Include="Source\Interface\IService\iClienteService.pas"/>
+        <DCCReference Include="Source\Service\uClienteService.pas"/>
+        <DCCReference Include="Source\Utils\uValidadorDocumento.pas"/>
+        <DCCReference Include="Source\Interface\IRepositorio\IClienteDAO.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

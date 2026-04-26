@@ -1,0 +1,11 @@
+unit iClienteService;
+
+interface
+type
+   IClienteService = interface
+    procedure Salvar(const Nome: string);
+   end;
+
+implementation
+
+end.

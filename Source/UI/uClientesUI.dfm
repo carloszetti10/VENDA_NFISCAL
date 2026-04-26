@@ -4,7 +4,6 @@ inherited frmCadastroCliente: TfrmCadastroCliente
   OnShow = FormShow
   TextHeight = 15
   inherited PageControlHerenca: TPageControl
-    ExplicitTop = 0
     inherited TabConsulta: TTabSheet
       inherited Panel1: TPanel
         StyleElements = [seFont, seClient, seBorder]
@@ -42,7 +41,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
           Height = 15
           Caption = 'RAZ'#195'O SOCIAL:'
         end
-        object MaskEdit2: TMaskEdit
+        object mskNome: TMaskEdit
           Left = 16
           Top = 63
           Width = 205
@@ -50,7 +49,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
           TabOrder = 0
           Text = ''
         end
-        object MaskEdit3: TMaskEdit
+        object mskTelefone: TMaskEdit
           Left = 16
           Top = 127
           Width = 205

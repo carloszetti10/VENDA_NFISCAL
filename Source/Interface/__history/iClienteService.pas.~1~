@@ -1,0 +1,11 @@
+unit iClienteService;
+
+interface
+type
+   IClienteService = interface
+
+   end;
+
+implementation
+
+end.

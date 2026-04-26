@@ -1,0 +1,28 @@
+unit uClienteService;
+
+interface
+uses
+  iClienteService,SysUtils,uClienteModel,uException;
+type
+   TClienteService = class(TInterfacedObject, IClienteServiceInterface)
+   private
+   public
+      procedure Inserir(Cliente: TClienteModel);
+      procedure Alterar(Cliente: TClienteModel);
+   end;
+
+implementation
+
+{ TClienteService }
+
+procedure TClienteService.Alterar(Cliente: TClienteModel);
+begin
+
+end;
+
+procedure TClienteService.Inserir(Cliente: TClienteModel);
+begin
+     raise EAppException.Create('Error Message, criandoooooo');
+end;
+
+end.

@@ -1,0 +1,38 @@
+unit uValidarCampo;
+
+interface
+uses
+  Vcl.StdCtrls, System.SysUtils, Vcl.Mask;
+
+type
+  TValidarCampos = class
+  public
+      class procedure ValidarCampoVazio(ACampo: TMaskEdit; const Nome: string);
+      class procedure LimparCampos(const Campos: array of TMaskEdit);
+  end;
+
+implementation
+
+{ TValidarCampos }
+
+ class procedure TValidarCampos.LimparCampos(const Campos: array of TMaskEdit);
+begin
+  var
+  Campo: TMaskEdit;
+begin
+  for Campo in Campos do
+    Campo.Clear;
+end;
+end;
+
+class procedure TValidarCampos.ValidarCampoVazio(ACampo: TMaskEdit;
+  const Nome: string);
+begin
+   if Trim(ACampo.Text) = '' then
+  begin
+    ACampo.SetFocus;
+    raise Exception.Create('Preencha o campo ' + Nome);
+  end;
+end;
+
+end.

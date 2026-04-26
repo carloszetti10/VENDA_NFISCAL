@@ -1,0 +1,122 @@
+﻿unit uClientesUI;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaBaseCadastroUI, Data.DB, Vcl.Grids,
+  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls, uException,uValidarCampo,iClienteService, uClienteModel;
+
+type
+  TfrmCadastroCliente = class(TfrmTelaBaseCadastro)
+    GroupBox1: TGroupBox;
+    mskNome: TMaskEdit;
+    Label1: TLabel;
+    mskTelefone: TMaskEdit;
+    Label2: TLabel;
+    mskCpfCnpj: TMaskEdit;
+    mskRazao: TMaskEdit;
+    lbRazao: TLabel;
+    tipoCliente: TRadioGroup;
+    procedure tipoClienteClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    FService: IClienteServiceInterface;
+    procedure Inserir;
+    procedure Alterar;
+  public
+    constructor Create(AOwner: TComponent; AService: IClienteServiceInterface);
+    procedure Gravar; override;
+  end;
+
+var
+  frmCadastroCliente: TfrmCadastroCliente;
+
+implementation
+
+{$R *.dfm}
+
+
+
+procedure TfrmCadastroCliente.FormShow(Sender: TObject);
+begin
+  inherited;
+  tipoCliente.ItemIndex := 0;
+end;
+
+constructor TfrmCadastroCliente.Create(AOwner: TComponent; AService: IClienteServiceInterface);
+begin
+  inherited Create(AOwner);
+  FService := AService; // 👈 injeção aqui
+end;
+
+{$REGION 'METODOS INSERIR E ALTERAR'}
+procedure TfrmCadastroCliente.Gravar;
+begin
+  inherited;
+  try
+     if EstadoCadastro = ecInserir then
+        Inserir;  //metodo de inserir
+     if EstadoCadastro = ecAlterar then
+        Alterar; //metodo alterar
+  except
+  on EApp: EAppException do
+     ShowMessage(EApp.Message);
+  on EInf: EInfraException do
+     ShowMessage(EInf.Message);
+  on EG: Exception do
+      ShowMessage('Falha na operação, tente novamente!');
+  end;
+end;
+
+procedure TfrmCadastroCliente.Inserir;
+var
+  Cliente: TClienteModel;
+begin
+   TValidarCampos.ValidarCampoVazio(mskNome, 'Nome');
+   if tipoCliente.ItemIndex = 1 then  // se o tipo for juridico
+     TValidarCampos.ValidarCampoVazio(mskRazao, 'Razão social');
+
+   try
+     Cliente.Nome := mskNome.Text;
+     Cliente.RazaoSocial := mskRazao.Text;
+     FService.Inserir(Cliente);
+  finally
+     Cliente.Free;
+  end
+
+
+end;
+
+procedure TfrmCadastroCliente.Alterar;
+begin
+
+end;
+{$ENDREGION}
+
+
+procedure TfrmCadastroCliente.tipoClienteClick(Sender: TObject);
+begin
+  inherited;
+  case tipoCliente.ItemIndex of
+    0: // CPF
+    begin
+       mskCpfCnpj.EditMask := '000.000.000-00;0;_';
+       mskRazao.Visible := false;
+       lbRazao.Visible := false;
+    end;
+
+
+    1: // CNPJ
+    begin
+       mskCpfCnpj.EditMask := '00.000.000/0000-00;0;_';
+       mskRazao.Visible := true;
+       lbRazao.Visible := true;
+    end;
+
+  end;
+
+  mskCpfCnpj.Clear;
+end;
+
+end.

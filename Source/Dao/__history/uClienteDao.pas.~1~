@@ -1,0 +1,15 @@
+unit uClienteDao;
+
+interface
+type
+  TClienteDao = class
+    private
+
+    public
+
+  end;
+
+implementation
+
+end.
+

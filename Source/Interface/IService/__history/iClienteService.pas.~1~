@@ -1,0 +1,15 @@
+unit iClienteService;
+
+interface
+uses
+ uClienteModel;
+type
+   IClienteServiceInterface = interface
+    procedure Inserir(Cliente: TClienteModel);
+    procedure Alterar(Cliente: TClienteModel);
+   end;
+
+implementation
+
+end.
+

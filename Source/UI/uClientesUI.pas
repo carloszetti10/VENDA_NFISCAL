@@ -1,18 +1,18 @@
-unit uClientesUI;
+﻿unit uClientesUI;
 
 interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaBaseCadastroUI, Data.DB, Vcl.Grids,
-  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls;
+  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls, uException,uValidarCampo,iClienteService, uClienteModel;
 
 type
   TfrmCadastroCliente = class(TfrmTelaBaseCadastro)
     GroupBox1: TGroupBox;
-    MaskEdit2: TMaskEdit;
+    mskNome: TMaskEdit;
     Label1: TLabel;
-    MaskEdit3: TMaskEdit;
+    mskTelefone: TMaskEdit;
     Label2: TLabel;
     mskCpfCnpj: TMaskEdit;
     mskRazao: TMaskEdit;
@@ -20,11 +20,14 @@ type
     tipoCliente: TRadioGroup;
     procedure tipoClienteClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-
   private
-    { Private declarations }
+    FService: IClienteServiceInterface;
+    FTipoPessoa: TTipoPessoa;
+    procedure Inserir;
+    procedure Alterar;
   public
-    { Public declarations }
+    constructor Create(AOwner: TComponent; AService: IClienteServiceInterface);
+    procedure Gravar; override;
   end;
 
 var
@@ -35,11 +38,66 @@ implementation
 {$R *.dfm}
 
 
+
 procedure TfrmCadastroCliente.FormShow(Sender: TObject);
 begin
   inherited;
   tipoCliente.ItemIndex := 0;
 end;
+
+constructor TfrmCadastroCliente.Create(AOwner: TComponent; AService: IClienteServiceInterface);
+begin
+  inherited Create(AOwner);
+  FService := AService;
+end;
+
+{$REGION 'METODOS INSERIR E ALTERAR'}
+procedure TfrmCadastroCliente.Gravar;
+begin
+  inherited;
+  try
+     if EstadoCadastro = ecInserir then
+        Inserir;  //metodo de inserir
+     if EstadoCadastro = ecAlterar then
+        Alterar; //metodo alterar
+  except
+  on EApp: EAppException do
+     ShowMessage(EApp.Message);
+  on EInf: EInfraException do
+     ShowMessage(EInf.Message);
+  on EG: Exception do
+      ShowMessage('Falha na operação, tente novamente!'+EG.Message);
+  end;
+end;
+
+procedure TfrmCadastroCliente.Inserir;
+var
+  Cliente: TClienteModel;
+begin
+   TValidarCampos.ValidarCampoVazio(mskNome, 'Nome');
+   if tipoCliente.ItemIndex = 1 then  // se o tipo for juridico
+     TValidarCampos.ValidarCampoVazio(mskRazao, 'Razão social');
+
+   Cliente := TClienteModel.Create;
+   try
+     Cliente.Nome := mskNome.Text;
+     Cliente.RazaoSocial := mskRazao.Text;
+     Cliente.Telefone := mskTelefone.Text;
+     Cliente.CpfCnpj := mskCpfCnpj.Text;
+     Cliente.TipoPessoa := FTipoPessoa;
+     FService.Inserir(Cliente);
+     ShowMessage('Cadastro realizado!')
+  finally
+     Cliente.Free;
+  end
+end;
+
+procedure TfrmCadastroCliente.Alterar;
+begin
+
+end;
+{$ENDREGION}
+
 
 procedure TfrmCadastroCliente.tipoClienteClick(Sender: TObject);
 begin
@@ -50,6 +108,7 @@ begin
        mskCpfCnpj.EditMask := '000.000.000-00;0;_';
        mskRazao.Visible := false;
        lbRazao.Visible := false;
+       FTipoPessoa := TTipoPessoa.F;
     end;
 
 
@@ -58,6 +117,7 @@ begin
        mskCpfCnpj.EditMask := '00.000.000/0000-00;0;_';
        mskRazao.Visible := true;
        lbRazao.Visible := true;
+       FTipoPessoa := TTipoPessoa.J;
     end;
 
   end;

@@ -1,0 +1,39 @@
+unit uClienteModel;
+
+interface
+type
+  TClienteModel = class
+    private
+      FId: Integer;
+      FNome: string;
+      FTelefone: string;
+      FCpfCnpj: string;
+      FRazaoSocial: string;
+      FAtivo: Boolean;
+    public
+      property Id: Integer read FId write FId;
+      property Nome: string read FNome write FNome;
+      property Telefone: string read FTelefone write FTelefone;
+      property CpfCnpj: string read FCpfCnpj write FCpfCnpj;
+      property RazaoSocial: string read FRazaoSocial write FRazaoSocial;
+      property Ativo: Boolean read FAtivo write FAtivo;
+
+      constructor Create(ANome, ATelefone, ACpfCnpj, ARazao : string);
+      constructor Create;
+
+  end;
+
+implementation
+
+{ TClienteModel }
+
+constructor TClienteModel.Create(ANome, ATelefone, ACpfCnpj, ARazao: string);
+begin
+  inherited Create;
+  FNome := ANome;
+  FTelefone := ATelefone;
+  FCpfCnpj := ACpfCnpj;
+  FRazaoSocial := ARazao;
+end;
+
+end.

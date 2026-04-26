@@ -1,0 +1,60 @@
+unit uClienteDao;
+
+interface
+uses
+  IClienteDAO, uClienteModel, System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection;
+type
+  TClienteDao = class(TInterfacedObject, IClienteDAOO)
+    private
+      FConexao : TZConnection;
+    public
+     procedure Insert(Cliente: TClienteModel);
+     procedure Update(Cliente: TClienteModel);
+     Constructor Create(Conn:TZConnection);
+
+  end;
+
+implementation
+
+{ TClienteDao }
+
+{ TClienteDao }
+
+constructor TClienteDao.Create(Conn: TZConnection);
+begin
+  inherited Create;
+   FConexao := Conn;
+end;
+
+procedure TClienteDao.Insert(Cliente: TClienteModel);
+var
+  Q: TZQuery;
+begin
+  Q := TZQuery.Create(nil);
+  try
+    Q.Connection := FConexao;
+
+    Q.SQL.Text :=
+      'INSERT INTO CLIENTE (NOME, CPF_CNPJ, TIPO_PESSOA, TELEFONE, RAZAO_SOCIAL) ' +
+      'VALUES (:NOME, :CPF_CNPJ, :TIPO, :TELEFONE, :RAZAO_SOCIAL)';
+
+    Q.ParamByName('NOME').AsString := Cliente.Nome;
+    Q.ParamByName('CPF_CNPJ').AsString := Cliente.CpfCnpj;
+    Q.ParamByName('TIPO').AsString := Cliente.GetTipoChar;
+    Q.ParamByName('TELEFONE').AsString := Cliente.GetTipoChar;
+    Q.ParamByName('RAZAO_SOCIAL').AsString := Cliente.RazaoSocial;
+
+    Q.ExecSQL;
+  finally
+    Q.Free;
+  end;
+end;
+
+procedure TClienteDao.Update(Cliente: TClienteModel);
+begin
+
+end;
+
+end.
+

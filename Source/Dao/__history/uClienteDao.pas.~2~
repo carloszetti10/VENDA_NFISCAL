@@ -1,0 +1,32 @@
+unit uClienteDao;
+
+interface
+uses
+  IClienteDAO, uClienteModel;
+type
+  TClienteDao = class(TInterfacedObject, IClienteDAO)
+
+    private
+
+    public
+      procedure Insert(Cliente: TClienteModel);
+      procedure Update(Cliente: TClienteModel);
+
+  end;
+
+implementation
+
+{ TClienteDao }
+
+procedure TClienteDao.Insert(Cliente: TClienteModel);
+begin
+
+end;
+
+procedure TClienteDao.Update(Cliente: TClienteModel);
+begin
+
+end;
+
+end.
+
