@@ -149,6 +149,11 @@
         <DCCReference Include="Source\Model\uUsuarioModel.pas"/>
         <DCCReference Include="Source\Interface\IService\IProdutoService.pas"/>
         <DCCReference Include="Source\Interface\IRepositorio\IProdutoDAO.pas"/>
+        <DCCReference Include="Source\UI\uProdutoUI.pas">
+            <Form>frmCadastroProduto</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Source\Dao\uProdutoDao.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -1,0 +1,76 @@
+unit uProdutoDao;
+
+interface
+uses
+  IProdutoDAO, uProdutoModel, System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection, uException;
+type
+  TProdutoDao = class(TInterfacedObject, IProdutoDAOO)
+    private
+      FConexao : TZConnection;
+    public
+     procedure Insert(Produto: TProdutoModel);
+     procedure Update(Produto: TProdutoModel);
+     function FindByID(ID: Integer): TProdutoModel;
+     function Listar(Nome: string): TZQuery;
+     function ListarVazia: TZQuery;
+     Constructor Create(Conn:TZConnection);
+  end;
+
+implementation
+
+
+
+{ TProdutoDao }
+
+constructor TProdutoDao.Create(Conn: TZConnection);
+begin
+  inherited Create;
+  FConexao := Conn;
+end;
+
+function TProdutoDao.FindByID(ID: Integer): TProdutoModel;
+begin
+
+end;
+
+procedure TProdutoDao.Insert(Produto: TProdutoModel);
+var
+  Q: TZQuery;
+begin
+  Q:= TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
+
+      Q.SQL.Text := '';
+      Q.ParamByName('').AsString := Produto.Nome;
+      Q.ExecSQL;
+
+    except
+      on E: EDatabaseError do
+        raise EInfraException.Create('Erro ao realizar o cadastro' + E.Message);
+    end;
+  finally
+    Q.Free;
+  end;
+
+
+end;
+
+function TProdutoDao.Listar(Nome: string): TZQuery;
+begin
+
+end;
+
+function TProdutoDao.ListarVazia: TZQuery;
+begin
+
+end;
+
+procedure TProdutoDao.Update(Produto: TProdutoModel);
+begin
+
+end;
+
+end.

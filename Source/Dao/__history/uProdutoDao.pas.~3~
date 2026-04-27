@@ -1,0 +1,22 @@
+unit uProdutoDao;
+
+interface
+uses
+  IProdutoDAO, uProdutoModel, System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection;
+type
+  TProdutoDao = class(TInterfacedObject, IProdutoDAOO)
+    private
+      FConexao : TZConnection;
+    public
+     procedure Insert(Produto: TProdutoModel);
+     procedure Update(Produto: TProdutoModel);
+     function FindByID(ID: Integer): TProdutoModel;
+     function Listar(Nome: string): TZQuery;
+     function ListarVazia: TZQuery;
+     Constructor Create(Conn:TZConnection);
+  end;
+
+implementation
+
+end.

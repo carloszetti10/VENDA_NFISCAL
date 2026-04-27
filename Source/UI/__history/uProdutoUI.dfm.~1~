@@ -1,0 +1,21 @@
+inherited frmTelaBaseCadastro1: TfrmTelaBaseCadastro1
+  Caption = 'frmTelaBaseCadastro1'
+  StyleElements = [seFont, seClient, seBorder]
+  TextHeight = 15
+  inherited PageControlHerenca: TPageControl
+    inherited TabConsulta: TTabSheet
+      inherited Panel1: TPanel
+        StyleElements = [seFont, seClient, seBorder]
+        inherited mskPesquisar: TMaskEdit
+          StyleElements = [seFont, seClient, seBorder]
+        end
+      end
+      inherited Panel2: TPanel
+        StyleElements = [seFont, seClient, seBorder]
+      end
+    end
+  end
+  inherited pnlInferior: TPanel
+    StyleElements = [seFont, seClient, seBorder]
+  end
+end

@@ -3,7 +3,7 @@ unit uClienteDao;
 interface
 uses
   IClienteDAO, uClienteModel, System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
-  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection;
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection, uException;
 type
   TClienteDao = class(TInterfacedObject, IClienteDAOO)
     private
@@ -112,8 +112,8 @@ begin
       Q.ExecSQL;
 
     except
-      on E: Exception do
-        raise Exception.Create('Erro ao inserir cliente: ' + E.Message);
+      on E: EDatabaseError do
+        raise EInfraException.Create('Erro ao realizar o cadastro' + E.Message);
     end;
   finally
     Q.Free;

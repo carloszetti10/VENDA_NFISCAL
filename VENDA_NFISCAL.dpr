@@ -18,7 +18,9 @@ uses
   uProdutoModel in 'Source\Model\uProdutoModel.pas',
   uUsuarioModel in 'Source\Model\uUsuarioModel.pas',
   IProdutoService in 'Source\Interface\IService\IProdutoService.pas',
-  IProdutoDAO in 'Source\Interface\IRepositorio\IProdutoDAO.pas';
+  IProdutoDAO in 'Source\Interface\IRepositorio\IProdutoDAO.pas',
+  uProdutoUI in 'Source\UI\uProdutoUI.pas' {frmCadastroProduto},
+  uProdutoDao in 'Source\Dao\uProdutoDao.pas';
 
 {$R *.res}
 
@@ -35,5 +37,6 @@ begin
   Application.CreateForm(TfrmTelaPrincipal, frmTelaPrincipal);
   Application.CreateForm(TfrmTelaBaseCadastro, frmTelaBaseCadastro);
   Application.CreateForm(TfrmCadastroCliente, frmCadastroCliente);
+  Application.CreateForm(TfrmCadastroProduto, frmCadastroProduto);
   Application.Run;
 end.
