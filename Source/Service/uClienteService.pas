@@ -11,7 +11,7 @@ type
       procedure Inserir(Cliente: TClienteModel);
       procedure Alterar(ID: Integer);
       function BuscarPorId(ID: Integer): TClienteModel;
-      constructor Create(AServiceDao: IClienteDAOO);
+      constructor Create(AClienteDao: IClienteDAOO);
       function  ListarPorNome(Nome: string): TZQuery;
       function ListarVazia: TZQuery;
    end;
@@ -55,10 +55,10 @@ begin
   result := FClienteDAO.FindByID(ID);
 end;
 
-constructor TClienteService.Create(AServiceDao: IClienteDAOO);
+constructor TClienteService.Create(AClienteDao: IClienteDAOO);
 begin
   inherited Create;
-  FClienteDAO := AServiceDao;
+  FClienteDAO := AClienteDao;
 end;
 
 procedure TClienteService.Inserir(Cliente: TClienteModel);

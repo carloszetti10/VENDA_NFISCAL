@@ -4,18 +4,20 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, uClientesUI,uAppServiceConexao;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, uClientesUI,uAppServiceConexao,
+  uProdutoUI;
 
 type
   TfrmTelaPrincipal = class(TForm)
     MainMenu1: TMainMenu;
     CADASTRO1: TMenuItem;
-    CLIENTES1: TMenuItem;
-    PRODUTOS1: TMenuItem;
+    CLIENTES: TMenuItem;
+    PRODUTO: TMenuItem;
     RELATORIOS1: TMenuItem;
     SAIR1: TMenuItem;
     procedure SAIR1Click(Sender: TObject);
-    procedure CLIENTES1Click(Sender: TObject);
+    procedure CLIENTESClick(Sender: TObject);
+    procedure PRODUTOClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -27,11 +29,12 @@ var
 
 implementation
 uses
-   iClienteService, uClienteService, IClienteDAO, uClienteDao;
+   iClienteService, uClienteService, IClienteDAO, uClienteDao,
+   IProdutoService, uProdutoService, IProdutoDAO, uProdutoDao;
 
 {$R *.dfm}
 
-procedure TfrmTelaPrincipal.CLIENTES1Click(Sender: TObject);
+procedure TfrmTelaPrincipal.CLIENTESClick(Sender: TObject);
 var
   frm : TfrmCadastroCliente;
   Service: IClienteServiceInterface;
@@ -47,6 +50,22 @@ begin
   end;
 end;
 
+
+procedure TfrmTelaPrincipal.PRODUTOClick(Sender: TObject);
+var
+  frm : TfrmCadastroProduto;
+  Service: IProdutoServiceInterface;
+  Dao: IProdutoDAOO;
+begin
+  Dao := TProdutoDao.Create(AppServiceConexao.getConexao);
+  Service := TProdutoService.Create(Dao);
+  frm := TfrmCadastroProduto.Create(nil, Service);
+  try
+    frm.ShowModal;
+  finally
+    frm.Free;
+  end;
+end;
 
 procedure TfrmTelaPrincipal.SAIR1Click(Sender: TObject);
 begin

@@ -18,12 +18,13 @@ object frmTelaPrincipal: TfrmTelaPrincipal
     Top = 16
     object CADASTRO1: TMenuItem
       Caption = 'CADASTRO'
-      object CLIENTES1: TMenuItem
+      object CLIENTES: TMenuItem
         Caption = 'CLIENTES'
-        OnClick = CLIENTES1Click
+        OnClick = CLIENTESClick
       end
-      object PRODUTOS1: TMenuItem
+      object PRODUTO: TMenuItem
         Caption = 'PRODUTOS'
+        OnClick = PRODUTOClick
       end
     end
     object RELATORIOS1: TMenuItem

@@ -14,6 +14,7 @@ type
      function FindByID(ID: Integer): TProdutoModel;
      function Listar(Nome: string): TZQuery;
      function ListarVazia: TZQuery;
+     function  FindByCodBarra(cod: string): TProdutoModel;
      Constructor Create(Conn:TZConnection);
   end;
 
@@ -29,9 +30,74 @@ begin
   FConexao := Conn;
 end;
 
-function TProdutoDao.FindByID(ID: Integer): TProdutoModel;
+function TProdutoDao.FindByCodBarra(cod: string): TProdutoModel;
+var
+  Q: TZQuery;
 begin
 
+  try
+    Q := TZQuery.Create(nil);
+    try
+      Q.Connection := FConexao;
+      Q.SQL.Text :=
+       'SELECT * FROM PRODUTO WHERE COD_BARRA = :COD';
+
+      Q.ParamByName('COD').AsString := cod;
+      Q.Open;
+
+      if not Q.IsEmpty then
+      begin
+        Result := TProdutoModel.Create;
+        Result.IdProduto := Q.FieldByName('ID_PRODUTO').AsInteger;
+        Result.Nome := Q.FieldByName('NOME').AsString;
+        Result.CodBarra := Q.FieldByName('COD_BARRA').AsString;
+        Result.Estoque := Q.FieldByName('ESTOQUE').AsInteger;
+        Result.ValorUnitario := Q.FieldByName('VALOR_UNITARIO').AsCurrency;
+      end
+      else
+        result := nil;
+    finally
+      Q.Free;
+    end;
+    except
+    on E: EUpdateError do
+      raise EInfraException.Create('Erro: '+e.Message);
+    end;
+end;
+
+function TProdutoDao.FindByID(ID: Integer): TProdutoModel;
+var
+  Q: TZQuery;
+begin
+
+  try
+    Q := TZQuery.Create(nil);
+    try
+      Q.Connection := FConexao;
+      Q.SQL.Text :=
+       'SELECT * FROM PRODUTO WHERE ID_PRODUTO = :COD';
+
+      Q.ParamByName('COD').AsInteger := ID;
+      Q.Open;
+
+      if not Q.IsEmpty then
+      begin
+        Result := TProdutoModel.Create;
+        Result.IdProduto := Q.FieldByName('ID_PRODUTO').AsInteger;
+        Result.Nome := Q.FieldByName('NOME').AsString;
+        Result.CodBarra := Q.FieldByName('COD_BARRA').AsString;
+        Result.Estoque := Q.FieldByName('ESTOQUE').AsInteger;
+        Result.ValorUnitario := Q.FieldByName('VALOR_UNITARIO').AsCurrency;
+      end
+      else
+        result := nil;
+    finally
+      Q.Free;
+    end;
+    except
+    on E: EUpdateError do
+      raise EInfraException.Create('Erro: '+e.Message);
+    end;
 end;
 
 procedure TProdutoDao.Insert(Produto: TProdutoModel);
@@ -43,8 +109,12 @@ begin
     try
       Q.Connection := FConexao;
 
-      Q.SQL.Text := '';
-      Q.ParamByName('').AsString := Produto.Nome;
+      Q.SQL.Text := 'INSERT INTO PRODUTO (NOME, COD_BARRA, ESTOQUE, VALOR_UNITARIO)'+
+      'VALUES (:NOME, :COD_BARRA, :ESTOQUE, :VALOR_UNITARIO)';
+      Q.ParamByName('NOME').AsString := Produto.Nome;
+      Q.ParamByName('COD_BARRA').AsString := Produto.CodBarra;
+      Q.ParamByName('ESTOQUE').AsInteger := Produto.Estoque;
+      Q.ParamByName('VALOR_UNITARIO').AsCurrency := Produto.ValorUnitario;
       Q.ExecSQL;
 
     except

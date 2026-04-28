@@ -105,24 +105,34 @@ procedure TfrmCadastroCliente.Inserir;
 var
   Cliente: TClienteModel;
 begin
-   TValidarCampos.ValidarCampoVazio(mskNome, 'Nome');
-   if tipoCliente.ItemIndex = 1 then  // se o tipo for juridico
-     TValidarCampos.ValidarCampoVazio(mskRazao, 'Razão social');
 
-   Cliente := TClienteModel.Create;
-   try
-     Cliente.Nome := mskNome.Text;
-     Cliente.RazaoSocial := mskRazao.Text;
-     Cliente.Telefone := mskTelefone.Text;
-     Cliente.CpfCnpj := mskCpfCnpj.Text;
-     Cliente.TipoPessoa := FTipoPessoa;
-     FService.Inserir(Cliente);
-     ShowMessage('Cadastro realizado!');
-     ControlarBotoes(true);
-     EstadoCadastro := ecNenhum;
+  try
+    TValidarCampos.ValidarCampoVazio(mskNome, 'Nome');
+    if tipoCliente.ItemIndex = 1 then  // se o tipo for juridico
+      TValidarCampos.ValidarCampoVazio(mskRazao, 'Razão social');
+
+    Cliente := TClienteModel.Create;
+    try
+      Cliente.Nome := mskNome.Text;
+      Cliente.RazaoSocial := mskRazao.Text;
+      Cliente.Telefone := mskTelefone.Text;
+      Cliente.CpfCnpj := mskCpfCnpj.Text;
+      Cliente.TipoPessoa := FTipoPessoa;
+      FService.Inserir(Cliente);
+      ShowMessage('Cadastro realizado!');
+      ControlarBotoes(true);
+      EstadoCadastro := ecNenhum;
   finally
      Cliente.Free;
   end
+  except
+    on E: EAppException do
+      raise;
+    on E: EInfraException do
+      raise;
+    on E: Exception do
+      raise Exception.Create('Erro: ' + E.Message);
+  end;
 end;
 
 procedure TfrmCadastroCliente.Alterar;

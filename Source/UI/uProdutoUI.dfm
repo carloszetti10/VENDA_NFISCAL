@@ -70,7 +70,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         object mskValorUnitario: TMaskEdit
           Left = 16
           Top = 103
-          Width = 65
+          Width = 62
           Height = 23
           TabOrder = 2
           Text = ''
@@ -78,7 +78,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         object mskQuantidade: TMaskEdit
           Left = 16
           Top = 161
-          Width = 65
+          Width = 64
           Height = 23
           TabOrder = 3
           Text = ''
@@ -98,7 +98,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     StyleElements = [seFont, seClient, seBorder]
   end
   inherited dtsDados: TDataSource
-    Left = 588
-    Top = 34
+    Left = 548
+    Top = 26
   end
 end

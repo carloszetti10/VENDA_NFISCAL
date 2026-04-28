@@ -20,7 +20,8 @@ uses
   IProdutoService in 'Source\Interface\IService\IProdutoService.pas',
   IProdutoDAO in 'Source\Interface\IRepositorio\IProdutoDAO.pas',
   uProdutoUI in 'Source\UI\uProdutoUI.pas' {frmCadastroProduto},
-  uProdutoDao in 'Source\Dao\uProdutoDao.pas';
+  uProdutoDao in 'Source\Dao\uProdutoDao.pas',
+  uProdutoService in 'Source\Service\uProdutoService.pas';
 
 {$R *.res}
 
