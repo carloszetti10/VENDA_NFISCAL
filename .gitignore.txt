@@ -1,0 +1,34 @@
+# Delphi compilados
+*.dcu
+*.exe
+*.dll
+*.bpl
+*.dcp
+*.res
+*.dsk
+*.~*
+
+# Cache / configs locais
+*.identcache
+*.local
+
+# Build
+Win32/
+Win64/
+Debug/
+Release/
+__history/
+
+# IDEs
+.vs/
+.idea/
+
+# Logs e temporários
+*.log
+*.tmp
+
+# Banco de dados local (se não quiser subir)
+*.lck
+*.db
+*.gdb
+*.fdb
