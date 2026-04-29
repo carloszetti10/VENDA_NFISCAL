@@ -7,13 +7,10 @@ type
   private
     FIdVenda: Integer;
     FIdProduto: Integer;
-    FQuantidade: Currency;
+    FQuantidade: Integer;
     FValorDesc: Currency;
     FValorUnitario: Currency;
     FValorTotal: Currency;
-
-    FNomeProduto: string;
-    FNomeCliente: string;
   public
     constructor Create;
 
@@ -23,9 +20,6 @@ type
     property ValorDesc: Currency read FValorDesc write FValorDesc;
     property ValorUnitario: Currency read FValorUnitario write FValorUnitario;
     property ValorTotal: Currency read FValorTotal write FValorTotal;
-
-    property NomeProduto: string read FNomeProduto write FNomeProduto;
-    property NomeCliente: string read FNomeCliente write FNomeCliente;
   end;
 
 implementation

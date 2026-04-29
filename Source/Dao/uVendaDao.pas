@@ -1,0 +1,146 @@
+unit uUsuarioDao;
+interface
+uses
+  IVendaDAO, uUsuarioModel, System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection, uException,  System.Generics.Collections;
+type
+  TVendaDao = class(TInterfacedObject, IVendaDAOO)
+    private
+      FConexao : TZConnection;
+    public
+      function Insert(Venda: TVendaModel): Integer:
+      procedure Update(Usuario: TUsuarioModel);
+      function  FindByID(cod: Integer): TUsuarioModel;
+      Constructor Create(Conn:TZConnection);
+  end;
+
+implementation
+
+{ TVendaDao }
+
+constructor TVendaDao.Create(Conn: TZConnection);
+begin
+  FConexao:= Conn;
+end;
+
+function TVendaDao.FindByID(cod: Integer): TVendaModel;
+var
+  Q: TZQuery;
+begin
+  try
+    Q:= TZQuery.Create(nil);
+    try
+      Q.Connection:= FConexao;
+      Q.SQL.Text :=
+       'SELECT ID_VENDA, ID_CLIENTE, ID_USUARIO, ID_VENDEDOR, STATUS, EMISAO, VALOR_DESC,VALOR_TOTAL'+
+       'FROM VENDA WHERE ID_VENDA = :ID';
+
+       Q.ParamByName('ID').AsInteger:= cod;
+      Q.Open;
+
+      if not Q.IsEmpty then
+      begin
+        Result := TVendaModel.Create;
+         Result.IdVenda := Q.FieldByName('ID_VENDA').AsInteger;
+        Result.IdCliente := Q.FieldByName('ID_CLIENTE').AsInteger;
+        Result.IdUsuario := Q.FieldByName('ID_USUARIO').AsInteger;
+        Result.IdVendedor := Q.FieldByName('ID_VENDEDOR').AsInteger;
+
+        Result.ValorDesc := Q.FieldByName('VALOR_DESC').AsCurrency;
+        Result.ValorTotal := Q.FieldByName('VALOR_TOTAL').AsCurrency;
+
+        Result.Status := Q.FieldByName('STATUS').AsString;
+        Result.Emissao := Q.FieldByName('EMISAO').AsDateTime;
+      end
+      else
+        result := nil;
+
+    finally
+      Q.Free;
+    end;
+
+  except
+    on E: EUpdateError do
+      raise EInfraException.Create('Erro: '+e.Message);
+  end;
+end;
+
+function TVendaDao.Insert(Venda: TVendaModel): TVendaModel;
+var
+  Q: TZQuery;
+begin
+  Q:= TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
+
+      Q.SQL.Text := 'INSERT INTO VENDA (ID_CLIENTE,ID_VENDEDOR,ID_USUARIO,STATUS,VALOR_DESC,VALOR_TOTAL)'+
+      'VALUES (:IDCLI, :IDVEND, :IDUSUA, :STATUS, :VLRDESC, :VLRTOTAL)'+
+      'RETURNING ID_VENDA';
+      Q.ParamByName('IDCLI').AsInteger     := Venda.IdCliente;
+      Q.ParamByName('IDVEND').AsInteger    := Venda.IdVendedor;
+      Q.ParamByName('IDUSUA').AsInteger    := Venda.IdUsuario;
+      Q.ParamByName('STATUS').AsInteger    := Venda.Status;
+      Q.ParamByName('VLRDESC').AsCurrency  := Venda.ValorDesc;
+      Q.ParamByName('VLRTOTAL').AsCurrency := Venda.ValorTotal;
+      Q.Open;
+
+      Result := Q.FieldByName('ID_VENDA').AsInteger;
+
+    except
+      on E: EDatabaseError do
+        raise EInfraException.Create('Erro ao realizar o cadastro' + E.Message);
+    end;
+  finally
+    Q.Free;
+  end;
+
+end;
+
+procedure TVendaDao.Update(Usuario: TUsuarioModel);
+var
+  Q: TZQuery;
+begin
+  Result := False;
+
+  Q := TZQuery.Create(nil);
+  try
+    Q.Connection := FConexao;
+
+    Q.SQL.Text :=
+    'UPDATE VENDA SET ID_CLIENTE = :IDCLI, ID_VENDEDOR = :IDVEND, ID_USUARIO = :IDUSUA,'+
+    'STATUS = :STATUS, VALOR_DESC = :VLRDESC, VALOR_TOTAL = :VLRTOTAL WHERE ID_VENDA = :ID';
+
+    Q.ParamByName('IDCLI').AsInteger    := Venda.IdCliente;
+    Q.ParamByName('IDVEND').AsInteger   := Venda.IdVendedor;
+    Q.ParamByName('IDUSUA').AsInteger   := Venda.IdUsuario;
+    Q.ParamByName('STATUS').AsString    := Venda.Status;
+    Q.ParamByName('VLRDESC').AsCurrency := Venda.ValorDesc;
+    Q.ParamByName('VLRTOTAL').AsCurrency:= Venda.ValorTotal;
+    Q.ParamByName('ID').AsInteger       := Venda.IdVenda;
+
+    Q.ExecSQL;
+    Result := True;
+
+  except
+    on E: Exception do
+      raise EInfraException.Create('Erro ao atualizar venda: ' + E.Message);
+  finally
+    Q.Free;
+  end;
+end;
+
+procedure TVendaDao.Listar(Q: TZQuery);
+begin
+  Q.Close;
+  Q.Connection := FConexao;
+
+  Q.SQL.Text :=
+    'SELECT ID_VENDA, ID_CLIENTE, ID_USUARIO, ID_VENDEDOR, STATUS, EMISAO, VALOR_DESC, VALOR_TOTAL ' +
+    'FROM VENDA';
+
+  Q.Open;
+end;
+
+
+end.
