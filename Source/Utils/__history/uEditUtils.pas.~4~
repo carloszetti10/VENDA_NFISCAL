@@ -1,0 +1,55 @@
+unit uEditUtils;
+
+interface
+
+uses
+  Vcl.StdCtrls, System.SysUtils;
+
+type
+  TFormatacao = class
+  public
+    procedure AplicarNumero(Edit: TEdit);
+    procedure KeyPressNumero(Sender: TObject; var Key: Char);
+    procedure ExitNumero(Sender: TObject);
+  end;
+
+implementation
+
+procedure TFormatacao.AplicarNumero(Edit: TEdit);
+begin
+  Edit.OnKeyPress := KeyPressNumero;
+  Edit.OnExit := ExitNumero;
+end;
+
+procedure TFormatacao.KeyPressNumero(Sender: TObject; var Key: Char);
+begin
+  if Key = '.' then
+    Key := ',';
+
+  if not CharInSet(Key, ['0'..'9', ',', #8]) then
+    Key := #0;
+
+  if (Key = ',') and (Pos(',', (Sender as TEdit).Text) > 0) then
+    Key := #0;
+end;
+
+procedure TFormatacao.ExitNumero(Sender: TObject);
+var
+  E: TEdit;
+  V: Double;
+begin
+  E := Sender as TEdit;
+
+  if Trim(E.Text) = '' then
+  begin
+    E.Text := '0,00';
+    Exit;
+  end;
+
+  if not TryStrToFloat(StringReplace(E.Text, ',', '.', [rfReplaceAll]), V) then
+    V := 0;
+
+  E.Text := FormatFloat('0.00', V);
+end;
+
+end.

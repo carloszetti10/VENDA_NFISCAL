@@ -1,0 +1,35 @@
+unit uUsuarioService;
+
+interface
+uses
+  iUsuarioService, uUsuarioModel, iUsuarioDao;
+type
+  TUsuarioService = class(TInterfacedObject, IUsuarioServiceInterface)
+  private
+    FUsuarioDAO: IUsuarioDAOO;
+  public
+    procedure IInserirUsuario(Usuario: TUsuarioModel);
+    procedure IAlterarUsuario(Usuario: TUsuarioModel);
+    constructor Create(AUsuarioDao: IUsuarioDAOO);
+  end;
+
+implementation
+
+{ TUsuarioService }
+
+constructor TUsuarioService.Create(AUsuarioDao: IUsuarioDAOO);
+begin
+  FUsuarioDAO:= AUsuarioDao;
+end;
+
+procedure TUsuarioService.IAlterarUsuario(Usuario: TUsuarioModel);
+begin
+
+end;
+
+procedure TUsuarioService.IInserirUsuario(Usuario: TUsuarioModel);
+begin
+
+end;
+
+end.

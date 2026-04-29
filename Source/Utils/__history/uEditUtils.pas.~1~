@@ -1,0 +1,53 @@
+unit uEditUtils;
+
+interface
+
+uses
+  Vcl.StdCtrls, System.SysUtils;
+
+type
+  TEditUtils = class
+  public
+    class procedure ApenasNumeroKeyPress(Sender: TObject; var Key: Char);
+    class procedure FormatarMoedaExit(Sender: TObject);
+    class procedure InicializarCampo(Edit: TEdit);
+  end;
+
+implementation
+
+{ TEditUtils }
+
+class procedure TEditUtils.ApenasNumeroKeyPress(Sender: TObject; var Key: Char);
+begin
+  // permite só números e backspace
+  if not (Key in ['0'..'9', #8]) then
+    Key := #0;
+end;
+
+class procedure TEditUtils.FormatarMoedaExit(Sender: TObject);
+var
+  Valor: Double;
+  Edit: TEdit;
+begin
+  Edit := Sender as TEdit;
+
+  if Trim(Edit.Text) = '' then
+    Valor := 0
+  else
+    Valor := StrToFloatDef(Edit.Text, 0) / 100; // ?? divide por 100
+
+  Edit.Text := FormatFloat('0.00', Valor);
+end;
+
+class procedure TEditUtils.InicializarCampo(Edit: TEdit);
+begin
+  Edit.Text := '0,00';
+end;
+
+end.unit Unit1;
+
+interface
+
+implementation
+
+end.

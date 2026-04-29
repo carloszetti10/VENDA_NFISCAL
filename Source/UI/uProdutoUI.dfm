@@ -67,29 +67,29 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           TabOrder = 1
           Text = ''
         end
-        object mskValorUnitario: TMaskEdit
-          Left = 16
-          Top = 103
-          Width = 62
-          Height = 23
-          TabOrder = 2
-          Text = ''
-        end
-        object mskQuantidade: TMaskEdit
-          Left = 16
-          Top = 161
-          Width = 64
-          Height = 23
-          TabOrder = 3
-          Text = ''
-        end
         object btnIniciarEstoque: TBitBtn
           Left = 98
           Top = 161
           Width = 81
           Height = 24
           Caption = 'Iniciar estoque'
+          TabOrder = 2
+        end
+        object mskValorUnitario: TEdit
+          Left = 16
+          Top = 103
+          Width = 64
+          Height = 23
+          TabOrder = 3
+          Text = '0,00'
+        end
+        object mskQuantidade: TEdit
+          Left = 16
+          Top = 161
+          Width = 64
+          Height = 23
           TabOrder = 4
+          Text = '0,00'
         end
       end
     end

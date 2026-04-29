@@ -26,11 +26,11 @@ type
     FService: IClienteServiceInterface;
     FTipoPessoa: TTipoPessoa;
     FIDSelecionado: Integer;
-    procedure Inserir;
+    procedure Inserir; override;
     procedure Alterar;override;
+    procedure Novo;override;
   public
     constructor Create(AOwner: TComponent; AService: IClienteServiceInterface);
-    procedure Gravar; override;
   end;
 
 var
@@ -82,8 +82,34 @@ begin
   end;
 end;
 
+procedure TfrmCadastroCliente.tipoClienteClick(Sender: TObject);
+begin
+  inherited;
+  case tipoCliente.ItemIndex of
+    0: // CPF
+    begin
+       mskCpfCnpj.EditMask := '000.000.000-00;0;_';
+       mskRazao.Visible := false;
+       lbRazao.Visible := false;
+       FTipoPessoa := TTipoPessoa.F;
+    end;
+
+
+    1: // CNPJ
+    begin
+       mskCpfCnpj.EditMask := '00.000.000/0000-00;0;_';
+       mskRazao.Visible := true;
+       lbRazao.Visible := true;
+       FTipoPessoa := TTipoPessoa.J;
+    end;
+
+  end;
+
+  mskCpfCnpj.Clear;
+end;
+
 {$REGION 'METODOS INSERIR E ALTERAR'}
-procedure TfrmCadastroCliente.Gravar;
+{procedure TfrmCadastroCliente.Gravar;
 begin
   inherited;
   try
@@ -99,7 +125,7 @@ begin
   on EG: Exception do
       ShowMessage('Falha na operação, tente novamente!'+EG.Message);
   end;
-end;
+end;}
 
 procedure TfrmCadastroCliente.Inserir;
 var
@@ -133,6 +159,13 @@ begin
     on E: Exception do
       raise Exception.Create('Erro: ' + E.Message);
   end;
+end;
+
+procedure TfrmCadastroCliente.Novo;
+begin
+  inherited;
+  //iniciar formulario
+  mskCpfCnpj.Enabled := true;
 end;
 
 procedure TfrmCadastroCliente.Alterar;
@@ -171,31 +204,5 @@ begin
 
 end;
 {$ENDREGION}
-
-procedure TfrmCadastroCliente.tipoClienteClick(Sender: TObject);
-begin
-  inherited;
-  case tipoCliente.ItemIndex of
-    0: // CPF
-    begin
-       mskCpfCnpj.EditMask := '000.000.000-00;0;_';
-       mskRazao.Visible := false;
-       lbRazao.Visible := false;
-       FTipoPessoa := TTipoPessoa.F;
-    end;
-
-
-    1: // CNPJ
-    begin
-       mskCpfCnpj.EditMask := '00.000.000/0000-00;0;_';
-       mskRazao.Visible := true;
-       lbRazao.Visible := true;
-       FTipoPessoa := TTipoPessoa.J;
-    end;
-
-  end;
-
-  mskCpfCnpj.Clear;
-end;
 
 end.

@@ -1,0 +1,57 @@
+unit uUsuarioService;
+
+interface
+uses
+  iUsuarioService, System.SysUtils, uUsuarioModel, iUsuarioDao,System.Generics.Collections, ZConnection, uException;
+type
+  TUsuarioService = class(TInterfacedObject, IUsuarioServiceInterface)
+  private
+    FUsuarioDAO: IUsuarioDAOO;
+    FConexao: TZConnection;
+  public
+    procedure IInserirUsuario(Usuario: TUsuarioModel; listaPermi: TList<Integer>);
+    procedure IAlterarUsuario(Usuario: TUsuarioModel);
+    constructor Create(AUsuarioDao: IUsuarioDAOO);
+  end;
+
+implementation
+
+{ TUsuarioService }
+
+constructor TUsuarioService.Create(AUsuarioDao: IUsuarioDAOO);
+begin
+  FUsuarioDAO:= AUsuarioDao;
+end;
+
+procedure TUsuarioService.IAlterarUsuario(Usuario: TUsuarioModel);
+begin
+
+end;
+
+
+
+procedure TUsuarioService.IInserirUsuario(Usuario: TUsuarioModel; listaPermi: TList<Integer>);
+begin
+  //verificar se tem Login com esse nome
+
+   FConexao.StartTransaction;
+  try
+    // 1. insere usuário
+    FUsuarioDAO.Insert(Usuario);
+
+    // 2. insere permissões
+    FUsuarioDAO.InsertPermissoes(Usuario.Id, listaPermi);
+
+    // 3. tudo deu certo
+    FConexao.Commit;
+
+  except
+    on E: Exception do
+    begin
+      FConexao.Rollback;
+      raise EInfraException.Create('Erro ao inserir usuário: ' + E.Message);
+    end;
+  end;
+end;
+
+end.

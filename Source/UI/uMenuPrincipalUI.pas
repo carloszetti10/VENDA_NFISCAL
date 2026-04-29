@@ -4,8 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, uClientesUI,uAppServiceConexao,
-  uProdutoUI;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, uClientesUI,uAppServiceConexao, uFormaPagamentoUI, uFuncionarioUI,
+  uProdutoUI, uUsuarioUI, uUsuarioService,uUsuarioDao,IUsuarioDAO,iUsuarioService;
 
 type
   TfrmTelaPrincipal = class(TForm)
@@ -15,9 +15,17 @@ type
     PRODUTO: TMenuItem;
     RELATORIOS1: TMenuItem;
     SAIR1: TMenuItem;
+    FUNCIONARIO1: TMenuItem;
+    N1: TMenuItem;
+    USUARIO1: TMenuItem;
+    EMPRESA1: TMenuItem;
+    FORMAPAGAMENTO1: TMenuItem;
     procedure SAIR1Click(Sender: TObject);
     procedure CLIENTESClick(Sender: TObject);
     procedure PRODUTOClick(Sender: TObject);
+    procedure FUNCIONARIO1Click(Sender: TObject);
+    procedure FORMAPAGAMENTO1Click(Sender: TObject);
+    procedure USUARIO1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -51,6 +59,37 @@ begin
 end;
 
 
+procedure TfrmTelaPrincipal.FORMAPAGAMENTO1Click(Sender: TObject);
+var
+  frm : TfrmCadastroPagamento;
+  //Service: IClienteServiceInterface;
+  //Dao: IClienteDAOO;
+begin
+  //Dao := TClienteDao.Create(AppServiceConexao.getConexao);
+  //Service := TClienteService.Create(Dao);
+  frm := TfrmCadastroPagamento.Create(nil);
+  try
+    frm.ShowModal;
+  finally
+    frm.Free;
+  end;
+end;
+procedure TfrmTelaPrincipal.FUNCIONARIO1Click(Sender: TObject);
+var
+  frm : TfrmCadastroFuncionario;
+  //Service: IClienteServiceInterface;
+  //Dao: IClienteDAOO;
+begin
+  //Dao := TClienteDao.Create(AppServiceConexao.getConexao);
+  //Service := TClienteService.Create(Dao);
+  frm := TfrmCadastroFuncionario.Create(nil);
+  try
+    frm.ShowModal;
+  finally
+    frm.Free;
+  end;
+end;
+
 procedure TfrmTelaPrincipal.PRODUTOClick(Sender: TObject);
 var
   frm : TfrmCadastroProduto;
@@ -70,6 +109,22 @@ end;
 procedure TfrmTelaPrincipal.SAIR1Click(Sender: TObject);
 begin
    Application.Terminate;
+end;
+
+procedure TfrmTelaPrincipal.USUARIO1Click(Sender: TObject);
+var
+  frm : TTfrmCadastroUsuario;
+  Service: IUsuarioServiceInterface;
+  Dao: IUsuarioDAOO;
+begin
+  Dao := TUsuarioDao.Create(AppServiceConexao.getConexao);
+  Service := TUsuarioService.Create(Dao, AppServiceConexao.getConexao);
+  frm := TTfrmCadastroUsuario.Create(nil,Service);
+  try
+    frm.ShowModal;
+  finally
+    frm.Free;
+  end;
 end;
 
 end.

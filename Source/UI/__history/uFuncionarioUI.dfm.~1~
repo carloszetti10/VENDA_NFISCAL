@@ -1,0 +1,41 @@
+inherited frmCadastroFuncionario: TfrmCadastroFuncionario
+  Caption = 'Funcionario'
+  ClientWidth = 466
+  StyleElements = [seFont, seClient, seBorder]
+  ExplicitWidth = 482
+  TextHeight = 15
+  inherited PageControlHerenca: TPageControl
+    Width = 466
+    inherited TabConsulta: TTabSheet
+      ExplicitWidth = 458
+      inherited Panel1: TPanel
+        Width = 458
+        StyleElements = [seFont, seClient, seBorder]
+        inherited mskPesquisar: TMaskEdit
+          StyleElements = [seFont, seClient, seBorder]
+        end
+      end
+      inherited dbGridHerenca: TDBGrid
+        Width = 458
+      end
+      inherited Panel2: TPanel
+        Width = 458
+        StyleElements = [seFont, seClient, seBorder]
+      end
+    end
+    inherited TabCadastro: TTabSheet
+      ExplicitWidth = 458
+    end
+  end
+  inherited pnlInferior: TPanel
+    Width = 466
+    StyleElements = [seFont, seClient, seBorder]
+    inherited btnSair: TBitBtn
+      Left = 387
+      ExplicitLeft = 387
+    end
+  end
+  inherited dtsDados: TDataSource
+    Left = 412
+  end
+end

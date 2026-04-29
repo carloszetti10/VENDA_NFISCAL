@@ -155,6 +155,28 @@
         </DCCReference>
         <DCCReference Include="Source\Dao\uProdutoDao.pas"/>
         <DCCReference Include="Source\Service\uProdutoService.pas"/>
+        <DCCReference Include="Source\UI\uFuncionarioUI.pas">
+            <Form>frmCadastroFuncionario</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Source\UI\uFormaPagamentoUI.pas">
+            <Form>frmCadastroPagamento</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Source\UI\uUsuarioUI.pas">
+            <Form>TfrmCadastroUsuario</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Source\Model\uFuncionarioModel.pas"/>
+        <DCCReference Include="Source\Model\uFormaPagModel.pas"/>
+        <DCCReference Include="Source\Interface\IService\iUsuarioService.pas"/>
+        <DCCReference Include="Source\Interface\IService\iFuncionarioService.pas"/>
+        <DCCReference Include="Source\Interface\IRepositorio\IUsuarioDAO.pas"/>
+        <DCCReference Include="Source\Dao\uUsuarioDao.pas"/>
+        <DCCReference Include="Source\Dao\uFuncionarioDao.pas"/>
+        <DCCReference Include="Source\Interface\IRepositorio\iFuncionarioDAO.pas"/>
+        <DCCReference Include="Source\Service\uUsuarioService.pas"/>
+        <DCCReference Include="Source\Utils\uEditUtils.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,
-  Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls;
+  Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls, uException,uEditUtils;
 
 
 
@@ -41,6 +41,8 @@ type
     procedure ControlarBotoes(nInsert: Boolean);
     procedure Gravar; virtual; abstract;
     procedure Alterar; virtual; abstract;
+    procedure Inserir; virtual; abstract;
+    procedure Novo; virtual; abstract;
   public
     property EstadoCadastro: TEstadoCadastro read FEstadoCadastro write FEstadoCadastro;
   end;
@@ -97,10 +99,13 @@ begin
   FEstadoCadastro := ecNenhum;
 end;
 
+
+
 //NOVO
 procedure TfrmTelaBaseCadastro.btnNovoClick(Sender: TObject);
 begin
    ControlarBotoes(false);
+   Novo;
    FEstadoCadastro := ecInserir;
 end;
 procedure TfrmTelaBaseCadastro.btnSairClick(Sender: TObject);
@@ -117,14 +122,30 @@ end;
 //ALTERAR
 procedure TfrmTelaBaseCadastro.btnAlterarClick(Sender: TObject);
 begin
-  Alterar;
+  //Alterar;
   //ControlarBotoes(false);
   //FEstadoCadastro := ecAlterar;
 end;
 //GRAVAR
 procedure TfrmTelaBaseCadastro.btnGravarClick(Sender: TObject);
 begin
-   Gravar();
+
+  try
+     if EstadoCadastro = ecInserir then
+        Inserir;  //metodo de inserir
+     if EstadoCadastro = ecAlterar then
+        Alterar; //metodo alterar
+
+     FEstadoCadastro := ecNenhum;
+     ControlarBotoes(True);
+  except
+  on EApp: EAppException do
+     ShowMessage(EApp.Message);
+  on EInf: EInfraException do
+     ShowMessage(EInf.Message);
+  on EG: Exception do
+      ShowMessage('Falha na operação, tente novamente!'+EG.Message);
+  end;
 end;
 
 

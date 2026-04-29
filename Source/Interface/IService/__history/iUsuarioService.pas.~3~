@@ -1,0 +1,14 @@
+unit iUsuarioService;
+
+interface
+uses
+ uUsuarioModel;
+type
+    IUsuarioServiceInterface = interface
+    procedure IInserirUsuario(Usuario: TUsuarioModel);
+    procedure IAlterarUsuario(Usuario: TUsuarioModel);
+   end;
+
+implementation
+
+end.

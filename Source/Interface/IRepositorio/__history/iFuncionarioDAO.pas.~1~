@@ -1,0 +1,15 @@
+unit iFuncionarioDAO;
+
+interface
+uses
+   uFuncionarioModel;
+type
+    IUsuarioDAOO = interface
+    procedure Insert(Func: TFuncionarioModel);
+    procedure Update(Func: TFuncionarioModel);
+    function  FindByID(cod: Integer): TFuncionarioModel;
+   end;
+
+implementation
+
+end.

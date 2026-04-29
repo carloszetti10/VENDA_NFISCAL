@@ -1,0 +1,101 @@
+unit uUsuarioDao;
+interface
+uses
+  IUsuarioDAO, uUsuarioModel, System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection, uException;
+type
+  TProdutoDao = class(TInterfacedObject, IUsuarioDAOO)
+    private
+      FConexao : TZConnection;
+    public
+      procedure Insert(Usuario: TUsuarioModel);
+      procedure Update(Usuario: TUsuarioModel);
+      function  FindByID(cod: Integer): TUsuarioModel;
+      function Listar(Nome: string): TZQuery;
+      function ListarVazia: TZQuery;
+      function  FindByCodBarra(cod: string): TUsuarioModel;
+      Constructor Create(Conn:TZConnection);
+  end;
+
+implementation
+
+{ TProdutoDao }
+
+constructor TProdutoDao.Create(Conn: TZConnection);
+begin
+
+end;
+
+function TProdutoDao.FindByCodBarra(cod: string): TUsuarioModel;
+begin
+
+end;
+
+function TProdutoDao.FindByID(cod: Integer): TUsuarioModel;
+var
+  Q: TZQuery;
+begin
+  try
+    Q:= TZQuery.Create(nil);
+    try
+      Q.Connection:= FConexao;
+      Q.SQL.Text :=
+       'SELECT U.ID_USUARIO, U.ID_FUNCIONARIO, F.NOME, U.LOGIN '+
+       'FROM USUARIO U '+
+       'JOIN FUNCIONARIO F ON U.ID_FUNCIONARIO = F.ID_FUNCIONARIO '+
+       'WHERE U.ID_USUARIO = :ID';
+      Q.Open;
+
+      if not Q.IsEmpty then
+      begin
+        Result := TUsuarioModel.Create;
+        Result.Id := Q.FieldByName('ID_USUARIO').AsInteger;
+        Result.IdFuncionario := Q.FieldByName('ID_FUNCIONARIO').AsInteger;
+        Result.NomeFuncionario := Q.FieldByName('NOME').AsString;
+        Result.Login := Q.FieldByName('LOGIN').AsString;
+      end
+      else
+        result := nil;
+
+    finally
+      Q.Free;
+    end;
+
+  except
+    on E: EUpdateError do
+      raise EInfraException.Create('Erro: '+e.Message);
+  end;
+end;
+
+procedure TProdutoDao.Insert(Usuario: TUsuarioModel);
+  var
+  Q: TZQuery;
+begin
+  Q:= TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
+
+      Q.SQL.Text := 'INSERT INTO USUARIO (LOGIN, SENHA, ID_FUNCIONARIO)'+
+      'VALUES (:LOGIN, :SENHA, :ID_FUNC)';
+      Q.ParamByName('LOGIN').AsString := Usuario.Login;
+      Q.ParamByName('SENHA').AsString := Usuario.Senha;
+      Q.ParamByName('ID_FUNC').AsInteger := Usuario.IdFuncionario;
+      Q.ExecSQL;
+
+    except
+      on E: EDatabaseError do
+        raise EInfraException.Create('Erro ao realizar o cadastro' + E.Message);
+    end;
+  finally
+    Q.Free;
+  end;
+
+end;
+
+procedure TProdutoDao.Update(Usuario: TUsuarioModel);
+begin
+
+end;
+
+end.
