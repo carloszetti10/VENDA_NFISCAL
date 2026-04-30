@@ -11,6 +11,7 @@ type
       function Insert(Venda: TVendaModel): Integer:
       procedure Update(Usuario: TUsuarioModel);
       function  FindByID(cod: Integer): TUsuarioModel;
+      function Inserir(AVenda: TVenda): Integer;
       Constructor Create(Conn:TZConnection);
   end;
 
@@ -141,6 +142,59 @@ begin
 
   Q.Open;
 end;
+function TVendaDAO.Inserir(AVenda: TVenda): Integer;
+var
+  Qry: TFDQuery;
+  i: Integer;
+begin
+  Result := 0;
 
+  Qry := TFDQuery.Create(nil);
+  try
+    Qry.Connection := FConn;
+
+    FConn.StartTransaction;
+    try
+      // 🔹 Inserir cabeçalho
+      Qry.SQL.Text :=
+        'INSERT INTO VENDA (ID_CLIENTE, ID_USUARIO, CODIGO_LOJA, TOTAL) ' +
+        'VALUES (:CLIENTE, :USUARIO, :LOJA, :TOTAL) ' +
+        'RETURNING ID';
+
+      Qry.ParamByName('CLIENTE').AsInteger := AVenda.IdCliente;
+      Qry.ParamByName('USUARIO').AsInteger := AVenda.IdUsuario;
+      Qry.ParamByName('LOJA').AsInteger := AVenda.CodigoLoja;
+      Qry.ParamByName('TOTAL').AsFloat := AVenda.Total;
+
+      Qry.Open;
+      Result := Qry.Fields[0].AsInteger;
+
+      // 🔹 Inserir itens
+      for i := 0 to AVenda.Itens.Count - 1 do
+      begin
+        Qry.Close;
+        Qry.SQL.Text :=
+          'INSERT INTO VENDA_ITEM (ID_VENDA, ID_PRODUTO, QTD, VALOR_UNITARIO, TOTAL) ' +
+          'VALUES (:VENDA, :PRODUTO, :QTD, :VALOR, :TOTAL)';
+
+        Qry.ParamByName('VENDA').AsInteger := Result;
+        Qry.ParamByName('PRODUTO').AsInteger := AVenda.Itens[i].IdProduto;
+        Qry.ParamByName('QTD').AsFloat := AVenda.Itens[i].Quantidade;
+        Qry.ParamByName('VALOR').AsFloat := AVenda.Itens[i].ValorUnitario;
+        Qry.ParamByName('TOTAL').AsFloat := AVenda.Itens[i].Total;
+
+        Qry.ExecSQL;
+      end;
+
+      FConn.Commit;
+    except
+      FConn.Rollback;
+      raise;
+    end;
+
+  finally
+    Qry.Free;
+  end;
+end;
 
 end.

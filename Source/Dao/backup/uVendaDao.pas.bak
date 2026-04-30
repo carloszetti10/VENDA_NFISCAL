@@ -130,6 +130,17 @@ begin
   end;
 end;
 
+procedure TVendaDao.Listar(Q: TZQuery);
+begin
+  Q.Close;
+  Q.Connection := FConexao;
+
+  Q.SQL.Text :=
+    'SELECT ID_VENDA, ID_CLIENTE, ID_USUARIO, ID_VENDEDOR, STATUS, EMISAO, VALOR_DESC, VALOR_TOTAL ' +
+    'FROM VENDA';
+
+  Q.Open;
+end;
 
 
 end.

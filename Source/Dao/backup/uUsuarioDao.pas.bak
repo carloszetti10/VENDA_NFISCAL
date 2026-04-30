@@ -14,7 +14,6 @@ type
       function  ListaPermissaoPorID(Id: Integer): TList<Integer>;
       procedure InsertPermissoes(Id: Integer; Lista:TList<Integer>);
       function Login(ALogin, ASenha: string): TUsuario;
-      function BuscarPorId(AId: Integer): TUsuario;
       Constructor Create(Conn:TZConnection);
   end;
 
@@ -195,31 +194,5 @@ begin
     Qry.Free;
   end;
 end;
- function TUsuarioDAO.BuscarPorId(AId: Integer): TUsuario;
-var
-  Qry: TFDQuery;
-begin
-  Result := nil;
-  Qry := TFDQuery.Create(nil);
-  try
-    Qry.Connection := FConn;
-    Qry.SQL.Text :=
-      'SELECT ID, NOME, LOGIN ' +
-      'FROM USUARIO ' +
-      'WHERE ID = :ID';
 
-    Qry.ParamByName('ID').AsInteger := AId;
-    Qry.Open;
-
-    if not Qry.IsEmpty then
-    begin
-      Result := TUsuario.Create;
-      Result.Id := Qry.FieldByName('ID').AsInteger;
-      Result.Nome := Qry.FieldByName('NOME').AsString;
-      Result.Login := Qry.FieldByName('LOGIN').AsString;
-    end;
-  finally
-    Qry.Free;
-  end;
-end;
 end.
