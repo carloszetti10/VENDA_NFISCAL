@@ -37,7 +37,11 @@ uses
   uEditUtils in 'Source\Utils\uEditUtils.pas',
   uVendaDavUI in 'Source\UI\uVendaDavUI.pas' {frmVendaDav},
   uVendaModel in 'Source\Model\uVendaModel.pas',
-  uItemVendaModel in 'Source\Model\uItemVendaModel.pas';
+  uItemVendaModel in 'Source\Model\uItemVendaModel.pas',
+  uVendaService in 'Source\Service\uVendaService.pas',
+  iVendaService in 'Source\Interface\IService\iVendaService.pas',
+  uVendaDao in 'Source\Dao\uVendaDao.pas',
+  iVendaDAO in 'Source\Interface\IRepositorio\iVendaDAO.pas';
 
 {$R *.res}
 

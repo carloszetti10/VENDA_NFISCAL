@@ -1,0 +1,15 @@
+unit iVendaService;
+
+interface
+uses
+ uVendaModel, System.Generics.Collections,ZDataset;
+type
+    IUsuarioServiceInterface = interface
+    procedure IInserirVenda(Venda: TVendaModel);
+    procedure IAlterarVenda(Venda: TVendaModel);
+    procedure ListarNaTela(Q: TZQuery; Nome: string);
+   end;
+
+implementation
+
+end.

@@ -183,6 +183,10 @@
         </DCCReference>
         <DCCReference Include="Source\Model\uVendaModel.pas"/>
         <DCCReference Include="Source\Model\uItemVendaModel.pas"/>
+        <DCCReference Include="Source\Service\uVendaService.pas"/>
+        <DCCReference Include="Source\Interface\IService\iVendaService.pas"/>
+        <DCCReference Include="Source\Dao\uVendaDao.pas"/>
+        <DCCReference Include="Source\Interface\IRepositorio\iVendaDAO.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

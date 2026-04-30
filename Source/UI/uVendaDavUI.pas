@@ -7,7 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons,
   Vcl.ComCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids, ZAbstractRODataset, uClientesUI,
   ZAbstractDataset, ZDataset,uAppServiceConexao, uFormaPagamentoUI, uFuncionarioUI,
-  uProdutoUI,uClienteModel, uUsuarioUI, uUsuarioService,uUsuarioDao,IUsuarioDAO,iUsuarioService,uTelaBaseCadastroUI;
+  uProdutoUI,uClienteModel, uUsuarioUI, uUsuarioService,uUsuarioDao,IUsuarioDAO,
+  iUsuarioService,uTelaBaseCadastroUI, iVendaService, IProdutoService, uProdutoService;
 type
   TfrmVendaDav = class(TForm)
     Panel1: TPanel;
@@ -52,20 +53,23 @@ type
     procedure FormShow(Sender: TObject);
     procedure edtVendedorClick(Sender: TObject);
     procedure edtClienteClick(Sender: TObject);
-
+    procedure edtPesquisaKeyPress(Sender: TObject; var Key: Char);
   private
     FCliente: TClienteModel;
-  public
+
+    FService: IVendaServiceInterface;
+    FProdutoService: IProdutoServiceInterface;
     procedure AlternaPainel(PainelVisivel: TPanel; PainelOculto: TPanel);
+    procedure PreencherGrildProdutosEstoque(NomeProd: string);
+  public
+    constructor Create(AOwner: TComponent; AProdServ: IProdutoServiceInterface; AService: IVendaServiceInterface);
   end;
 
 var
   frmVendaDav: TfrmVendaDav;
-
 implementation
 uses
-   iClienteService, uClienteService, IClienteDAO, uClienteDao,
-   IProdutoService, uProdutoService, IProdutoDAO, uProdutoDao;
+   iClienteService, uClienteService, IClienteDAO, uClienteDao;
 
 {$R *.dfm}
 
@@ -78,6 +82,13 @@ begin
 end;
 
 
+
+constructor TfrmVendaDav.Create(AOwner: TComponent;
+  AProdServ: IProdutoServiceInterface; AService: IVendaServiceInterface);
+begin
+  inherited Create(AOwner);
+  FService:= AService;
+end;
 
 procedure TfrmVendaDav.edtClienteClick(Sender: TObject);
 var
@@ -105,6 +116,11 @@ begin
 
 end;
 
+
+procedure TfrmVendaDav.edtPesquisaKeyPress(Sender: TObject; var Key: Char);
+begin
+  PreencherGrildProdutosEstoque(edtPesquisa.Text);
+end;
 
 procedure TfrmVendaDav.edtVendedorClick(Sender: TObject);
 var
@@ -136,5 +152,10 @@ begin
   AlternaPainel(painelEstoque, painelVenda);
 end;
 
+
+procedure TfrmVendaDav.PreencherGrildProdutosEstoque(NomeProd: string);
+begin
+  FService.ListarNaTelaGridEstoque(QRYProdEstoque, NomeProd);
+end;
 
 end.

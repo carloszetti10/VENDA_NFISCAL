@@ -1,0 +1,18 @@
+unit uVendaService;
+
+uses
+
+type
+   TVendaService = class(TInterfacedObject, IVendaServiceInterface)
+   private
+   FVendaDAO : IVendaDAOO;
+   public
+     procedure Inserir(Produto: TProdutoModel);
+     procedure Alterar(Produto: TProdutoModel);
+     constructor Create(AVendaDao: IVendaDAOO);
+     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
+   end;
+
+implementation
+
+end.

@@ -44,7 +44,8 @@ var
 implementation
 uses
    iClienteService, uClienteService, IClienteDAO, uClienteDao,
-   IProdutoService, uProdutoService, IProdutoDAO, uProdutoDao;
+   IProdutoService, uProdutoService, IProdutoDAO, uProdutoDao,
+   iVendaService, uVendaService, iVendaDAO, uVendaDao;
 
 {$R *.dfm}
 
@@ -85,7 +86,6 @@ begin
   PanelCentro.Left := (ClientWidth - PanelCentro.Width) div 2;
   PanelCentro.Top  := (ClientHeight - PanelCentro.Height) div 2;
 end;
-
 procedure TfrmTelaPrincipal.FUNCIONARIO1Click(Sender: TObject);
 var
   frm : TfrmCadastroFuncionario;
@@ -101,9 +101,6 @@ begin
     frm.Free;
   end;
 end;
-
-
-
 procedure TfrmTelaPrincipal.PRODUTOClick(Sender: TObject);
 var
   frm : TfrmCadastroProduto;
@@ -119,12 +116,10 @@ begin
     frm.Free;
   end;
 end;
-
 procedure TfrmTelaPrincipal.SAIR1Click(Sender: TObject);
 begin
    Application.Terminate;
 end;
-
 procedure TfrmTelaPrincipal.USUARIO1Click(Sender: TObject);
 var
   frm : TTfrmCadastroUsuario;
@@ -140,16 +135,16 @@ begin
     frm.Free;
   end;
 end;
-
 procedure TfrmTelaPrincipal.VENDA1Click(Sender: TObject);
 var
   frm : TfrmVendaDav;
-  //Service: IUsuarioServiceInterface;
-  //Dao: IUsuarioDAOO;
+  Service: IVendaServiceInterface;
+  Dao: IVendaDAOO;
+  DAOp: IProdutoDAOO;
 begin
-  //Dao := TUsuarioDao.Create(AppServiceConexao.getConexao);
-  //Service := TUsuarioService.Create(Dao, AppServiceConexao.getConexao);
-  frm := TfrmVendaDav.Create(nil);
+  Dao := TVendaDao.Create();
+  //Service := IVendaServiceInterface.Create( AppServiceConexao.getConexao);
+  //frm := TfrmVendaDav.Create(nil);
   try
     frm.ShowModal;
   finally

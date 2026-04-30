@@ -169,8 +169,6 @@ object frmVendaDav: TfrmVendaDav
       Height = 245
       Align = alClient
       TabOrder = 0
-      ExplicitLeft = 360
-      ExplicitWidth = 583
       object Panel5: TPanel
         Left = 1
         Top = 1
@@ -219,6 +217,7 @@ object frmVendaDav: TfrmVendaDav
           Width = 302
           Height = 23
           TabOrder = 2
+          OnKeyPress = edtPesquisaKeyPress
         end
       end
       object Panel6: TPanel
@@ -228,8 +227,6 @@ object frmVendaDav: TfrmVendaDav
         Height = 187
         Align = alClient
         TabOrder = 1
-        ExplicitTop = 104
-        ExplicitHeight = 140
         object painelEstoque: TPanel
           Left = 14
           Top = 6
@@ -289,7 +286,6 @@ object frmVendaDav: TfrmVendaDav
             Align = alTop
             Caption = 'PRODUTOS DO ESTOQUE'
             TabOrder = 1
-            ExplicitWidth = 240
           end
         end
         object painelVenda: TPanel
@@ -355,7 +351,6 @@ object frmVendaDav: TfrmVendaDav
             Align = alTop
             Caption = 'PRODUTOS DA VENDA'
             TabOrder = 1
-            ExplicitWidth = 240
           end
         end
       end

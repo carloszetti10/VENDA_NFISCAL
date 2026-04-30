@@ -10,8 +10,8 @@ type
     function  FindByID(cod: Integer): TUsuarioModel;
     function  ListaPermissaoPorID(Id: Integer): TList<Integer>;
     procedure InsertPermissoes(Id: Integer; Lista:TList<Integer>);
-     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
-     procedure ListarTodos(Q: TZQuery);
+    procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
+    procedure ListarTodos(Q: TZQuery);
    end;
 
 implementation

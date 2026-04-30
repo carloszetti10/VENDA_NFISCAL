@@ -1,0 +1,153 @@
+unit uVendaDavUI;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons,
+  Vcl.ComCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids, ZAbstractRODataset, uClientesUI,
+  ZAbstractDataset, ZDataset,uAppServiceConexao, uFormaPagamentoUI, uFuncionarioUI,
+  uProdutoUI,uClienteModel, uUsuarioUI, uUsuarioService,uUsuarioDao,IUsuarioDAO,
+  iUsuarioService,uTelaBaseCadastroUI, iVendaService;
+type
+  TfrmVendaDav = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    Edit1: TEdit;
+    Label1: TLabel;
+    dtmEmisao: TDateTimePicker;
+    Label2: TLabel;
+    Label3: TLabel;
+    edtCliente: TEdit;
+    Label6: TLabel;
+    Panel4: TPanel;
+    Label7: TLabel;
+    edtPesquisa: TEdit;
+    edtQuantidade: TEdit;
+    Label8: TLabel;
+    Label9: TLabel;
+    edtValorUnitarioProd: TEdit;
+    edtBruto: TEdit;
+    edtDesconto: TEdit;
+    edtLiquido: TEdit;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    edtVendedor: TEdit;
+    btnNovo: TBitBtn;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    Panel5: TPanel;
+    Panel6: TPanel;
+    painelEstoque: TPanel;
+    painelVenda: TPanel;
+    DBGrid1: TDBGrid;
+    DBGrid2: TDBGrid;
+    Panel7: TPanel;
+    Panel8: TPanel;
+    DTSProdEstoque: TDataSource;
+    QRYProdEstoque: TZQuery;
+    DTSProdVenda: TDataSource;
+    QRYProdVenda: TZQuery;
+    procedure FormShow(Sender: TObject);
+    procedure edtVendedorClick(Sender: TObject);
+    procedure edtClienteClick(Sender: TObject);
+    procedure edtPesquisaKeyPress(Sender: TObject; var Key: Char);
+  private
+    FCliente: TClienteModel;
+
+    FService: IVendaServiceInterface;
+  public
+    procedure AlternaPainel(PainelVisivel: TPanel; PainelOculto: TPanel);
+    procedure PreencherGrildProdutosEstoque(NomeProd: string);
+  end;
+
+var
+  frmVendaDav: TfrmVendaDav;
+implementation
+uses
+   iClienteService, uClienteService, IClienteDAO, uClienteDao,
+   IProdutoService, uProdutoService, IProdutoDAO, uProdutoDao;
+
+{$R *.dfm}
+
+//---------Manipular tabela que aparece----------------------
+procedure TfrmVendaDav.AlternaPainel(PainelVisivel, PainelOculto: TPanel);
+begin
+   PainelVisivel.Align:= alClient;
+   PainelVisivel.Visible:= true;
+   PainelOculto.Visible:= False;
+end;
+
+
+
+procedure TfrmVendaDav.edtClienteClick(Sender: TObject);
+var
+  Frm : TfrmCadastroCliente;
+  Service: IClienteServiceInterface;
+  Dao: IClienteDAOO;
+begin
+  Dao := TClienteDao.Create(AppServiceConexao.getConexao);
+  Service := TClienteService.Create(Dao);
+  Frm := TfrmCadastroCliente.Create(nil, Service);
+  try
+    Frm.ModoTela := mtSelecao;
+
+    if Frm.ShowModal = mrOk then
+    begin
+      FCliente := Frm.GetCliente;
+
+      edtCliente.Text := '';
+      edtCliente.Text := FCliente.Nome;
+    end;
+
+  finally
+    Frm.Free;
+  end;
+
+end;
+
+
+procedure TfrmVendaDav.edtPesquisaKeyPress(Sender: TObject; var Key: Char);
+begin
+  PreencherGrildProdutosEstoque(edtPesquisa.Text);
+end;
+
+procedure TfrmVendaDav.edtVendedorClick(Sender: TObject);
+var
+  Frm : TfrmCadastroCliente;
+  Service: IClienteServiceInterface;
+  Dao: IClienteDAOO;
+begin
+  Dao := TClienteDao.Create(AppServiceConexao.getConexao);
+  Service := TClienteService.Create(Dao);
+  Frm := TfrmCadastroCliente.Create(nil, Service);
+  try
+    Frm.ModoTela := mtSelecao;
+
+    if Frm.ShowModal = mrOk then
+    begin
+      FCliente := Frm.GetCliente;
+
+      edtCliente.Text := '';
+      edtCliente.Text := FCliente.Nome;
+    end;
+
+  finally
+    Frm.Free;
+  end;
+end;
+
+procedure TfrmVendaDav.FormShow(Sender: TObject);
+begin
+  AlternaPainel(painelEstoque, painelVenda);
+end;
+
+
+procedure TfrmVendaDav.PreencherGrildProdutosEstoque(NomeProd: string);
+begin
+  FService.ListarNaTelaGridEstoque(QRYProdEstoque, NomeProd);
+end;
+
+end.
