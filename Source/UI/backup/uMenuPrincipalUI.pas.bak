@@ -144,8 +144,8 @@ var
 begin
   DaoVenda := TVendaDao.Create();
   DaoProduto := TProdutoDao.Create();
-  Service := TVendaService.Create(DaoVenda, DaoProduto, AppServiceConexao.getConexao);
-  frm := TfrmVendaDav.Create(nil, Service);
+  Service := IVendaService.Create(DaoVenda, DaoProduto, AppServiceConexao.getConexao);
+  //frm := TfrmVendaDav.Create(nil);
   try
     frm.ShowModal;
   finally
