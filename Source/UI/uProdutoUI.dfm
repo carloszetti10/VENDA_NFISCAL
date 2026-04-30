@@ -1,15 +1,46 @@
 inherited frmCadastroProduto: TfrmCadastroProduto
-  Caption = 'frmCadastroProduto'
+  Caption = 'Produtos'
   StyleElements = [seFont, seClient, seBorder]
   TextHeight = 15
   inherited PageControlHerenca: TPageControl
-    ActivePage = TabCadastro
     inherited TabConsulta: TTabSheet
       inherited Panel1: TPanel
         StyleElements = [seFont, seClient, seBorder]
         inherited mskPesquisar: TMaskEdit
           StyleElements = [seFont, seClient, seBorder]
         end
+      end
+      inherited dbGridHerenca: TDBGrid
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'ID_PRODUTO'
+            ReadOnly = False
+            Title.Caption = 'CODIGO'
+            Width = 58
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'NOME'
+            Title.Caption = 'NNOME DO PRODUTO'
+            Width = 250
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VALOR_UNITARIO'
+            Title.Caption = 'PRE'#199'O'
+            Width = 70
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'ESTOQUE'
+            Title.Caption = 'QUANTIDADE'
+            Width = 80
+            Visible = True
+          end>
       end
       inherited Panel2: TPanel
         StyleElements = [seFont, seClient, seBorder]
@@ -98,7 +129,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     StyleElements = [seFont, seClient, seBorder]
   end
   inherited dtsDados: TDataSource
-    Left = 548
-    Top = 26
+    Left = 564
+  end
+  inherited Qry: TZQuery
+    SQL.Strings = (
+      '')
   end
 end

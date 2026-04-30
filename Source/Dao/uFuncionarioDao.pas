@@ -11,6 +11,7 @@ type
       procedure Insert(Func: TFuncionarioModel);
       procedure Update(Func: TFuncionarioModel);
       function  FindByID(cod: Integer): TFuncionarioModel;
+      procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
       Constructor Create(Conn:TZConnection);
   end;
 
@@ -76,6 +77,17 @@ begin
     Q.Free;
   end;
 
+end;
+
+procedure TFuncionarioDao.ListarPorNomeTela(Q: TZQuery; Nome: string);
+begin
+  Q.Close;
+  Q.Connection := FConexao;
+
+  Q.SQL.Text :=
+    'SELECT * FUNCIONARIO FROM PRODUTO WHERE UPPER(NOME) LIKE UPPER(:NOME)';
+  Q.ParamByName('NOME').AsString := '%' + Trim(Nome) + '%';
+  Q.Open;
 end;
 
 procedure TFuncionarioDao.Update(Func: TFuncionarioModel);

@@ -2,7 +2,7 @@ unit IUsuarioDAO;
 
 interface
 uses
-   uUsuarioModel,System.Generics.Collections;
+   uUsuarioModel,System.Generics.Collections,ZDataset;
 type
     IUsuarioDAOO = interface
     function Insert(Usuario: TUsuarioModel):Integer;
@@ -10,6 +10,8 @@ type
     function  FindByID(cod: Integer): TUsuarioModel;
     function  ListaPermissaoPorID(Id: Integer): TList<Integer>;
     procedure InsertPermissoes(Id: Integer; Lista:TList<Integer>);
+     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
+     procedure ListarTodos(Q: TZQuery);
    end;
 
 implementation

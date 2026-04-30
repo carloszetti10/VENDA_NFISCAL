@@ -13,15 +13,12 @@ type
      procedure Update(Cliente: TClienteModel);
      function FindByDocumento(Docum: string): TClienteModel;
      function FindByID(ID: Integer): TClienteModel;
-     function Listar(Nome: string): TZQuery;
-     function ListarVazia: TZQuery;
+     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
      Constructor Create(Conn:TZConnection);
 
   end;
 
 implementation
-
-{ TClienteDao }
 
 { TClienteDao }
 
@@ -120,26 +117,13 @@ begin
   end;
 end;
 
-function TClienteDao.Listar(Nome: string): TZQuery;
+procedure TClienteDao.ListarPorNomeTela(Q: TZQuery; Nome: string);
 begin
-  Result := TZQuery.Create(nil);
-  Result.Connection := FConexao;
-
-  Result.SQL.Text :=  'SELECT ID_CLIENTE, NOME FROM CLIENTE WHERE NOME LIKE :NOME AND ATIVO = 1';
-
-  Result.ParamByName('NOME').AsString := '%' + Nome + '%';
-  Result.Open;
-end;
-
-
-function TClienteDAO.ListarVazia: TZQuery;
-begin
-  Result := TZQuery.Create(nil);
-  Result.Connection := FConexao;
-
-  Result.SQL.Text :=
-    'SELECT ID_CLIENTE, NOME FROM CLIENTE WHERE ID_CLIENTE = 0';
-  Result.Open;
+  Q.Close;
+  Q.SQL.Text :=
+    'SELECT ID_CLIENTE, NOME, CPF_CNPJ FROM CLIENTE WHERE UPPER(NOME) LIKE UPPER(:NOME)';
+  Q.ParamByName('NOME').AsString := '%' + Trim(Nome) + '%';
+  Q.Open;
 end;
 
 procedure TClienteDao.Update(Cliente: TClienteModel);

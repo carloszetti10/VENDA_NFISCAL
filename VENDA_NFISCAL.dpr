@@ -34,7 +34,10 @@ uses
   uFuncionarioDao in 'Source\Dao\uFuncionarioDao.pas',
   iFuncionarioDAO in 'Source\Interface\IRepositorio\iFuncionarioDAO.pas',
   uUsuarioService in 'Source\Service\uUsuarioService.pas',
-  uEditUtils in 'Source\Utils\uEditUtils.pas';
+  uEditUtils in 'Source\Utils\uEditUtils.pas',
+  uVendaDavUI in 'Source\UI\uVendaDavUI.pas' {frmVendaDav},
+  uVendaModel in 'Source\Model\uVendaModel.pas',
+  uItemVendaModel in 'Source\Model\uItemVendaModel.pas';
 
 {$R *.res}
 
@@ -55,5 +58,6 @@ begin
   Application.CreateForm(TfrmCadastroFuncionario, frmCadastroFuncionario);
   Application.CreateForm(TfrmCadastroPagamento, frmCadastroPagamento);
   Application.CreateForm(TTfrmCadastroUsuario, TfrmCadastroUsuario);
+  Application.CreateForm(TfrmVendaDav, frmVendaDav);
   Application.Run;
 end.

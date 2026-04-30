@@ -1,0 +1,65 @@
+object frmTelaPrincipal: TfrmTelaPrincipal
+  Left = 0
+  Top = 0
+  Caption = 'TELA PRINCIPAL'
+  ClientHeight = 441
+  ClientWidth = 624
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Menu = MainMenu1
+  WindowState = wsMaximized
+  TextHeight = 15
+  object PanelCentro: TPanel
+    Left = 8
+    Top = 40
+    Width = 569
+    Height = 369
+    Caption = 'PanelCentro'
+    TabOrder = 0
+    OnResize = PanelCentroResize
+  end
+  object MainMenu1: TMainMenu
+    Left = 568
+    Top = 16
+    object CADASTRO1: TMenuItem
+      Caption = 'CADASTRO'
+      object CLIENTES: TMenuItem
+        Caption = 'CLIENTES'
+        OnClick = CLIENTESClick
+      end
+      object PRODUTO: TMenuItem
+        Caption = 'PRODUTOS'
+        OnClick = PRODUTOClick
+      end
+      object FUNCIONARIO1: TMenuItem
+        Caption = 'FUNCIONARIO'
+        OnClick = FUNCIONARIO1Click
+      end
+      object FORMAPAGAMENTO1: TMenuItem
+        Caption = 'FORMA PAGAMENTO'
+        OnClick = FORMAPAGAMENTO1Click
+      end
+      object N1: TMenuItem
+        Caption = '-'
+      end
+      object USUARIO1: TMenuItem
+        Caption = 'USUARIO'
+        OnClick = USUARIO1Click
+      end
+    end
+    object RELATORIOS1: TMenuItem
+      Caption = 'RELATORIOS'
+    end
+    object EMPRESA1: TMenuItem
+      Caption = 'EMPRESA'
+    end
+    object SAIR1: TMenuItem
+      Caption = 'SAIR'
+      OnClick = SAIR1Click
+    end
+  end
+end

@@ -1,0 +1,87 @@
+unit uFuncionarioDao;
+interface
+uses
+  iFuncionarioDAO, uFuncionarioModel, System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection, uException;
+type
+  TFuncionarioDao = class(TInterfacedObject, IFuncionarioDAOO)
+    private
+      FConexao : TZConnection;
+    public
+      procedure Insert(Func: TFuncionarioModel);
+      procedure Update(Func: TFuncionarioModel);
+      function  FindByID(cod: Integer): TFuncionarioModel;
+      Constructor Create(Conn:TZConnection);
+  end;
+
+implementation
+
+{ TProdutoDao }
+
+constructor TFuncionarioDao.Create(Conn: TZConnection);
+begin
+  FConexao:= Conn;
+end;
+
+function TFuncionarioDao.FindByID(cod: Integer):  TFuncionarioModel;
+var
+  Q: TZQuery;
+begin
+  try
+    Q:= TZQuery.Create(nil);
+    try
+      Q.Connection:= FConexao;
+      Q.SQL.Text :=
+       'SELECT * FROM FUNCIONARIO WHERE ID_FUNCIONARIO = :ID';
+      Q.ParamByName('ID').AsInteger:= COD;
+      Q.Open;
+
+      if not Q.IsEmpty then
+      begin
+        Result := TFuncionarioModel.Create;
+        Result.Id := Q.FieldByName('ID_FUNCIONARIO').AsInteger;
+        Result.Nome := Q.FieldByName('NOME').AsString;
+      end
+      else
+        result := nil;
+
+    finally
+      Q.Free;
+    end;
+
+  except
+    on E: EUpdateError do
+      raise EInfraException.Create('Erro: '+e.Message);
+  end;
+end;
+
+procedure TFuncionarioDao.Insert(Func: TFuncionarioModel);
+  var
+  Q: TZQuery;
+begin
+  Q:= TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
+
+      Q.SQL.Text := 'INSERT INTO FUNCIONARIO (NOME) VALUES (:NOME)';
+      Q.ParamByName('NOME').AsString := Func.Nome;
+      Q.ExecSQL;
+
+    except
+      on E: EDatabaseError do
+        raise EInfraException.Create('Erro ao realizar o cadastro' + E.Message);
+    end;
+  finally
+    Q.Free;
+  end;
+
+end;
+
+procedure TFuncionarioDao.Update(Func: TFuncionarioModel);
+begin
+
+end;
+
+end.
+

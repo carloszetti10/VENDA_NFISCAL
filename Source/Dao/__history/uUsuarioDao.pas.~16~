@@ -1,0 +1,193 @@
+unit uUsuarioDao;
+interface
+uses
+  IUsuarioDAO, uUsuarioModel, System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection, uException,  System.Generics.Collections;
+type
+  TUsuarioDao = class(TInterfacedObject, IUsuarioDAOO)
+    private
+      FConexao : TZConnection;
+    public
+      function Insert(Usuario: TUsuarioModel): Integer;
+      procedure Update(Usuario: TUsuarioModel);
+      function  FindByID(cod: Integer): TUsuarioModel;
+      function  ListaPermissaoPorID(Id: Integer): TList<Integer>;
+      procedure InsertPermissoes(Id: Integer; Lista:TList<Integer>);
+      Constructor Create(Conn:TZConnection);
+      procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
+      procedure ListarTodos(Q: TZQuery);
+  end;
+
+implementation
+
+{ TProdutoDao }
+
+constructor TUsuarioDao.Create(Conn: TZConnection);
+begin
+  FConexao:= Conn;
+end;
+
+function TUsuarioDao.FindByID(cod: Integer): TUsuarioModel;
+var
+  Q: TZQuery;
+begin
+  try
+    Q:= TZQuery.Create(nil);
+    try
+      Q.Connection:= FConexao;
+      Q.SQL.Text :=
+       'SELECT U.ID_USUARIO, U.ID_FUNCIONARIO, F.NOME, U.LOGIN '+
+       'FROM USUARIO U '+
+       'JOIN FUNCIONARIO F ON U.ID_FUNCIONARIO = F.ID_FUNCIONARIO '+
+       'WHERE U.ID_USUARIO = :ID';
+
+       Q.ParamByName('ID').AsInteger:= COD;
+      Q.Open;
+
+      if not Q.IsEmpty then
+      begin
+        Result := TUsuarioModel.Create;
+        Result.Id := Q.FieldByName('ID_USUARIO').AsInteger;
+        Result.IdFuncionario := Q.FieldByName('ID_FUNCIONARIO').AsInteger;
+        Result.NomeFuncionario := Q.FieldByName('NOME').AsString;
+        Result.Login := Q.FieldByName('LOGIN').AsString;
+      end
+      else
+        result := nil;
+
+    finally
+      Q.Free;
+    end;
+
+  except
+    on E: EUpdateError do
+      raise EInfraException.Create('Erro: '+e.Message);
+  end;
+end;
+
+function TUsuarioDao.Insert(Usuario: TUsuarioModel): Integer;
+var
+  Q: TZQuery;
+begin
+  Q:= TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
+
+      Q.SQL.Text := 'INSERT INTO USUARIO (LOGIN, SENHA, ID_FUNCIONARIO)'+
+      'VALUES (:LOGIN, :SENHA, :ID_FUNC)'+
+      'RETURNING ID_USUARIO';;
+      Q.ParamByName('LOGIN').AsString := Usuario.Login;
+      Q.ParamByName('SENHA').AsString := Usuario.Senha;
+      if Usuario.IdFuncionario = 0 then
+
+        Q.ParamByName('ID_FUNC').Clear
+      else
+      begin
+          Q.ParamByName('ID_FUNC').AsInteger := Usuario.IdFuncionario;
+      end;
+
+      Q.Open;
+
+      Result := Q.FieldByName('ID_USUARIO').AsInteger;
+
+    except
+      on E: EDatabaseError do
+        raise EInfraException.Create('Erro ao realizar o cadastro' + E.Message);
+    end;
+  finally
+    Q.Free;
+  end;
+
+end;
+
+procedure TUsuarioDao.InsertPermissoes(Id: Integer; Lista: TList<Integer>);
+var
+  Q: TZQuery;
+  IdPermissao: Integer;
+begin
+  Q := TZQuery.Create(nil);
+  try
+    Q.Connection := FConexao;
+
+    //remover
+    Q.SQL.Text := 'DELETE FROM USUARIO_PERMISSAO WHERE ID_USUARIO = :ID';
+    Q.ParamByName('ID').AsInteger := Id;
+    Q.ExecSQL;
+
+    // depois inserir
+    for IdPermissao in Lista do
+    begin
+      Q.SQL.Text :=
+        'INSERT INTO USUARIO_PERMISSAO (ID_USUARIO, ID_PERMISSAO) '+
+        'VALUES (:U, :P)';
+
+      Q.ParamByName('U').AsInteger := Id;
+      Q.ParamByName('P').AsInteger := IdPermissao;
+
+      Q.ExecSQL;
+    end;
+
+  finally
+    Q.Free;
+  end;
+end;
+
+function TUsuarioDao.ListaPermissaoPorID(Id: Integer): TList<Integer>;
+var
+  Q: TZQuery;
+begin
+  Result := TList<Integer>.Create;
+
+  Q := TZQuery.Create(nil);
+  try
+    Q.Connection := FConexao;
+    Q.SQL.Text :=
+      'SELECT ID_PERMISSAO '+
+      'FROM USUARIO_PERMISSAO '+
+      'WHERE ID_USUARIO = :ID';
+
+    Q.ParamByName('ID').AsInteger := Id;
+    Q.Open;
+
+    while not Q.Eof do
+    begin
+      Result.Add(Q.FieldByName('ID_PERMISSAO').AsInteger);
+      Q.Next;
+    end;
+
+  finally
+    Q.Free;
+  end;
+end;
+procedure TUsuarioDao.ListarPorNomeTela(Q: TZQuery; Nome: string);
+begin
+  Q.Close;
+  Q.Connection := FConexao;
+
+  Q.SQL.Text :=
+    'SELECT U.ID_USUARIO, U.LOGIN, F.NOME FROM USUARIO U JOIN FUNCIONARIO F ON '+
+     'U.ID_FUNCIONARIO = F.ID_FUNCIONARIO WHERE UPPER(F.NOME) LIKE UPPER(:NOME)';
+
+  Q.ParamByName('NOME').AsString := '%' + Trim(Nome) + '%';
+  Q.Open;
+end;
+
+procedure TUsuarioDao.ListarTodos(Q: TZQuery);
+begin
+  Q.Close;
+  Q.Connection := FConexao;
+
+  Q.SQL.Text :='SELECT * FROM USUARIO';
+  Q.Open;
+end;
+
+procedure TUsuarioDao.Update(Usuario: TUsuarioModel);
+
+
+begin
+
+end;
+
+
+end.

@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaBaseCadastroUI, Data.DB, Vcl.Grids,
   Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls,
-  Vcl.CheckLst, System.Generics.Collections, uUsuarioModel, uValidarCampo, iUsuarioService;
+  Vcl.CheckLst, System.Generics.Collections, uUsuarioModel, uValidarCampo, iUsuarioService,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset;
 
 type
   TTfrmCadastroUsuario = class(TfrmTelaBaseCadastro)
@@ -18,17 +19,20 @@ type
     BitBtn1: TBitBtn;
     GroupBox2: TGroupBox;
     clbPermissoes: TCheckListBox;
+    ckcTodos: TCheckBox;
+    procedure ckcTodosClick(Sender: TObject);
   private
     FService: IUsuarioServiceInterface;
-    procedure Gravar; override;
-    procedure Alterar; override;
-    procedure Inserir; override;
-    procedure Novo; override;
   public
     procedure PrencherPermissao;
     procedure MarcarPermissoes(Lista: TList<Integer>);
     function PegarPermissoesMarcadas: TList<Integer>;
     constructor Create(AOwner: TComponent; AService: IUsuarioServiceInterface);
+
+    procedure Alterar; override;
+    procedure Inserir; override;
+    procedure Novo; override;
+    procedure Pesquisa; override;
   end;
 
 var
@@ -48,17 +52,19 @@ begin
 
 end;
 
+procedure TTfrmCadastroUsuario.ckcTodosClick(Sender: TObject);
+begin
+  inherited;
+  if ckcTodos.Checked then
+    FService.ListarNaTela(Qry, '', true)
+
+end;
+
 constructor TTfrmCadastroUsuario.Create(AOwner: TComponent; AService: IUsuarioServiceInterface);
 begin
   inherited Create(AOwner);
   FService:= AService;
   PrencherPermissao;
-end;
-
-procedure TTfrmCadastroUsuario.Gravar;
-begin
-  inherited;
-
 end;
 
 procedure TTfrmCadastroUsuario.Inserir;
@@ -84,7 +90,6 @@ begin
      Lista.Free;
   end
 end;
-
 procedure TTfrmCadastroUsuario.MarcarPermissoes(Lista: TList<Integer>);
 var
   i: Integer;
@@ -108,13 +113,11 @@ begin
     end;
   end;
 end;
-
 procedure TTfrmCadastroUsuario.Novo;
 begin
   inherited;
 
 end;
-
 function TTfrmCadastroUsuario.PegarPermissoesMarcadas: TList<Integer>;
 var
   i: Integer;
@@ -126,6 +129,11 @@ begin
     if clbPermissoes.Checked[i] then
       Result.Add(Integer(clbPermissoes.Items.Objects[i]));
   end;
+end;
+procedure TTfrmCadastroUsuario.Pesquisa;
+begin
+  inherited;
+  FService.ListarNaTela(Qry, mskPesquisar.Text, false)
 end;
 
 procedure TTfrmCadastroUsuario.PrencherPermissao;
@@ -139,5 +147,4 @@ begin
   clbPermissoes.Items.AddObject('FAZER VENDA', TObject(5));
   clbPermissoes.Items.AddObject('FATURAR VENDA', TObject(6));
 end;
-
 end.

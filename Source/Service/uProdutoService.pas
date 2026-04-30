@@ -11,6 +11,7 @@ type
      procedure Inserir(Produto: TProdutoModel);
      procedure Alterar(Produto: TProdutoModel);
      constructor Create(AProdDao: IProdutoDAOO);
+     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
    end;
 
 implementation
@@ -46,6 +47,11 @@ begin
   on Ex: Exception do
     raise EInfraException.Create('Error: '+ Ex.Message);
   end;
+end;
+
+procedure TProdutoService.ListarPorNomeTela(Q: TZQuery; Nome: string);
+begin
+  FProdutoDAO.ListarPorNomeTela(Q, nome);
 end;
 
 end.

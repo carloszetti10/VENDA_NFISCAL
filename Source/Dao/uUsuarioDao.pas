@@ -14,6 +14,8 @@ type
       function  ListaPermissaoPorID(Id: Integer): TList<Integer>;
       procedure InsertPermissoes(Id: Integer; Lista:TList<Integer>);
       Constructor Create(Conn:TZConnection);
+      procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
+      procedure ListarTodos(Q: TZQuery);
   end;
 
 implementation
@@ -158,6 +160,29 @@ begin
     Q.Free;
   end;
 end;
+procedure TUsuarioDao.ListarPorNomeTela(Q: TZQuery; Nome: string);
+begin
+  Q.Close;
+  Q.Connection := FConexao;
+
+  Q.SQL.Text :=
+    'SELECT U.ID_USUARIO, U.LOGIN, F.NOME FROM USUARIO U JOIN FUNCIONARIO F ON '+
+     'U.ID_FUNCIONARIO = F.ID_FUNCIONARIO WHERE UPPER(F.NOME) LIKE UPPER(:NOME)';
+
+  Q.ParamByName('NOME').AsString := '%' + Trim(Nome) + '%';
+  Q.Open;
+end;
+
+procedure TUsuarioDao.ListarTodos(Q: TZQuery);
+begin
+  Q.Close;
+  Q.Connection := FConexao;
+
+  Q.SQL.Text := 'SELECT U.ID_USUARIO, U.LOGIN,' +
+     'F.NOME FROM USUARIO U JOIN FUNCIONARIO F ON U.ID_FUNCIONARIO = F.ID_FUNCIONARIO';
+  Q.Open;
+end;
+
 procedure TUsuarioDao.Update(Usuario: TUsuarioModel);
 
 

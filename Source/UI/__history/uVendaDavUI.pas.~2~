@@ -1,0 +1,55 @@
+unit uVendaDavUI;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons,
+  Vcl.ComCtrls;
+
+type
+  TfrmVendaDav = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    Edit1: TEdit;
+    Label1: TLabel;
+    DateTimePicker1: TDateTimePicker;
+    Label2: TLabel;
+    Label3: TLabel;
+    Edit2: TEdit;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Panel4: TPanel;
+    Label7: TLabel;
+    Edit4: TEdit;
+    Edit5: TEdit;
+    Label8: TLabel;
+    Label9: TLabel;
+    Edit6: TEdit;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    BitBtn3: TBitBtn;
+    Edit7: TEdit;
+    Edit8: TEdit;
+    Edit9: TEdit;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    Edit3: TEdit;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmVendaDav: TfrmVendaDav;
+
+implementation
+
+{$R *.dfm}
+
+
+end.

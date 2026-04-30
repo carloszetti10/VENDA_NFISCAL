@@ -12,9 +12,8 @@ type
      procedure Insert(Produto: TProdutoModel);
      procedure Update(Produto: TProdutoModel);
      function FindByID(ID: Integer): TProdutoModel;
-     function Listar(Nome: string): TZQuery;
-     function ListarVazia: TZQuery;
      function  FindByCodBarra(cod: string): TProdutoModel;
+     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
      Constructor Create(Conn:TZConnection);
   end;
 
@@ -113,7 +112,7 @@ begin
       'VALUES (:NOME, :COD_BARRA, :ESTOQUE, :VALOR_UNITARIO)';
       Q.ParamByName('NOME').AsString := Produto.Nome;
       Q.ParamByName('COD_BARRA').AsString := Produto.CodBarra;
-      Q.ParamByName('ESTOQUE').AsInteger := Produto.Estoque;
+      Q.ParamByName('ESTOQUE').AsCurrency := Produto.Estoque;
       Q.ParamByName('VALOR_UNITARIO').AsCurrency := Produto.ValorUnitario;
       Q.ExecSQL;
 
@@ -128,19 +127,23 @@ begin
 
 end;
 
-function TProdutoDao.Listar(Nome: string): TZQuery;
-begin
-
-end;
-
-function TProdutoDao.ListarVazia: TZQuery;
-begin
-
-end;
-
 procedure TProdutoDao.Update(Produto: TProdutoModel);
 begin
 
+end;
+
+procedure TProdutoDao.ListarPorNomeTela(Q: TZQuery; Nome: string);
+begin
+  Q.Close;
+  Q.Connection := FConexao;
+
+  Q.SQL.Text :=
+    'SELECT ID_PRODUTO, NOME, COD_BARRA, ESTOQUE, VALOR_UNITARIO ' +
+    'FROM PRODUTO ' +
+    'WHERE UPPER(NOME) LIKE UPPER(:NOME)';
+
+  Q.ParamByName('NOME').AsString := '%' + Trim(Nome) + '%';
+  Q.Open;
 end;
 
 end.

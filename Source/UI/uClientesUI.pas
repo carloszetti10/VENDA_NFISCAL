@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaBaseCadastroUI, Data.DB, Vcl.Grids,
-  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls, uException,uValidarCampo,iClienteService, uClienteModel;
+  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls, uException,uValidarCampo,iClienteService, uClienteModel,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset;
 
 type
   TfrmCadastroCliente = class(TfrmTelaBaseCadastro)
@@ -20,7 +21,6 @@ type
     tipoCliente: TRadioGroup;
     procedure tipoClienteClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure btnPesquisaClick(Sender: TObject);
     procedure dtsDadosDataChange(Sender: TObject; Field: TField);
   private
     FService: IClienteServiceInterface;
@@ -29,8 +29,12 @@ type
     procedure Inserir; override;
     procedure Alterar;override;
     procedure Novo;override;
+    procedure Pesquisa; override;
+    procedure LimparCampos; override;
+    procedure HabilitarCampos(Habilitar: Boolean); override;
   public
     constructor Create(AOwner: TComponent; AService: IClienteServiceInterface);
+    function GetCliente: TClienteModel;
   end;
 
 var
@@ -46,25 +50,14 @@ procedure TfrmCadastroCliente.FormShow(Sender: TObject);
 begin
   inherited;
   tipoCliente.ItemIndex := 0;
-  dtsDados.DataSet := FService.ListarVazia;
 end;
 
-procedure TfrmCadastroCliente.btnPesquisaClick(Sender: TObject);
+function TfrmCadastroCliente.GetCliente: TClienteModel;
 begin
-  inherited;
-  try
-    if Trim(mskPesquisar.Text) = '' then
-    begin
-      dtsDados.DataSet := FService.ListarVazia;
-    end
-    else
-      dtsDados.DataSet := FService.ListarPorNome(mskPesquisar.Text);
-  except
-  on E: Exception do
-  ShowMessage(E.Message);
+  Result := TClienteModel.Create;
 
-  end;
-
+  Result.Id := Qry.FieldByName('ID_CLIENTE').AsInteger;
+  Result.Nome := Qry.FieldByName('NOME').AsString;
 end;
 
 constructor TfrmCadastroCliente.Create(AOwner: TComponent; AService: IClienteServiceInterface);
@@ -88,7 +81,7 @@ begin
   case tipoCliente.ItemIndex of
     0: // CPF
     begin
-       mskCpfCnpj.EditMask := '000.000.000-00;0;_';
+       mskCpfCnpj.EditMask := '000.000.000-00;1;_';
        mskRazao.Visible := false;
        lbRazao.Visible := false;
        FTipoPessoa := TTipoPessoa.F;
@@ -97,7 +90,7 @@ begin
 
     1: // CNPJ
     begin
-       mskCpfCnpj.EditMask := '00.000.000/0000-00;0;_';
+       mskCpfCnpj.EditMask := '00.000.000/0000-00;1;_';
        mskRazao.Visible := true;
        lbRazao.Visible := true;
        FTipoPessoa := TTipoPessoa.J;
@@ -108,24 +101,7 @@ begin
   mskCpfCnpj.Clear;
 end;
 
-{$REGION 'METODOS INSERIR E ALTERAR'}
-{procedure TfrmCadastroCliente.Gravar;
-begin
-  inherited;
-  try
-     if EstadoCadastro = ecInserir then
-        Inserir;  //metodo de inserir
-     if EstadoCadastro = ecAlterar then
-        //Alterar; //metodo alterar
-  except
-  on EApp: EAppException do
-     ShowMessage(EApp.Message);
-  on EInf: EInfraException do
-     ShowMessage(EInf.Message);
-  on EG: Exception do
-      ShowMessage('Falha na operação, tente novamente!'+EG.Message);
-  end;
-end;}
+{$REGION 'METODOS VIRTUAIS'}
 
 procedure TfrmCadastroCliente.Inserir;
 var
@@ -161,11 +137,35 @@ begin
   end;
 end;
 
+
+procedure TfrmCadastroCliente.LimparCampos;
+begin
+  inherited;
+  mskNome.Clear;
+  mskTelefone.Clear;
+  mskCpfCnpj.Clear;
+  mskRazao.Clear;
+end;
+procedure TfrmCadastroCliente.HabilitarCampos(Habilitar: Boolean);
+begin
+  inherited;
+  mskNome.Enabled := Habilitar;
+  mskTelefone.Enabled := Habilitar;
+  mskCpfCnpj.Enabled := Habilitar;
+  mskRazao.Enabled := Habilitar;
+  tipoCliente.Enabled := Habilitar;
+end;
 procedure TfrmCadastroCliente.Novo;
 begin
   inherited;
   //iniciar formulario
   mskCpfCnpj.Enabled := true;
+end;
+
+procedure TfrmCadastroCliente.Pesquisa;
+begin
+  inherited;
+  FService.ListarPorNomeTela(Qry, mskPesquisar.Text);
 end;
 
 procedure TfrmCadastroCliente.Alterar;

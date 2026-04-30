@@ -10,12 +10,15 @@ inherited frmCadastroFuncionario: TfrmCadastroFuncionario
     Width = 418
     Height = 172
     ActivePage = TabCadastro
+    ExplicitWidth = 418
+    ExplicitHeight = 172
     inherited TabConsulta: TTabSheet
       ExplicitWidth = 410
       ExplicitHeight = 142
       inherited Panel1: TPanel
         Width = 410
         StyleElements = [seFont, seClient, seBorder]
+        ExplicitWidth = 410
         inherited mskPesquisar: TMaskEdit
           StyleElements = [seFont, seClient, seBorder]
         end
@@ -28,6 +31,8 @@ inherited frmCadastroFuncionario: TfrmCadastroFuncionario
         Top = 107
         Width = 410
         StyleElements = [seFont, seClient, seBorder]
+        ExplicitTop = 107
+        ExplicitWidth = 410
       end
     end
     inherited TabCadastro: TTabSheet
@@ -62,6 +67,8 @@ inherited frmCadastroFuncionario: TfrmCadastroFuncionario
     Top = 172
     Width = 418
     StyleElements = [seFont, seClient, seBorder]
+    ExplicitTop = 172
+    ExplicitWidth = 418
     inherited btnSair: TBitBtn
       Left = 339
       ExplicitLeft = 339

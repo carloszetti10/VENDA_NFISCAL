@@ -2,11 +2,12 @@ unit IProdutoService;
 
 interface
 uses
- uProdutoModel;
+ uProdutoModel, ZDataset;
 type
     IProdutoServiceInterface = interface
     procedure Inserir(Produto: TProdutoModel);
     procedure Alterar(Produto: TProdutoModel);
+    procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
    end;
 
 implementation

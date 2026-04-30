@@ -2,7 +2,7 @@ unit uUsuarioService;
 
 interface
 uses
-  iUsuarioService, System.SysUtils, uUsuarioModel, iUsuarioDao,System.Generics.Collections, ZConnection, uException;
+  iUsuarioService, System.SysUtils, uUsuarioModel, iUsuarioDao,System.Generics.Collections, ZConnection, uException,ZDataset;
 type
   TUsuarioService = class(TInterfacedObject, IUsuarioServiceInterface)
   private
@@ -12,6 +12,7 @@ type
     procedure IInserirUsuario(Usuario: TUsuarioModel; listaPermi: TList<Integer>);
     procedure IAlterarUsuario(Usuario: TUsuarioModel);
     constructor Create(AUsuarioDao: IUsuarioDAOO; AConexao: TZConnection);
+    procedure ListarNaTela(Q: TZQuery; Nome: string; Todos: Boolean);
   end;
 
 implementation
@@ -28,8 +29,6 @@ procedure TUsuarioService.IAlterarUsuario(Usuario: TUsuarioModel);
 begin
 
 end;
-
-
 
 procedure TUsuarioService.IInserirUsuario(Usuario: TUsuarioModel; listaPermi: TList<Integer>);
 var
@@ -50,6 +49,18 @@ begin
       raise EInfraException.Create('Erro ao inserir usuário: ' + E.Message);
     end;
   end;
+end;
+
+
+
+procedure TUsuarioService.ListarNaTela(Q: TZQuery; Nome: string; Todos: Boolean);
+begin
+   if Todos then
+   begin
+      FUsuarioDAO.ListarTodos(Q);
+   end
+   else
+     FUsuarioDAO.ListarPorNomeTela(Q,Nome);
 end;
 
 end.

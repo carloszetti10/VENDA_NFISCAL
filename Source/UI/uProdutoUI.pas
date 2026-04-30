@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, iProdutoService, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaBaseCadastroUI, Data.DB, Vcl.Grids,
-  Vcl.DBGrids, uEditUtils, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls, uException, uProdutoModel, uValidarCampo;
+  Vcl.DBGrids, uEditUtils, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls, uException, uProdutoModel, uValidarCampo,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, uAppServiceConexao;
 
 type
   TfrmCadastroProduto = class(TfrmTelaBaseCadastro)
@@ -22,9 +23,10 @@ type
   private
     FService: IProdutoServiceInterface;
     procedure Inserir; override;
-    procedure Gravar; override;
     procedure Alterar; override;
-    procedure Novo; override;
+    procedure Pesquisa; override;
+    procedure LimparCampos; override;
+    procedure HabilitarCampos(Habilitar: Boolean); override;
   public
     constructor Create(AOwner: TComponent; AService: IProdutoServiceInterface);
   end;
@@ -36,27 +38,19 @@ implementation
 
 {$R *.dfm}
 
-procedure TfrmCadastroProduto.Alterar;
-begin
-  inherited;
-
-end;
-
 constructor TfrmCadastroProduto.Create(AOwner: TComponent; AService: IProdutoServiceInterface);
 begin
   inherited Create(AOwner);
   FService:= AService;
   TFormatacao.AplicarNumero(mskValorUnitario);
-  //TFormatacao.AplicarNumero(mskQuantidade);
+  TFormatacao.AplicarNumero(mskQuantidade);
 end;
 
-
-procedure TfrmCadastroProduto.Gravar;
+{$REGION 'METODOS VIRTUAIS'}
+procedure TfrmCadastroProduto.Alterar;
 begin
   inherited;
-
 end;
-
 procedure TfrmCadastroProduto.Inserir;
 var
   Prod: TProdutoModel;
@@ -67,7 +61,7 @@ begin
    try
      Prod.Nome := mskNome.Text;
      Prod.CodBarra:= mskCodBarra.Text;
-     Prod.Estoque:= StrToInt(mskQuantidade.Text);
+     Prod.Estoque:= StrToCurr(mskQuantidade.Text);
      Prod.ValorUnitario:= StrToCurr(mskValorUnitario.Text);
      FService.Inserir(Prod);
      ShowMessage('Cadastro realizado!');
@@ -75,13 +69,27 @@ begin
      Prod.Free;
   end
 end;
-
-
-
-procedure TfrmCadastroProduto.Novo;
+procedure TfrmCadastroProduto.LimparCampos;
 begin
   inherited;
-
+  mskNome.Clear;
+  mskCodBarra.Clear;
+  mskValorUnitario.Text := '0,00';
+  mskQuantidade.Text := '0,00';
 end;
-
+ procedure TfrmCadastroProduto.HabilitarCampos(Habilitar: Boolean);
+begin
+  inherited;
+  mskNome.Enabled := Habilitar;
+  mskCodBarra.Enabled := Habilitar;
+  mskValorUnitario.Enabled := Habilitar;
+  mskQuantidade.Enabled := Habilitar;
+  btnIniciarEstoque.Enabled := Habilitar;
+end;
+procedure TfrmCadastroProduto.Pesquisa;
+begin
+  inherited;
+  FService.ListarPorNomeTela(Qry, mskPesquisar.Text);
+end;
+{$ENDREGION}
 end.

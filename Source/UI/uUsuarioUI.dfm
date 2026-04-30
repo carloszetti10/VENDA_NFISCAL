@@ -6,7 +6,6 @@ inherited TfrmCadastroUsuario: TTfrmCadastroUsuario
   TextHeight = 15
   inherited PageControlHerenca: TPageControl
     Width = 513
-    ActivePage = TabCadastro
     ExplicitWidth = 513
     inherited TabConsulta: TTabSheet
       ExplicitWidth = 505
@@ -17,9 +16,42 @@ inherited TfrmCadastroUsuario: TTfrmCadastroUsuario
         inherited mskPesquisar: TMaskEdit
           StyleElements = [seFont, seClient, seBorder]
         end
+        inherited btnPesquisa: TBitBtn
+          Left = 239
+          ExplicitLeft = 239
+        end
+        object ckcTodos: TCheckBox
+          Left = 199
+          Top = 19
+          Width = 18
+          Height = 17
+          TabOrder = 2
+          OnClick = ckcTodosClick
+        end
       end
       inherited dbGridHerenca: TDBGrid
         Width = 505
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'ID_USUARIO'
+            Title.Caption = 'CODIGO'
+            Width = 53
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'LOGIN'
+            Width = 83
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'NOME'
+            Title.Caption = 'NOME DO FUNCIONARIO VINCULADO'
+            Width = 215
+            Visible = True
+          end>
       end
       inherited Panel2: TPanel
         Width = 505
@@ -111,7 +143,11 @@ inherited TfrmCadastroUsuario: TTfrmCadastroUsuario
     end
   end
   inherited dtsDados: TDataSource
-    Left = 20
-    Top = 338
+    Left = 452
+    Top = 34
+  end
+  inherited Qry: TZQuery
+    Left = 404
+    Top = 34
   end
 end

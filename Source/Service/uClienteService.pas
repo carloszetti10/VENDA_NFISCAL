@@ -6,14 +6,13 @@ uses
 type
    TClienteService = class(TInterfacedObject, IClienteServiceInterface)
    private
-   FClienteDAO : IClienteDAOO;
+     FClienteDAO : IClienteDAOO;
    public
       procedure Inserir(Cliente: TClienteModel);
       procedure Alterar(ID: Integer);
       function BuscarPorId(ID: Integer): TClienteModel;
       constructor Create(AClienteDao: IClienteDAOO);
-      function  ListarPorNome(Nome: string): TZQuery;
-      function ListarVazia: TZQuery;
+      procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
    end;
 
 implementation
@@ -61,6 +60,7 @@ begin
   FClienteDAO := AClienteDao;
 end;
 
+//Cadastrar Clientes
 procedure TClienteService.Inserir(Cliente: TClienteModel);
 var
   isCpfValido: Boolean;
@@ -93,14 +93,10 @@ begin
 
 end;
 
-function TClienteService.ListarPorNome(Nome: string): TZQuery;
+//Pesquisar cliente por nome
+procedure TClienteService.ListarPorNomeTela(Q: TZQuery; Nome: string);
 begin
-  Result := FClienteDAO.Listar(Nome);
-end;
-
-function TClienteService.ListarVazia: TZQuery;
-begin
-  Result := FClienteDAO.ListarVazia;
+  FClienteDAO.ListarPorNomeTela(Q,Nome);
 end;
 
 end.

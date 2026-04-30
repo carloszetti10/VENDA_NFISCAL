@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, uClientesUI,uAppServiceConexao, uFormaPagamentoUI, uFuncionarioUI,
-  uProdutoUI, uUsuarioUI, uUsuarioService,uUsuarioDao,IUsuarioDAO,iUsuarioService;
+  uProdutoUI, uUsuarioUI, uUsuarioService,uUsuarioDao,IUsuarioDAO,iUsuarioService, uVendaDavUI,
+  Vcl.ExtCtrls;
 
 type
   TfrmTelaPrincipal = class(TForm)
@@ -20,12 +21,17 @@ type
     USUARIO1: TMenuItem;
     EMPRESA1: TMenuItem;
     FORMAPAGAMENTO1: TMenuItem;
+    PanelCentro: TPanel;
+    GridPanel1: TGridPanel;
+    VENDA1: TMenuItem;
     procedure SAIR1Click(Sender: TObject);
     procedure CLIENTESClick(Sender: TObject);
     procedure PRODUTOClick(Sender: TObject);
     procedure FUNCIONARIO1Click(Sender: TObject);
     procedure FORMAPAGAMENTO1Click(Sender: TObject);
     procedure USUARIO1Click(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure VENDA1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -74,6 +80,12 @@ begin
     frm.Free;
   end;
 end;
+procedure TfrmTelaPrincipal.FormResize(Sender: TObject);
+begin
+  PanelCentro.Left := (ClientWidth - PanelCentro.Width) div 2;
+  PanelCentro.Top  := (ClientHeight - PanelCentro.Height) div 2;
+end;
+
 procedure TfrmTelaPrincipal.FUNCIONARIO1Click(Sender: TObject);
 var
   frm : TfrmCadastroFuncionario;
@@ -89,6 +101,8 @@ begin
     frm.Free;
   end;
 end;
+
+
 
 procedure TfrmTelaPrincipal.PRODUTOClick(Sender: TObject);
 var
@@ -125,6 +139,23 @@ begin
   finally
     frm.Free;
   end;
+end;
+
+procedure TfrmTelaPrincipal.VENDA1Click(Sender: TObject);
+var
+  frm : TfrmVendaDav;
+  //Service: IUsuarioServiceInterface;
+  //Dao: IUsuarioDAOO;
+begin
+  //Dao := TUsuarioDao.Create(AppServiceConexao.getConexao);
+  //Service := TUsuarioService.Create(Dao, AppServiceConexao.getConexao);
+  frm := TfrmVendaDav.Create(nil);
+  try
+    frm.ShowModal;
+  finally
+    frm.Free;
+  end;
+
 end;
 
 end.

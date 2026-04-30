@@ -10,8 +10,7 @@ type
     procedure Update(Cliente: TClienteModel);
     function  FindByDocumento(Docum: string): TClienteModel;
     function  FindByID(ID: Integer): TClienteModel;
-    function  Listar(Nome: string): TZQuery;
-    function ListarVazia: TZQuery;
+    procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
    end;
 
 implementation
