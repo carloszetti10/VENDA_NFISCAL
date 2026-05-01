@@ -22,6 +22,7 @@ type
     procedure tipoClienteClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure dtsDadosDataChange(Sender: TObject; Field: TField);
+    procedure dbGridHerencaDblClick(Sender: TObject);
   private
     FService: IClienteServiceInterface;
     FTipoPessoa: TTipoPessoa;
@@ -66,12 +67,21 @@ begin
   FService := AService;
 end;
 
+
+procedure TfrmCadastroCliente.dbGridHerencaDblClick(Sender: TObject);
+begin
+  if FIDSelecionado = 0 then
+    exit;
+  inherited;
+end;
+
+//sempre pegar o id do cliente que ta selecionado
 procedure TfrmCadastroCliente.dtsDadosDataChange(Sender: TObject; Field: TField);
 begin
   inherited;
   if (dtsDados.DataSet <> nil) and (not dtsDados.DataSet.IsEmpty) then
   begin
-    FIDSelecionado := dtsDados.DataSet.FieldByName('ID_CLIENTE').AsInteger;
+    FIDSelecionado := GetCliente.Id;
   end;
 end;
 

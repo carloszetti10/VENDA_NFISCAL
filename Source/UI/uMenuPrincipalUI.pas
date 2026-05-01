@@ -6,7 +6,10 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, uClientesUI,uAppServiceConexao, uFormaPagamentoUI, uFuncionarioUI,
   uProdutoUI, uUsuarioUI, uUsuarioService,uUsuarioDao,IUsuarioDAO,iUsuarioService, uVendaDavUI,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls,ZConnection,
+  iClienteService, uClienteService, IClienteDAO, uClienteDao,
+  IProdutoService, uProdutoService, IProdutoDAO, uProdutoDao,
+  iVendaService, uVendaService, iVendaDAO, uVendaDao;
 
 type
   TfrmTelaPrincipal = class(TForm)
@@ -32,20 +35,18 @@ type
     procedure USUARIO1Click(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure VENDA1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
-    { Private declarations }
+    FConn: TZConnection;
   public
-    { Public declarations }
+    function CriarProdutoService: IProdutoServiceInterface;
+    function CriarVendaService: IVendaServiceInterface;
   end;
 
 var
   frmTelaPrincipal: TfrmTelaPrincipal;
 
 implementation
-uses
-   iClienteService, uClienteService, IClienteDAO, uClienteDao,
-   IProdutoService, uProdutoService, IProdutoDAO, uProdutoDao,
-   iVendaService, uVendaService, iVendaDAO, uVendaDao;
 
 {$R *.dfm}
 
@@ -65,7 +66,23 @@ begin
   end;
 end;
 
+function TfrmTelaPrincipal.CriarProdutoService: IProdutoServiceInterface;
+var
+  Dao: IProdutoDAOO;
+begin
+  Dao := TProdutoDao.Create(FConn);
+  Result := TProdutoService.Create(Dao);
+end;
 
+function TfrmTelaPrincipal.CriarVendaService: IVendaServiceInterface;
+var
+  DaoVenda: IVendaDAOO;
+  ProdutoService: IProdutoServiceInterface;
+begin
+  ProdutoService := CriarProdutoService;
+  DaoVenda := TVendaDao.Create(FConn);
+  Result := TVendaService.Create(DaoVenda, ProdutoService);
+end;
 procedure TfrmTelaPrincipal.FORMAPAGAMENTO1Click(Sender: TObject);
 var
   frm : TfrmCadastroPagamento;
@@ -81,6 +98,11 @@ begin
     frm.Free;
   end;
 end;
+procedure TfrmTelaPrincipal.FormCreate(Sender: TObject);
+begin
+  FConn := AppServiceConexao.getConexao;
+end;
+
 procedure TfrmTelaPrincipal.FormResize(Sender: TObject);
 begin
   PanelCentro.Left := (ClientWidth - PanelCentro.Width) div 2;
@@ -105,10 +127,8 @@ procedure TfrmTelaPrincipal.PRODUTOClick(Sender: TObject);
 var
   frm : TfrmCadastroProduto;
   Service: IProdutoServiceInterface;
-  Dao: IProdutoDAOO;
 begin
-  Dao := TProdutoDao.Create(AppServiceConexao.getConexao);
-  Service := TProdutoService.Create(Dao);
+  Service := CriarProdutoService;
   frm := TfrmCadastroProduto.Create(nil, Service);
   try
     frm.ShowModal;
@@ -139,13 +159,9 @@ procedure TfrmTelaPrincipal.VENDA1Click(Sender: TObject);
 var
   frm : TfrmVendaDav;
   Service: IVendaServiceInterface;
-  DaoVenda: IVendaDAOO;
-  DaoProduto: IProdutoDAOO;
 begin
-  DaoVenda := TVendaDao.Create();
-  DaoProduto := TProdutoDao.Create();
-  Service := TVendaService.Create(DaoVenda, DaoProduto, AppServiceConexao.getConexao);
-  frm := TfrmVendaDav.Create(nil, Service);
+  Service := CriarVendaService;
+  frm := TfrmVendaDav.Create(nil,Service);
   try
     frm.ShowModal;
   finally

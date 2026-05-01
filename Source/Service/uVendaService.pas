@@ -3,19 +3,17 @@ unit uVendaService;
 interface
 uses
   iVendaService, iVendaDAO, uVendaModel,System.Generics.Collections,
-  ZConnection, uException,ZDataset, IProdutoDAO, uProdutoDao;
+  ZConnection, uException,ZDataset, IProdutoService, uProdutoService;
 type
    TVendaService = class(TInterfacedObject, IVendaServiceInterface)
    private
    FVendaDAO : IVendaDAOO;
-   FProdutoDAO: IProdutoDAOO;
-   FConexao: TZConnection;
+   FProdutoService: IProdutoServiceInterface;
    public
      procedure IInserirVenda(Venda: TVendaModel);
      procedure IAlterarVenda(Venda: TVendaModel);
      procedure ListarNaTelaGridEstoque(Q: TZQuery; Nome: string);
-     constructor Create(AVendaDao: IVendaDAOO; AProdutoDao: IProdutoDAOO;
-      AConexao: TZConnection);
+     constructor Create(AVendaDao: IVendaDAOO; AProdutoService: IProdutoServiceInterface);
    end;
 
 implementation
@@ -23,10 +21,9 @@ implementation
 { TVendaService }
 
 constructor TVendaService.Create(AVendaDao: IVendaDAOO;
-  AProdutoDao: IProdutoDAOO; AConexao: TZConnection);
+ AProdutoService: IProdutoServiceInterface);
 begin
-  FConexao:= AConexao;
-  FProdutoDAO:= AProdutoDao;
+  FProdutoService:= AProdutoService;
   FVendaDAO:= AVendaDao;
 end;
 
@@ -42,7 +39,7 @@ end;
 
 procedure TVendaService.ListarNaTelaGridEstoque(Q: TZQuery; Nome: string);
 begin
-  FProdutoDAO.ListarPorNomeTela(Q, Nome);
+  FProdutoService.ListarPorNomeTela(Q,Nome);
 end;
 
 end.

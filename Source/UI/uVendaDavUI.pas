@@ -53,6 +53,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure edtVendedorClick(Sender: TObject);
     procedure edtClienteClick(Sender: TObject);
+    procedure edtPesquisaChange(Sender: TObject);
     procedure edtPesquisaKeyPress(Sender: TObject; var Key: Char);
   private
     FCliente: TClienteModel;
@@ -61,8 +62,9 @@ type
     FProdutoService: IProdutoServiceInterface;
     procedure AlternaPainel(PainelVisivel: TPanel; PainelOculto: TPanel);
     procedure PreencherGrildProdutosEstoque(NomeProd: string);
+    procedure AdicionarProdutoSelecionado;
   public
-    constructor Create(AOwner: TComponent; AProdServ: IProdutoServiceInterface; AService: IVendaServiceInterface);
+    constructor Create(AOwner: TComponent; AService: IVendaServiceInterface);
   end;
 
 var
@@ -73,6 +75,20 @@ uses
 
 {$R *.dfm}
 
+
+procedure TfrmVendaDav.AdicionarProdutoSelecionado;
+var
+  IdProduto: Integer;
+begin
+  if not QRYProdEstoque.IsEmpty then
+  begin
+    IdProduto := QRYProdEstoque.FieldByName('ID_PRODUTO').AsInteger;
+
+    //chamar service de itemVenda
+    edtPesquisa.Text := '';
+    edtPesquisa.SetFocus;
+  end;
+end;
 //---------Manipular tabela que aparece----------------------
 procedure TfrmVendaDav.AlternaPainel(PainelVisivel, PainelOculto: TPanel);
 begin
@@ -81,10 +97,7 @@ begin
    PainelOculto.Visible:= False;
 end;
 
-
-
-constructor TfrmVendaDav.Create(AOwner: TComponent;
-  AProdServ: IProdutoServiceInterface; AService: IVendaServiceInterface);
+constructor TfrmVendaDav.Create(AOwner: TComponent; AService: IVendaServiceInterface);
 begin
   inherited Create(AOwner);
   FService:= AService;
@@ -114,12 +127,6 @@ begin
     Frm.Free;
   end;
 
-end;
-
-
-procedure TfrmVendaDav.edtPesquisaKeyPress(Sender: TObject; var Key: Char);
-begin
-  PreencherGrildProdutosEstoque(edtPesquisa.Text);
 end;
 
 procedure TfrmVendaDav.edtVendedorClick(Sender: TObject);
@@ -152,6 +159,26 @@ begin
   AlternaPainel(painelEstoque, painelVenda);
 end;
 
+procedure TfrmVendaDav.edtPesquisaChange(Sender: TObject);
+begin
+  if Trim(edtPesquisa.Text).IsEmpty then
+  begin
+    AlternaPainel(painelVenda, painelEstoque);
+    QRYProdEstoque.Close;
+    Exit;
+  end;
+  AlternaPainel(painelEstoque,painelVenda);
+  PreencherGrildProdutosEstoque(edtPesquisa.Text);
+end;
+
+procedure TfrmVendaDav.edtPesquisaKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+    Key := #0;
+    AdicionarProdutoSelecionado;
+  end;
+end;
 
 procedure TfrmVendaDav.PreencherGrildProdutosEstoque(NomeProd: string);
 begin

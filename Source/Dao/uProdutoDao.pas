@@ -142,7 +142,7 @@ begin
     'FROM PRODUTO ' +
     'WHERE UPPER(NOME) LIKE UPPER(:NOME)';
 
-  Q.ParamByName('NOME').AsString := '%' + Trim(Nome) + '%';
+  Q.ParamByName('NOME').AsString := Trim(Nome) +'%';
   Q.Open;
 end;
 

@@ -12,6 +12,7 @@ object frmTelaPrincipal: TfrmTelaPrincipal
   Font.Style = []
   Menu = MainMenu1
   WindowState = wsMaximized
+  OnCreate = FormCreate
   OnResize = FormResize
   TextHeight = 15
   object PanelCentro: TPanel

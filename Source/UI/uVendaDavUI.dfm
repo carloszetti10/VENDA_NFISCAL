@@ -1,9 +1,9 @@
 object frmVendaDav: TfrmVendaDav
-  Left = 0
+  Left = 626
   Top = 0
   Caption = 'VENDA'
-  ClientHeight = 441
-  ClientWidth = 624
+  ClientHeight = 452
+  ClientWidth = 711
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,10 +16,11 @@ object frmVendaDav: TfrmVendaDav
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 624
+    Width = 711
     Height = 89
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 624
     object Label1: TLabel
       Left = 16
       Top = 13
@@ -83,11 +84,13 @@ object frmVendaDav: TfrmVendaDav
   end
   object Panel2: TPanel
     Left = 0
-    Top = 336
-    Width = 624
+    Top = 347
+    Width = 711
     Height = 105
     Align = alBottom
     TabOrder = 1
+    ExplicitTop = 336
+    ExplicitWidth = 624
     object Label10: TLabel
       Left = 16
       Top = 6
@@ -158,24 +161,29 @@ object frmVendaDav: TfrmVendaDav
   object Panel3: TPanel
     Left = 0
     Top = 89
-    Width = 624
-    Height = 247
+    Width = 711
+    Height = 258
     Align = alClient
     TabOrder = 2
+    ExplicitWidth = 624
+    ExplicitHeight = 247
     object Panel4: TPanel
       Left = 1
       Top = 1
-      Width = 622
-      Height = 245
+      Width = 709
+      Height = 256
       Align = alClient
       TabOrder = 0
+      ExplicitWidth = 622
+      ExplicitHeight = 245
       object Panel5: TPanel
         Left = 1
         Top = 1
-        Width = 620
+        Width = 707
         Height = 56
         Align = alTop
         TabOrder = 0
+        ExplicitWidth = 620
         object Label9: TLabel
           Left = 501
           Top = 4
@@ -217,16 +225,19 @@ object frmVendaDav: TfrmVendaDav
           Width = 302
           Height = 23
           TabOrder = 2
+          OnChange = edtPesquisaChange
           OnKeyPress = edtPesquisaKeyPress
         end
       end
       object Panel6: TPanel
         Left = 1
         Top = 57
-        Width = 620
-        Height = 187
+        Width = 707
+        Height = 198
         Align = alClient
         TabOrder = 1
+        ExplicitWidth = 620
+        ExplicitHeight = 187
         object painelEstoque: TPanel
           Left = 14
           Top = 6
@@ -239,6 +250,8 @@ object frmVendaDav: TfrmVendaDav
             Width = 241
             Height = 142
             Align = alClient
+            DataSource = DTSProdEstoque
+            Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
             TabOrder = 0
             TitleFont.Charset = DEFAULT_CHARSET
             TitleFont.Color = clWindowText
@@ -257,6 +270,7 @@ object frmVendaDav: TfrmVendaDav
                 Expanded = False
                 FieldName = 'NOME'
                 Title.Caption = 'DESCRI'#199#195'O'
+                Width = 180
                 Visible = True
               end
               item
@@ -286,6 +300,7 @@ object frmVendaDav: TfrmVendaDav
             Align = alTop
             Caption = 'PRODUTOS DO ESTOQUE'
             TabOrder = 1
+            ExplicitTop = 0
           end
         end
         object painelVenda: TPanel
@@ -300,6 +315,8 @@ object frmVendaDav: TfrmVendaDav
             Width = 254
             Height = 140
             Align = alClient
+            DataSource = DTSProdVenda
+            Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
             TabOrder = 0
             TitleFont.Charset = DEFAULT_CHARSET
             TitleFont.Color = clWindowText

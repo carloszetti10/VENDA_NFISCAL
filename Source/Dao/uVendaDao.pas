@@ -12,6 +12,7 @@ type
       function Insert(Venda: TVendaModel): Integer;
       function  FindByID(cod: Integer): TVendaModel;
       procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
+      Constructor Create(Conn:TZConnection);
 
   end;
 
@@ -19,6 +20,11 @@ type
 implementation
 
 { TVendaDao }
+
+constructor TVendaDao.Create(Conn: TZConnection);
+begin
+
+end;
 
 function TVendaDao.FindByID(cod: Integer): TVendaModel;
 begin
