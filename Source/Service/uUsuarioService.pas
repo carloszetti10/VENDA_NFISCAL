@@ -2,7 +2,7 @@ unit uUsuarioService;
 
 interface
 uses
-  iUsuarioService, System.SysUtils, uUsuarioModel, iUsuarioDao,System.Generics.Collections, ZConnection, uException,ZDataset;
+  iUsuarioService,System.Hash,System.SysUtils, uUsuarioModel, iUsuarioDao,System.Generics.Collections, ZConnection, uException,ZDataset;
 type
   TUsuarioService = class(TInterfacedObject, IUsuarioServiceInterface)
   private
@@ -13,6 +13,8 @@ type
     procedure IAlterarUsuario(Usuario: TUsuarioModel);
     constructor Create(AUsuarioDao: IUsuarioDAOO; AConexao: TZConnection);
     procedure ListarNaTela(Q: TZQuery; Nome: string; Todos: Boolean);
+    function HashSenha(const Senha: string): string;
+    function Login(ALogin, ASenha: string): TUsuarioModel;
   end;
 
 implementation
@@ -34,10 +36,17 @@ procedure TUsuarioService.IInserirUsuario(Usuario: TUsuarioModel; listaPermi: TL
 var
   IdUsuario: Integer;
 begin
+
   FConexao.StartTransaction;
   try
     //adicionar a função para verificar se tem logi cadastrado depois
+     if FUsuarioDAO.FindByLogin(Usuario.Login) <> nil then
+      raise EAppException.Create('Login já cadastrado');
+
+
+    Usuario.Senha := HashSenha(Usuario.Senha);
     IdUsuario := FUsuarioDAO.Insert(Usuario);
+
 
     FUsuarioDAO.InsertPermissoes(IdUsuario, listaPermi);
 
@@ -61,6 +70,23 @@ begin
    end
    else
      FUsuarioDAO.ListarPorNomeTela(Q,Nome);
+end;
+
+
+function TUsuarioService.Login(ALogin, ASenha: string): TUsuarioModel;
+begin
+   ASenha := HashSenha(ASenha);
+
+  Result := FUsuarioDAO.Login(ALogin, ASenha);
+
+  // valida retorno
+  if Result = nil then
+    raise EAppException.Create('Login ou senha inválidos');
+end;
+
+function TUsuarioService.HashSenha(const Senha: string): string;
+begin
+  Result := THashSHA2.GetHashString(Senha, THashSHA2.TSHA2Version.SHA256);
 end;
 
 end.

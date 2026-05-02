@@ -1,0 +1,55 @@
+unit uValidarCampo;
+
+interface
+uses
+  Vcl.StdCtrls, System.SysUtils, Vcl.Mask, uException,Vcl.Graphics;
+
+type
+  TValidarCampos = class
+  public
+      class procedure ValidarCampoVazio(ACampo: TMaskEdit; const Nome: string);
+      class procedure LimparCampos(const Campos: array of TMaskEdit);
+      class procedure ConfigurarEditBloqueado(Edit: TEdit; Bloqueado: Boolean);
+      class procedure ConfigurarEditInativo(Edit: TEdit; Bloqueado: Boolean);
+  end;
+
+implementation
+
+{ TValidarCampos }
+
+class procedure TValidarCampos.ConfigurarEditBloqueado(Edit: TEdit; Bloqueado: Boolean);
+begin
+  Edit.ReadOnly := Bloqueado;
+  Edit.TabStop := not Bloqueado;
+
+  if Bloqueado then
+    Edit.Color := clBtnFace
+  else
+    Edit.Color := clWindow;
+end;
+
+class procedure TValidarCampos.ConfigurarEditInativo(Edit: TEdit;
+  Bloqueado: Boolean);
+begin
+  Edit.Enabled := Bloqueado;
+end;
+
+class procedure TValidarCampos.LimparCampos(const Campos: array of TMaskEdit);
+begin
+  var
+  Campo: TMaskEdit;
+begin
+  for Campo in Campos do
+    Campo.Clear;
+end;
+end;
+
+class procedure TValidarCampos.ValidarCampoVazio(ACampo: TMaskEdit; const Nome: string);
+begin
+   if Trim(ACampo.Text) = '' then
+  begin
+    ACampo.SetFocus;
+    raise EAppException.Create('Preencha o campo ' + Nome);
+  end;
+end;
+end.

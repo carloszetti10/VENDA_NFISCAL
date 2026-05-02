@@ -11,6 +11,7 @@ type
       class procedure LimparCampos(const Campos: array of TMaskEdit);
       class procedure ConfigurarEditBloqueado(Edit: TEdit; Bloqueado: Boolean);
       class procedure ConfigurarEditInativo(Edit: TEdit; Bloqueado: Boolean);
+      class procedure ValidarEditVazio(ACampo: TEdit; const Nome: string);
   end;
 
 implementation
@@ -52,4 +53,14 @@ begin
     raise EAppException.Create('Preencha o campo ' + Nome);
   end;
 end;
+class procedure TValidarCampos.ValidarEditVazio(ACampo: TEdit;
+  const Nome: string);
+begin
+  if Trim(ACampo.Text) = '' then
+  begin
+    ACampo.SetFocus;
+    raise EAppException.Create('Preencha o campo ' + Nome);
+  end;
+end;
+
 end.

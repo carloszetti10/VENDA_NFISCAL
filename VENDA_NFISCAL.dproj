@@ -192,6 +192,10 @@
         <DCCReference Include="Source\Interface\IRepositorio\IItemVendaDAOO.pas"/>
         <DCCReference Include="Source\Interface\IService\iItemVendaService.pas"/>
         <DCCReference Include="Source\Service\uItemVendaService.pas"/>
+        <DCCReference Include="Source\UI\uLoginUI.pas">
+            <Form>ftmLogin</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

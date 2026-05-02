@@ -1,0 +1,30 @@
+unit uLoginUI;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons;
+
+type
+  TftmLogin = class(TForm)
+    Label1: TLabel;
+    edtLogin: TEdit;
+    edtSenha: TEdit;
+    Label2: TLabel;
+    BitBtn1: TBitBtn;
+    Label3: TLabel;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ftmLogin: TftmLogin;
+
+implementation
+
+{$R *.dfm}
+
+end.

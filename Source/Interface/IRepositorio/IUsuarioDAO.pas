@@ -12,6 +12,8 @@ type
     procedure InsertPermissoes(Id: Integer; Lista:TList<Integer>);
     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
     procedure ListarTodos(Q: TZQuery);
+    function FindByLogin(const Login: string): TUsuarioModel;
+    function Login(ALogin, ASenha: string): TUsuarioModel;
    end;
 
 implementation

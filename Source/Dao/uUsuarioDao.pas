@@ -11,11 +11,13 @@ type
       function Insert(Usuario: TUsuarioModel): Integer;
       procedure Update(Usuario: TUsuarioModel);
       function  FindByID(cod: Integer): TUsuarioModel;
+      function Login(ALogin, ASenha: string): TUsuarioModel;
       function  ListaPermissaoPorID(Id: Integer): TList<Integer>;
       procedure InsertPermissoes(Id: Integer; Lista:TList<Integer>);
       Constructor Create(Conn:TZConnection);
       procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
       procedure ListarTodos(Q: TZQuery);
+      function FindByLogin(const Login: string): TUsuarioModel;
   end;
 
 implementation
@@ -63,6 +65,37 @@ begin
     on E: EUpdateError do
       raise EInfraException.Create('Erro: '+e.Message);
   end;
+end;
+
+function TUsuarioDao.FindByLogin(const Login: string): TUsuarioModel;
+var
+  Q: TZQuery;
+begin
+  Result := nil;
+
+  Q := TZQuery.Create(nil);
+  try
+    Q.Connection := FConexao;
+
+    Q.SQL.Text :=
+      'SELECT ID_USUARIO, LOGIN ' +
+      'FROM USUARIO ' +
+      'WHERE LOGIN = :LOGIN';
+
+    Q.ParamByName('LOGIN').AsString := Login;
+    Q.Open;
+
+    if not Q.IsEmpty then
+    begin
+      Result := TUsuarioModel.Create;
+      Result.Id := Q.FieldByName('ID_USUARIO').AsInteger;
+      Result.Login := Q.FieldByName('LOGIN').AsString;
+    end;
+
+  finally
+    Q.Free;
+  end;
+
 end;
 
 function TUsuarioDao.Insert(Usuario: TUsuarioModel): Integer;
@@ -181,6 +214,37 @@ begin
   Q.SQL.Text := 'SELECT U.ID_USUARIO, U.LOGIN,' +
      'F.NOME FROM USUARIO U JOIN FUNCIONARIO F ON U.ID_FUNCIONARIO = F.ID_FUNCIONARIO';
   Q.Open;
+end;
+
+function TUsuarioDao.Login(ALogin, ASenha: string): TUsuarioModel;
+var
+  Q: TZQuery;
+begin
+  Result := nil;
+
+  Q := TZQuery.Create(nil);
+  try
+    Q.Connection := FConexao;
+
+    Q.SQL.Text :=
+      'SELECT ID_USUARIO, LOGIN '+
+      'FROM USUARIO '+
+      'WHERE LOGIN = :LOGIN AND SENHA = :SENHA';
+
+    Q.ParamByName('LOGIN').AsString := ALogin;
+    Q.ParamByName('SENHA').AsString := ASenha;
+    Q.Open;
+
+    if not Q.IsEmpty then
+    begin
+      Result := TUsuarioModel.Create;
+      Result.Id := Q.FieldByName('ID_USUARIO').AsInteger;
+      Result.Login := Q.FieldByName('LOGIN').AsString;
+    end;
+
+  finally
+    Q.Free;
+  end;
 end;
 
 procedure TUsuarioDao.Update(Usuario: TUsuarioModel);

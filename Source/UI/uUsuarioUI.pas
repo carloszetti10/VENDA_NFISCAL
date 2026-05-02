@@ -29,10 +29,11 @@ type
     function PegarPermissoesMarcadas: TList<Integer>;
     constructor Create(AOwner: TComponent; AService: IUsuarioServiceInterface);
 
-    procedure Alterar; override;
     procedure Inserir; override;
-    procedure Novo; override;
+    procedure Alterar; override;
     procedure Pesquisa; override;
+    procedure LimparCampos; override;
+    procedure HabilitarCampos(Habilitar: Boolean); override;
   end;
 
 var
@@ -67,6 +68,12 @@ begin
   PrencherPermissao;
 end;
 
+procedure TTfrmCadastroUsuario.HabilitarCampos(Habilitar: Boolean);
+begin
+  inherited;
+
+end;
+
 procedure TTfrmCadastroUsuario.Inserir;
   var
   Usuario: TUsuarioModel;
@@ -90,6 +97,12 @@ begin
      Lista.Free;
   end
 end;
+procedure TTfrmCadastroUsuario.LimparCampos;
+begin
+  inherited;
+
+end;
+
 procedure TTfrmCadastroUsuario.MarcarPermissoes(Lista: TList<Integer>);
 var
   i: Integer;
@@ -112,11 +125,6 @@ begin
       end;
     end;
   end;
-end;
-procedure TTfrmCadastroUsuario.Novo;
-begin
-  inherited;
-
 end;
 function TTfrmCadastroUsuario.PegarPermissoesMarcadas: TList<Integer>;
 var

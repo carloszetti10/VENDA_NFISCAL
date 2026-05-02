@@ -46,7 +46,8 @@ uses
   uItemVendaDao in 'Source\Dao\uItemVendaDao.pas',
   IItemVendaDAOO in 'Source\Interface\IRepositorio\IItemVendaDAOO.pas',
   iItemVendaService in 'Source\Interface\IService\iItemVendaService.pas',
-  uItemVendaService in 'Source\Service\uItemVendaService.pas';
+  uItemVendaService in 'Source\Service\uItemVendaService.pas',
+  uLoginUI in 'Source\UI\uLoginUI.pas' {ftmLogin};
 
 {$R *.res}
 
@@ -60,13 +61,6 @@ begin
   AppServiceConexao := TAppServiceConexao.Create;
 
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TfrmTelaPrincipal, frmTelaPrincipal);
-  Application.CreateForm(TfrmTelaBaseCadastro, frmTelaBaseCadastro);
-  Application.CreateForm(TfrmCadastroCliente, frmCadastroCliente);
-  Application.CreateForm(TfrmCadastroProduto, frmCadastroProduto);
-  Application.CreateForm(TfrmCadastroFuncionario, frmCadastroFuncionario);
-  Application.CreateForm(TfrmCadastroPagamento, frmCadastroPagamento);
-  Application.CreateForm(TTfrmCadastroUsuario, TfrmCadastroUsuario);
-  Application.CreateForm(TfrmVendaDav, frmVendaDav);
+  Application.CreateForm(TftmLogin, ftmLogin);
   Application.Run;
 end.

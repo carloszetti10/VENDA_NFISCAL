@@ -8,6 +8,7 @@ type
     procedure IInserirUsuario(Usuario: TUsuarioModel; listaPermi: TList<Integer>);
     procedure IAlterarUsuario(Usuario: TUsuarioModel);
     procedure ListarNaTela(Q: TZQuery; Nome: string; Todos: Boolean);
+    function Login(ALogin, ASenha: string): TUsuarioModel;
    end;
 
 implementation
