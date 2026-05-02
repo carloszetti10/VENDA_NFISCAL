@@ -15,7 +15,7 @@ type
     FNomeProduto: string;
     FNomeCliente: string;
   public
-    constructor Create;
+    constructor Create; overload;
 
     property IdVenda: Integer read FIdVenda write FIdVenda;
     property IdProduto: Integer read FIdProduto write FIdProduto;
@@ -34,7 +34,7 @@ implementation
 
 constructor TItemVendaModel.Create;
 begin
-
+  inherited;
 end;
 
 end.

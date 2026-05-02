@@ -2,7 +2,7 @@ unit IClienteDAO;
 
 interface
 uses
- uClienteModel, Data.DB, ZAbstractRODataset,
+  uClienteModel, Data.DB, ZAbstractRODataset,
   ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection;
 type
     IClienteDAOO = interface

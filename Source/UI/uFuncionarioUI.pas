@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaBaseCadastroUI, Data.DB, Vcl.Grids,
   Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls,
-  ZAbstractRODataset, ZAbstractDataset, ZDataset;
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, uValidarCampo, uFuncionarioModel, iFuncionarioService, uException;
 
 type
   TfrmCadastroFuncionario = class(TfrmTelaBaseCadastro)
@@ -14,7 +14,7 @@ type
     Label1: TLabel;
     mskNome: TMaskEdit;
   private
-
+    FService: IFuncionarioServiceInterface;
   public
     procedure Inserir; override;
     procedure Alterar;override;
@@ -22,6 +22,8 @@ type
     procedure Pesquisa; override;
     procedure LimparCampos; override;
     procedure HabilitarCampos(Habilitar: Boolean); override;
+    function GetFuncionario: TFuncionarioModel;
+    constructor Create(AOwner: TComponent; AService: IFuncionarioServiceInterface);
   end;
 
 var
@@ -39,15 +41,44 @@ begin
 
 end;
 
+constructor TfrmCadastroFuncionario.Create(AOwner: TComponent;
+  AService: IFuncionarioServiceInterface);
+begin
+  inherited Create(AOwner);
+  FService:= AService;
+end;
+
 procedure TfrmCadastroFuncionario.HabilitarCampos(Habilitar: Boolean);
 begin
   inherited;
-
+  mskNome.Enabled := Habilitar;
 end;
 
 procedure TfrmCadastroFuncionario.Inserir;
+var
+  Func: TFuncionarioModel;
 begin
-  inherited;
+
+  try
+    TValidarCampos.ValidarCampoVazio(mskNome, 'Nome');
+
+    Func := TFuncionarioModel.Create;
+    try
+      Func.Nome := mskNome.Text;
+      FService.IInserir(Func);
+      ShowMessage('Cadastro realizado!');
+  finally
+     Func.Free;
+  end
+  except
+    on E: EAppException do
+      raise;
+    on E: EInfraException do
+      raise;
+    on E: Exception do
+      raise Exception.Create('Erro: ' + E.Message);
+  end;
+
 
 end;
 
@@ -66,7 +97,15 @@ end;
 procedure TfrmCadastroFuncionario.Pesquisa;
 begin
   inherited;
-
+  FService.ListarPorNomeTela(Qry, mskPesquisar.Text)
 end;
 
+
+function TfrmCadastroFuncionario.GetFuncionario: TFuncionarioModel;
+begin
+  Result := TFuncionarioModel.Create;
+
+  Result.Id := Qry.FieldByName('ID_FUNCIONARIO').AsInteger;
+  Result.Nome := Qry.FieldByName('NOME').AsString;
+end;
 end.

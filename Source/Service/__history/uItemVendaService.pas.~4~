@@ -1,0 +1,35 @@
+unit uItemVendaService;
+
+interface
+uses
+  iItemVendaService, IItemVendaDAOO, uItemVendaModel,System.Generics.Collections,
+  ZConnection, uException,ZDataset, IProdutoService, uProdutoService;
+type
+   TVendaService = class(TInterfacedObject, IItemVendaServiceInterface)
+   private
+     FItemVendaDao: IItemVendaDAO;
+   public
+     procedure ListarProdutoVenda(Q: TZQuery; IdVenda: Integer);
+     procedure InserirItem(AItem: TItemVendaModel);
+     constructor Create(AItemVendaDao: IItemVendaDAO);
+   end;
+implementation
+
+{ TVendaService }
+
+constructor TVendaService.Create(AItemVendaDao: IItemVendaDAO);
+begin
+  FItemVendaDao:= AItemVendaDao;
+end;
+
+procedure TVendaService.InserirItem(AItem: TItemVendaModel);
+begin
+  FItemVendaDao.Insert(AItem);
+end;
+
+procedure TVendaService.ListarProdutoVenda(Q: TZQuery; IdVenda: Integer);
+begin
+  FItemVendaDao.ListarPorVenda(Q, IdVenda);
+end;
+
+end.

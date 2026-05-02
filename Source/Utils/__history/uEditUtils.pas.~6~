@@ -1,0 +1,59 @@
+unit uEditUtils;
+
+interface
+
+uses
+  Vcl.StdCtrls, System.SysUtils;
+
+type
+  TFormatacao = class
+  public
+    class procedure AplicarNumero(Edit: TEdit);
+    class procedure KeyPressNumero(Sender: TObject; var Key: Char);
+    class procedure ExitNumero(Sender: TObject);
+  end;
+
+implementation
+
+class procedure TFormatacao.AplicarNumero(Edit: TEdit);
+begin
+  Edit.OnKeyPress := KeyPressNumero;
+  Edit.OnExit := ExitNumero;
+end;
+
+class procedure TFormatacao.KeyPressNumero(Sender: TObject; var Key: Char);
+begin
+
+  if Key = #13 then
+  begin
+    Key := #0;
+    ExitNumero(Sender);
+    Exit;
+  end;
+
+  // troca ponto por vírgula
+  if Key = '.' then
+    Key := ',';
+
+  // só permite número, vírgula e backspace
+  if not CharInSet(Key, ['0'..'9', ',', #8]) then
+    Key := #0;
+
+  // só uma vírgula
+  if (Key = ',') and (Pos(',', (Sender as TEdit).Text) > 0) then
+    Key := #0;
+end;
+
+class procedure TFormatacao.ExitNumero(Sender: TObject);
+var
+  E: TEdit;
+begin
+  E := Sender as TEdit;
+
+  if Trim(E.Text) = '' then
+    E.Text := '0,00'
+  else
+    E.Text := FormatFloat('0.00', StrToFloat(E.Text));
+end;
+
+end.

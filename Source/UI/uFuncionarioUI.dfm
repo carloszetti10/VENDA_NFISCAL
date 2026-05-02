@@ -1,20 +1,19 @@
 inherited frmCadastroFuncionario: TfrmCadastroFuncionario
   Caption = 'Funcionario'
-  ClientHeight = 213
+  ClientHeight = 260
   ClientWidth = 418
   StyleElements = [seFont, seClient, seBorder]
   ExplicitWidth = 434
-  ExplicitHeight = 252
+  ExplicitHeight = 299
   TextHeight = 15
   inherited PageControlHerenca: TPageControl
     Width = 418
-    Height = 172
-    ActivePage = TabCadastro
+    Height = 219
     ExplicitWidth = 418
-    ExplicitHeight = 172
+    ExplicitHeight = 219
     inherited TabConsulta: TTabSheet
       ExplicitWidth = 410
-      ExplicitHeight = 142
+      ExplicitHeight = 189
       inherited Panel1: TPanel
         Width = 410
         StyleElements = [seFont, seClient, seBorder]
@@ -25,19 +24,19 @@ inherited frmCadastroFuncionario: TfrmCadastroFuncionario
       end
       inherited dbGridHerenca: TDBGrid
         Width = 410
-        Height = 48
+        Height = 95
       end
       inherited Panel2: TPanel
-        Top = 107
+        Top = 154
         Width = 410
         StyleElements = [seFont, seClient, seBorder]
-        ExplicitTop = 107
+        ExplicitTop = 154
         ExplicitWidth = 410
       end
     end
     inherited TabCadastro: TTabSheet
       ExplicitWidth = 410
-      ExplicitHeight = 142
+      ExplicitHeight = 189
       object GroupBox1: TGroupBox
         Left = 16
         Top = 16
@@ -64,10 +63,10 @@ inherited frmCadastroFuncionario: TfrmCadastroFuncionario
     end
   end
   inherited pnlInferior: TPanel
-    Top = 172
+    Top = 219
     Width = 418
     StyleElements = [seFont, seClient, seBorder]
-    ExplicitTop = 172
+    ExplicitTop = 219
     ExplicitWidth = 418
     inherited btnSair: TBitBtn
       Left = 339

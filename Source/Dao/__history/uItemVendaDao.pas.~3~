@@ -1,0 +1,22 @@
+unit uItemVendaDao;
+interface
+uses
+  IVendaDAO, uVendaModel, System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection, uException,
+  System.Generics.Collections, uItemVendaModel, IItemVendaDAOO;
+type
+  TItemVendaDao = class(TInterfacedObject, IItemVendaDAO)
+  private
+    FConexao: TZConnection;
+  public
+    constructor Create(Conn: TZConnection);
+
+    procedure Insert(AItem: TItemVendaModel);
+    procedure Update(AItem: TItemVendaModel);
+    procedure Deletar(IdVenda, IdProduto: Integer);
+    procedure ListarPorVenda(Q: TZQuery; IdVenda: Integer);
+  end;
+
+implementation
+
+end.

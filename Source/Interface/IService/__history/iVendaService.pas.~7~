@@ -1,0 +1,19 @@
+unit iVendaService;
+
+interface
+uses
+ uVendaModel, System.Generics.Collections,ZDataset, uUsuarioModel;
+type
+    IVendaServiceInterface = interface
+    Function  IIniciarVenda(IdUsuario: Integer): Integer;
+    procedure IAlterarVenda(Venda: TVendaModel);
+    procedure ListarNaTelaGridEstoque(Q: TZQuery; Nome: string);
+    function  UpdateCliente(IdCliente: Integer; IdVenda: Integer): Integer;
+    function  UpdateFuncionario(IdFunc: Integer; IdVenda: Integer): Integer;
+    procedure CancelarVenda(IdVenda: Integer);
+    procedure AdicionarItemVenda(FIdVenda, IdProduto: Integer; Quant: Currency);
+   end;
+
+implementation
+
+end.

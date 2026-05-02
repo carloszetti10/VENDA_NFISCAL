@@ -1,0 +1,50 @@
+unit uVendaService;
+
+interface
+uses
+  iVendaService, iVendaDAO, uVendaModel,System.Generics.Collections,
+  ZConnection, uException,ZDataset, IProdutoService, uProdutoService,
+  uUsuarioModel;
+type
+   TVendaService = class(TInterfacedObject, IVendaServiceInterface)
+   private
+   FVendaDAO : IVendaDAOO;
+   FProdutoService: IProdutoServiceInterface;
+   public
+     Function IIniciarVenda(IdUsuario: Integer):Integer;
+     procedure IAlterarVenda(Venda: TVendaModel);
+     procedure ListarNaTelaGridEstoque(Q: TZQuery; Nome: string);
+     constructor Create(AVendaDao: IVendaDAOO; AProdutoService: IProdutoServiceInterface);
+
+     function UpdateCliente(IdCliente: Integer; IdVenda: Integer): Integer;
+     function UpdateFuncionario(IdFunc: Integer; IdVenda: Integer): Integer;
+   end;
+
+implementation
+
+{ TVendaService }
+
+{ ================== CONSTRUTOR ================== }
+constructor TVendaService.Create(AVendaDao: IVendaDAOO; AProdutoService: IProdutoServiceInterface);
+begin
+  FProdutoService:= AProdutoService;
+  FVendaDAO:= AVendaDao;
+end;
+
+procedure TVendaService.IAlterarVenda(Venda: TVendaModel);
+begin
+
+end;
+
+{ ================== INICIAR VENDA ================== }
+function TVendaService.IIniciarVenda(IdUsuario: Integer): Integer;
+begin
+  Result:= FVendaDAO.Insert(IdUsuario);
+end;
+
+procedure TVendaService.ListarNaTelaGridEstoque(Q: TZQuery; Nome: string);
+begin
+  FProdutoService.ListarPorNomeTela(Q,Nome);
+end;
+
+end.

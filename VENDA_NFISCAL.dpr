@@ -41,7 +41,12 @@ uses
   uVendaService in 'Source\Service\uVendaService.pas',
   iVendaService in 'Source\Interface\IService\iVendaService.pas',
   uVendaDao in 'Source\Dao\uVendaDao.pas',
-  iVendaDAO in 'Source\Interface\IRepositorio\iVendaDAO.pas';
+  iVendaDAO in 'Source\Interface\IRepositorio\iVendaDAO.pas',
+  uFuncionarioService in 'Source\Service\uFuncionarioService.pas',
+  uItemVendaDao in 'Source\Dao\uItemVendaDao.pas',
+  IItemVendaDAOO in 'Source\Interface\IRepositorio\IItemVendaDAOO.pas',
+  iItemVendaService in 'Source\Interface\IService\iItemVendaService.pas',
+  uItemVendaService in 'Source\Service\uItemVendaService.pas';
 
 {$R *.res}
 

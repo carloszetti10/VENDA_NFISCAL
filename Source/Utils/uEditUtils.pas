@@ -23,12 +23,13 @@ end;
 
 class procedure TFormatacao.KeyPressNumero(Sender: TObject; var Key: Char);
 begin
+
   // troca ponto por vírgula
   if Key = '.' then
     Key := ',';
 
   // só permite número, vírgula e backspace
-  if not CharInSet(Key, ['0'..'9', ',', #8]) then
+  if not CharInSet(Key, ['0'..'9', ',', #8, #13]) then
     Key := #0;
 
   // só uma vírgula

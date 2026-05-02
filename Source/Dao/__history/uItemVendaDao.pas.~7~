@@ -1,0 +1,90 @@
+unit uItemVendaDao;
+interface
+uses
+  IVendaDAO, uVendaModel, System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection, uException,
+  System.Generics.Collections, uItemVendaModel, IItemVendaDAOO;
+type
+  TItemVendaDao = class(TInterfacedObject, IItemVendaDAO)
+  private
+    FConexao: TZConnection;
+  public
+    constructor Create(Conn: TZConnection);
+
+    procedure Insert(AItem: TItemVendaModel);
+    procedure Update(AItem: TItemVendaModel);
+    procedure Deletar(IdVenda, IdProduto: Integer);
+    procedure ListarPorVenda(Q: TZQuery; IdVenda: Integer);
+  end;
+
+implementation
+
+{ TItemVendaDao }
+
+
+{ ================== CONSTRUTOR ================== }
+constructor TItemVendaDao.Create(Conn: TZConnection);
+begin
+  inherited Create;
+  FConexao := Conn;
+end;
+
+procedure TItemVendaDao.Deletar(IdVenda, IdProduto: Integer);
+begin
+
+end;
+
+
+{ ================== INSERT ================== }
+procedure TItemVendaDao.Insert(AItem: TItemVendaModel);
+var
+  Q: TZQuery;
+begin
+
+  Q := TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
+
+      Q.SQL.Text := 'INSERT INTO ITEM_VENDA (ID_VENDA, ID_PRODUTO, QUANTIDADE, VALOR_DESC, VALOR_UNITARIO, VALOR_TOTAL) ' +
+       'VALUES (:ID_VENDA, :ID_PRODUTO, :QTD, :DESC, :VLR_UNIT, :TOTAL)';
+
+    Q.ParamByName('ID_VENDA').AsInteger := AItem.IdVenda;
+    Q.ParamByName('ID_PRODUTO').AsInteger := AItem.IdProduto;
+    Q.ParamByName('QTD').AsCurrency := AItem.Quantidade;
+    Q.ParamByName('DESC').AsCurrency := AItem.ValorDesc;
+    Q.ParamByName('VLR_UNIT').AsCurrency := AItem.ValorUnitario;
+    Q.ParamByName('TOTAL').AsCurrency := AItem.ValorTotal;
+
+    Q.ExecSQL;
+    except
+    on E: Exception do
+      raise EInfraException.Create('Erro ao inserir item: ' + E.Message);
+
+    end;
+  finally
+    Q.Free;
+  end;
+
+end;
+
+procedure TItemVendaDao.ListarPorVenda(Q: TZQuery; IdVenda: Integer);
+begin
+  Q.Close;
+  Q.Connection := FConexao;
+
+  Q.SQL.Text :=
+    'SELECT ID_VENDA, ID_PRODUTO, QUANTIDADE, VALOR_UNITARIO, VALOR_TOTAL ' +
+    'FROM ITEM_VENDA ' +
+    'WHERE ID_VENDA = :ID';
+
+  Q.ParamByName('ID').AsInteger := IdVenda;
+  Q.Open;
+end;
+
+procedure TItemVendaDao.Update(AItem: TItemVendaModel);
+begin
+
+end;
+
+end.

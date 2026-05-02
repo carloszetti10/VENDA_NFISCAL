@@ -9,7 +9,9 @@ uses
   Vcl.ExtCtrls,ZConnection,
   iClienteService, uClienteService, IClienteDAO, uClienteDao,
   IProdutoService, uProdutoService, IProdutoDAO, uProdutoDao,
-  iVendaService, uVendaService, iVendaDAO, uVendaDao;
+  iVendaService, uVendaService, iVendaDAO, uVendaDao,
+   iFuncionarioService, uFuncionarioService, iFuncionarioDAO, uFuncionarioDao,
+   iItemVendaService, uItemVendaModel, uItemVendaDao, IItemVendaDAOO,uItemVendaService;
 
 type
   TfrmTelaPrincipal = class(TForm)
@@ -41,6 +43,8 @@ type
   public
     function CriarProdutoService: IProdutoServiceInterface;
     function CriarVendaService: IVendaServiceInterface;
+    function CriarFuncionarioService: IFuncionarioServiceInterface;
+    function CriarItemVendaService: IItemVendaServiceInterface;
   end;
 
 var
@@ -66,6 +70,22 @@ begin
   end;
 end;
 
+function TfrmTelaPrincipal.CriarFuncionarioService: IFuncionarioServiceInterface;
+var
+  Dao: IFuncionarioDAOO;
+begin
+  Dao := TFuncionarioDao.Create(FConn);
+  Result := TFuncionarioService.Create(Dao);
+end;
+
+function TfrmTelaPrincipal.CriarItemVendaService: IItemVendaServiceInterface;
+var
+  Dao: IItemVendaDAO;
+begin
+  Dao := TItemVendaDao.Create(FConn);
+  Result := TItemVendaService.Create(Dao);
+end;
+
 function TfrmTelaPrincipal.CriarProdutoService: IProdutoServiceInterface;
 var
   Dao: IProdutoDAOO;
@@ -78,10 +98,12 @@ function TfrmTelaPrincipal.CriarVendaService: IVendaServiceInterface;
 var
   DaoVenda: IVendaDAOO;
   ProdutoService: IProdutoServiceInterface;
+  ItemVendaService: IItemVendaServiceInterface;
 begin
   ProdutoService := CriarProdutoService;
   DaoVenda := TVendaDao.Create(FConn);
-  Result := TVendaService.Create(DaoVenda, ProdutoService);
+  ItemVendaService := CriarItemVendaService;
+  Result := TVendaService.Create(DaoVenda, ProdutoService,ItemVendaService);
 end;
 procedure TfrmTelaPrincipal.FORMAPAGAMENTO1Click(Sender: TObject);
 var
@@ -111,12 +133,11 @@ end;
 procedure TfrmTelaPrincipal.FUNCIONARIO1Click(Sender: TObject);
 var
   frm : TfrmCadastroFuncionario;
-  //Service: IClienteServiceInterface;
-  //Dao: IClienteDAOO;
+  Service: IFuncionarioServiceInterface;
 begin
-  //Dao := TClienteDao.Create(AppServiceConexao.getConexao);
-  //Service := TClienteService.Create(Dao);
-  frm := TfrmCadastroFuncionario.Create(nil);
+
+  Service := CriarFuncionarioService;
+  frm := TfrmCadastroFuncionario.Create(nil, Service);
   try
     frm.ShowModal;
   finally

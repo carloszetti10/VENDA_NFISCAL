@@ -3,28 +3,41 @@ unit uVendaService;
 interface
 uses
   iVendaService, iVendaDAO, uVendaModel,System.Generics.Collections,
-  ZConnection, uException,ZDataset, IProdutoService, uProdutoService;
+  ZConnection, uException,ZDataset, IProdutoService, uProdutoService,
+  uUsuarioModel, iItemVendaService, uItemVendaModel;
 type
    TVendaService = class(TInterfacedObject, IVendaServiceInterface)
    private
    FVendaDAO : IVendaDAOO;
    FProdutoService: IProdutoServiceInterface;
+   FItemVendaService: IItemVendaServiceInterface;
    public
-     procedure IInserirVenda(Venda: TVendaModel);
+     Function IIniciarVenda(IdUsuario: Integer):Integer;
      procedure IAlterarVenda(Venda: TVendaModel);
      procedure ListarNaTelaGridEstoque(Q: TZQuery; Nome: string);
-     constructor Create(AVendaDao: IVendaDAOO; AProdutoService: IProdutoServiceInterface);
+     procedure ListarNaTelaGridVenda(Q: TZQuery; IdVenda: Integer);
+     constructor Create(AVendaDao: IVendaDAOO; AProdutoService: IProdutoServiceInterface; AItemVendaService: IItemVendaServiceInterface);
+
+     {===== ATUALIZAÇÃO VENDA ====}
+     function UpdateCliente(IdCliente: Integer; IdVenda: Integer): Integer;
+     function UpdateFuncionario(IdFunc: Integer; IdVenda: Integer): Integer;
+     procedure AdicionarItemVenda(Item: TItemVendaModel);
+     function CalcularTotalVenda(IdVenda: Integer): Currency;
+     {===== CANCELAR VENDA ====}
+     procedure CancelarVenda(IdVenda: Integer);
    end;
 
 implementation
 
 { TVendaService }
 
-constructor TVendaService.Create(AVendaDao: IVendaDAOO;
- AProdutoService: IProdutoServiceInterface);
+
+{ ================== CONSTRUTOR ================== }
+constructor TVendaService.Create(AVendaDao: IVendaDAOO; AProdutoService: IProdutoServiceInterface;AItemVendaService: IItemVendaServiceInterface );
 begin
   FProdutoService:= AProdutoService;
   FVendaDAO:= AVendaDao;
+  FItemVendaService:= AItemVendaService;
 end;
 
 procedure TVendaService.IAlterarVenda(Venda: TVendaModel);
@@ -32,9 +45,10 @@ begin
 
 end;
 
-procedure TVendaService.IInserirVenda(Venda: TVendaModel);
+{ ================== INICIAR VENDA ================== }
+function TVendaService.IIniciarVenda(IdUsuario: Integer): Integer;
 begin
-
+  Result:= FVendaDAO.Insert(IdUsuario);
 end;
 
 procedure TVendaService.ListarNaTelaGridEstoque(Q: TZQuery; Nome: string);
@@ -42,4 +56,42 @@ begin
   FProdutoService.ListarPorNomeTela(Q,Nome);
 end;
 
+procedure TVendaService.ListarNaTelaGridVenda(Q: TZQuery; IdVenda: Integer);
+begin
+  FItemVendaService.ListarProdutoVenda(Q, IdVenda);
+end;
+
+procedure TVendaService.AdicionarItemVenda(Item: TItemVendaModel);
+
+
+begin
+  //ver se ja tem
+
+  //inserir
+  FItemVendaService.InserirItem(Item);
+end;
+
+
+{ ================== ATUALIZAR VENDA CLIENTE/VENDEDOR ================== }
+function TVendaService.UpdateCliente(IdCliente, IdVenda: Integer): Integer;
+begin
+  Result := FVendaDAO.UpdateCliente(IdCliente, IdVenda);
+end;
+
+function TVendaService.UpdateFuncionario(IdFunc, IdVenda: Integer): Integer;
+begin
+
+end;
+
+
+function TVendaService.CalcularTotalVenda(IdVenda: Integer): Currency;
+begin
+  Result := FVendaDAO.CalcularTotalVenda(IdVenda);
+end;
+
+{===== CANCELAR VENDA ====}
+procedure TVendaService.CancelarVenda(IdVenda: Integer);
+begin
+  FVendaDAO.UpdateStatus(IdVenda, svCancelado);
+end;
 end.

@@ -1,0 +1,24 @@
+unit uItemVendaDao;
+interface
+uses
+  IVendaDAO, uVendaModel, System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection, uException,
+  System.Generics.Collections, uItemVendaModel;
+type
+  TItemVendaDao = class(TInterfacedObject, IVendaDAOO)
+    private
+      FConexao : TZConnection;
+    public
+      procedure Inserir(AItem: TItemVendaModel; IdVenda: Integer);
+      procedure Atualizar(AItem: TItemVendaModel; IdVenda: Integer);
+      procedure Deletar(IdVenda, IdProduto: Integer);
+      procedure ListarPorVenda(IdVenda: Integer);
+
+      {===== ATUALIZAÇÃO ====}
+      function UpdateCliente(IdCliente: Integer; IdVenda: Integer): Integer;
+      function UpdateFuncionario(IdFunc: Integer; IdVenda: Integer): Integer;
+  end;
+
+implementation
+
+end.

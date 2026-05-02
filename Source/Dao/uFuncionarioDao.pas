@@ -85,7 +85,7 @@ begin
   Q.Connection := FConexao;
 
   Q.SQL.Text :=
-    'SELECT * FUNCIONARIO FROM PRODUTO WHERE UPPER(NOME) LIKE UPPER(:NOME)';
+    'SELECT * FROM FUNCIONARIO WHERE UPPER(NOME) LIKE UPPER(:NOME)';
   Q.ParamByName('NOME').AsString := '%' + Trim(Nome) + '%';
   Q.Open;
 end;

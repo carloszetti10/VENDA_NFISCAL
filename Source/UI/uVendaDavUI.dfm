@@ -1,9 +1,11 @@
 object frmVendaDav: TfrmVendaDav
   Left = 626
   Top = 0
+  Align = alClient
+  BorderStyle = bsNone
   Caption = 'VENDA'
-  ClientHeight = 452
-  ClientWidth = 711
+  ClientHeight = 449
+  ClientWidth = 785
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,16 +13,16 @@ object frmVendaDav: TfrmVendaDav
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poDesktopCenter
+  WindowState = wsMaximized
   OnShow = FormShow
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 711
+    Width = 785
     Height = 89
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 624
     object Label1: TLabel
       Left = 16
       Top = 13
@@ -43,23 +45,24 @@ object frmVendaDav: TfrmVendaDav
       Caption = 'CLIENTE:'
     end
     object Label6: TLabel
-      Left = 424
+      Left = 479
       Top = 13
       Width = 63
       Height = 15
       Caption = 'VENDEDOR:'
     end
-    object Edit1: TEdit
+    object edtNumeroVenda: TEdit
       Left = 16
       Top = 34
-      Width = 81
+      Width = 98
       Height = 23
       TabOrder = 0
+      OnKeyPress = edtNumeroVendaKeyPress
     end
-    object dtmEmisao: TDateTimePicker
+    object edtEmisao: TDateTimePicker
       Left = 120
       Top = 34
-      Width = 97
+      Width = 114
       Height = 23
       Date = 46141.000000000000000000
       Time = 0.490384513890603600
@@ -68,29 +71,39 @@ object frmVendaDav: TfrmVendaDav
     object edtCliente: TEdit
       Left = 240
       Top = 34
-      Width = 154
+      Width = 225
       Height = 23
+      ReadOnly = True
       TabOrder = 2
       OnClick = edtClienteClick
     end
     object edtVendedor: TEdit
-      Left = 424
+      Left = 479
       Top = 34
-      Width = 154
+      Width = 225
       Height = 23
+      ReadOnly = True
       TabOrder = 3
       OnClick = edtVendedorClick
+    end
+    object btnSair: TButton
+      Left = 709
+      Top = 1
+      Width = 75
+      Height = 87
+      Align = alRight
+      Caption = '&SAIR'
+      TabOrder = 4
+      OnClick = btnSairClick
     end
   end
   object Panel2: TPanel
     Left = 0
-    Top = 347
-    Width = 711
-    Height = 105
+    Top = 319
+    Width = 785
+    Height = 130
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 336
-    ExplicitWidth = 624
     object Label10: TLabel
       Left = 16
       Top = 6
@@ -112,28 +125,31 @@ object frmVendaDav: TfrmVendaDav
       Height = 15
       Caption = 'LIQUIDO:'
     end
-    object edtBruto: TEdit
+    object edtBrutoVenda: TEdit
       Left = 16
       Top = 22
       Width = 97
       Height = 23
       TabOrder = 0
+      Text = '0,00'
     end
-    object edtDesconto: TEdit
+    object edtDescontoVenda: TEdit
       Left = 119
       Top = 22
       Width = 97
       Height = 23
       TabOrder = 1
+      Text = '0,00'
     end
-    object edtLiquido: TEdit
+    object edtLiquidoVenda: TEdit
       Left = 222
       Top = 22
       Width = 97
       Height = 23
       TabOrder = 2
+      Text = '0,00'
     end
-    object btnNovo: TBitBtn
+    object btnNovaVenda: TBitBtn
       Left = 16
       Top = 62
       Width = 75
@@ -141,58 +157,54 @@ object frmVendaDav: TfrmVendaDav
       Caption = '&NOVO'
       TabOrder = 3
     end
-    object BitBtn1: TBitBtn
-      Left = 107
+    object btnCancelar: TBitBtn
+      Left = 97
       Top = 62
       Width = 75
       Height = 25
-      Caption = '&NOVO'
+      Caption = '&CANCELAR'
       TabOrder = 4
+      OnClick = btnCancelarClick
     end
-    object BitBtn2: TBitBtn
-      Left = 196
+    object btnGravar: TBitBtn
+      Left = 178
       Top = 62
       Width = 75
       Height = 25
-      Caption = '&NOVO'
+      Caption = '&GRAVAR'
       TabOrder = 5
     end
   end
   object Panel3: TPanel
     Left = 0
     Top = 89
-    Width = 711
-    Height = 258
+    Width = 785
+    Height = 230
     Align = alClient
     TabOrder = 2
-    ExplicitWidth = 624
-    ExplicitHeight = 247
     object Panel4: TPanel
       Left = 1
       Top = 1
-      Width = 709
-      Height = 256
+      Width = 783
+      Height = 228
       Align = alClient
       TabOrder = 0
-      ExplicitWidth = 622
-      ExplicitHeight = 245
       object Panel5: TPanel
         Left = 1
         Top = 1
-        Width = 707
+        Width = 781
         Height = 56
         Align = alTop
         TabOrder = 0
-        ExplicitWidth = 620
         object Label9: TLabel
-          Left = 501
+          Left = 597
           Top = 4
           Width = 39
           Height = 15
           Caption = 'VALOR:'
         end
         object Label8: TLabel
-          Left = 399
+          Left = 477
           Top = 4
           Width = 76
           Height = 15
@@ -205,46 +217,48 @@ object frmVendaDav: TfrmVendaDav
           Height = 15
           Caption = 'PESQUISAR PRODUTOS'
         end
-        object edtValorUnitarioProd: TEdit
-          Left = 501
+        object edtValorItemTotal: TEdit
+          Left = 597
           Top = 25
-          Width = 81
+          Width = 105
           Height = 23
           TabOrder = 0
+          Text = '0,00'
         end
-        object edtQuantidade: TEdit
-          Left = 399
-          Top = 25
-          Width = 81
+        object edtQuantidadeProdutoSelecionado: TEdit
+          Left = 486
+          Top = 27
+          Width = 105
           Height = 23
           TabOrder = 1
+          Text = '1,00'
+          OnChange = edtQuantidadeProdutoSelecionadoChange
+          OnKeyDown = edtQuantidadeProdutoSelecionadoKeyDown
         end
-        object edtPesquisa: TEdit
-          Left = 15
+        object edtPesquisaProduto: TEdit
+          Left = 14
           Top = 26
-          Width = 302
+          Width = 448
           Height = 23
           TabOrder = 2
-          OnChange = edtPesquisaChange
-          OnKeyPress = edtPesquisaKeyPress
+          OnChange = edtPesquisaProdutoChange
+          OnKeyPress = edtPesquisaProdutoKeyPress
         end
       end
       object Panel6: TPanel
         Left = 1
         Top = 57
-        Width = 707
-        Height = 198
+        Width = 781
+        Height = 170
         Align = alClient
         TabOrder = 1
-        ExplicitWidth = 620
-        ExplicitHeight = 187
         object painelEstoque: TPanel
           Left = 14
           Top = 6
           Width = 243
           Height = 160
           TabOrder = 0
-          object DBGrid2: TDBGrid
+          object dbProdEsqtque: TDBGrid
             Left = 1
             Top = 17
             Width = 241
@@ -258,19 +272,20 @@ object frmVendaDav: TfrmVendaDav
             TitleFont.Height = -12
             TitleFont.Name = 'Segoe UI'
             TitleFont.Style = []
+            OnKeyPress = dbProdEsqtqueKeyPress
             Columns = <
               item
                 Expanded = False
                 FieldName = 'ID_PRODUTO'
                 Title.Caption = 'CODIGO'
-                Width = 44
+                Width = 61
                 Visible = True
               end
               item
                 Expanded = False
                 FieldName = 'NOME'
                 Title.Caption = 'DESCRI'#199#195'O'
-                Width = 180
+                Width = 161
                 Visible = True
               end
               item
@@ -300,7 +315,6 @@ object frmVendaDav: TfrmVendaDav
             Align = alTop
             Caption = 'PRODUTOS DO ESTOQUE'
             TabOrder = 1
-            ExplicitTop = 0
           end
         end
         object painelVenda: TPanel
@@ -309,7 +323,7 @@ object frmVendaDav: TfrmVendaDav
           Width = 256
           Height = 160
           TabOrder = 1
-          object DBGrid1: TDBGrid
+          object dbProdVenda: TDBGrid
             Left = 1
             Top = 19
             Width = 254
@@ -332,7 +346,7 @@ object frmVendaDav: TfrmVendaDav
               end
               item
                 Expanded = False
-                FieldName = 'NAME'
+                FieldName = 'NOME'
                 Title.Caption = 'DESCRI'#199#195'O'
                 Visible = True
               end
