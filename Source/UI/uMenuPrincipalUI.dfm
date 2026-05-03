@@ -32,28 +32,165 @@ object frmTelaPrincipal: TfrmTelaPrincipal
       Caption = 'GridPanel1'
       ColumnCollection = <
         item
-          Value = 50.000000000000000000
+          Value = 33.771905196898100000
         end
         item
-          Value = 50.000000000000000000
+          Value = 33.191525349606290000
         end
         item
-        end
-        item
+          Value = 33.036569453495620000
         end>
-      ControlCollection = <>
+      ControlCollection = <
+        item
+          Column = 0
+          Control = Panel2
+          Row = 0
+        end
+        item
+          Column = 1
+          Control = Panel3
+          Row = 0
+        end
+        item
+          Column = 2
+          Control = Panel4
+          Row = 0
+        end
+        item
+          Column = 0
+          Control = Panel5
+          Row = 1
+        end
+        item
+          Column = 1
+          Control = Panel6
+          Row = 1
+        end
+        item
+          Column = 2
+          Control = Panel7
+          Row = 1
+        end
+        item
+          Column = 0
+          Control = Panel8
+          Row = 2
+        end
+        item
+          Column = 1
+          Control = Panel9
+          Row = 2
+        end
+        item
+          Column = 2
+          Control = Panel10
+          Row = 2
+        end>
       RowCollection = <
         item
-          Value = 50.000000000000000000
+          Value = 32.750057464604240000
         end
         item
-          Value = 50.000000000000000000
+          Value = 34.161999169260220000
         end
         item
-        end
-        item
+          Value = 33.087943366135530000
         end>
       TabOrder = 0
+      DesignSize = (
+        598
+        398)
+      object Panel2: TPanel
+        Left = 9
+        Top = 22
+        Width = 185
+        Height = 88
+        Anchors = []
+        Caption = 'CLIENTE'
+        TabOrder = 0
+        OnClick = Panel2Click
+        ExplicitTop = -2
+      end
+      object Panel3: TPanel
+        Left = 208
+        Top = 22
+        Width = 185
+        Height = 88
+        Anchors = []
+        Caption = 'PRODUTO'
+        TabOrder = 1
+        ExplicitLeft = 215
+      end
+      object Panel4: TPanel
+        Left = 406
+        Top = 22
+        Width = 185
+        Height = 88
+        Anchors = []
+        Caption = 'USUARIO'
+        TabOrder = 2
+        ExplicitTop = -2
+      end
+      object Panel5: TPanel
+        Left = 9
+        Top = 147
+        Width = 185
+        Height = 103
+        Anchors = []
+        Caption = 'FUNCIONARIO'
+        TabOrder = 3
+        ExplicitTop = 116
+      end
+      object Panel6: TPanel
+        Left = 208
+        Top = 150
+        Width = 185
+        Height = 97
+        Anchors = []
+        Caption = 'Panel6'
+        TabOrder = 4
+        ExplicitTop = 147
+      end
+      object Panel7: TPanel
+        Left = 406
+        Top = 153
+        Width = 185
+        Height = 91
+        Anchors = []
+        Caption = 'Panel7'
+        TabOrder = 5
+        ExplicitTop = 128
+      end
+      object Panel8: TPanel
+        Left = 9
+        Top = 287
+        Width = 185
+        Height = 88
+        Anchors = []
+        Caption = 'VENDA'
+        TabOrder = 6
+        ExplicitTop = 264
+      end
+      object Panel9: TPanel
+        Left = 208
+        Top = 287
+        Width = 185
+        Height = 88
+        Anchors = []
+        Caption = 'FATURAR VENDA'
+        TabOrder = 7
+        ExplicitTop = 264
+      end
+      object Panel10: TPanel
+        Left = 406
+        Top = 287
+        Width = 185
+        Height = 88
+        Anchors = []
+        Caption = 'Panel10'
+        TabOrder = 8
+        ExplicitTop = 264
+      end
     end
   end
   object pnl: TPanel
@@ -70,10 +207,24 @@ object frmTelaPrincipal: TfrmTelaPrincipal
       Height = 15
       Caption = 'EMPRESA'
     end
+    object Panel1: TPanel
+      Left = 488
+      Top = 1
+      Width = 135
+      Height = 31
+      Align = alRight
+      TabOrder = 0
+      object lbUsuario: TLabel
+        Left = 12
+        Top = 8
+        Width = 49
+        Height = 15
+        Caption = 'USUARIO'
+      end
+    end
   end
   object MainMenu1: TMainMenu
-    Left = 568
-    Top = 16
+    Left = 440
     object CADASTRO1: TMenuItem
       Caption = 'CADASTRO'
       object CLIENTES: TMenuItem

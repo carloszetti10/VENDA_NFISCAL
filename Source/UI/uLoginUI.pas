@@ -18,6 +18,7 @@ type
     Label3: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure btnEntrarClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
      FUsuarioService: IUsuarioServiceInterface;
      FDaoLoja: ILojaDAOO; //criar o service depois
@@ -26,6 +27,7 @@ type
     function  VerificarUsurMaster(user, senha: string): Boolean;
     procedure AbrirTelaInicial(UsuarioLogado: TUsuarioModel; Loja: TLojaModel);
     procedure VerificarLojaCadastrada;
+    procedure LimparCampo;
   end;
 
 var
@@ -37,15 +39,27 @@ implementation
 
 procedure TftmLogin.AbrirTelaInicial(UsuarioLogado: TUsuarioModel; Loja: TLojaModel);
 begin
-   frmTelaPrincipal := TfrmTelaPrincipal.Create(nil);
-   frmTelaPrincipal.Show;
-   Self.Hide;
-   FUsuarioService.PreecherAppContext(UsuarioLogado, Loja);
+  TSession.SetUsuario(UsuarioLogado);
+  FUsuarioService.PreecherAppContext(UsuarioLogado, Loja);
+  frmTelaPrincipal := TfrmTelaPrincipal.Create(nil);
+  try
+    Self.Hide; // escondeR o login
+    frmTelaPrincipal.ShowModal;
+  finally
+    Self.Show; // volta o login quando a principal fechar
+    frmTelaPrincipal.Free;
+  end;
 end;
 
 procedure TftmLogin.btnEntrarClick(Sender: TObject);
 begin
   Logar;
+  LimparCampo;
+end;
+
+procedure TftmLogin.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Application.Terminate;
 end;
 
 procedure TftmLogin.FormCreate(Sender: TObject);
@@ -61,28 +75,38 @@ begin
   VerificarLojaCadastrada; //não deve esta aqui mais de inicio vou implementar aqui.
 end;
 
+procedure TftmLogin.LimparCampo;
+begin
+  edtLogin.Text := '';
+  edtSenha.Text := '';
+end;
+
 procedure TftmLogin.Logar;
 var
   Usuario: TUsuarioModel;
+  Loja: TLojaModel;
 begin
 
   TValidarCampos.ValidarEditVazio(edtLogin, 'Usuario');
   TValidarCampos.ValidarEditVazio(edtSenha, 'Senha');
 
+  Loja := FDaoLoja.FindBy;
+  if not Assigned(Loja) then
+    raise Exception.Create('Nenhuma loja cadastrada.');
+
   if VerificarUsurMaster(edtLogin.Text, edtSenha.Text) then
   begin
     Usuario := TUsuarioModel.Create;
     Usuario.Login := 'ZETTI';
-    TSession.SetUsuario(Usuario);
-    AbrirTelaInicial(Usuario, FDaoLoja.FindBy);
+    Usuario.Id := 0;
+    AbrirTelaInicial(Usuario, Loja);
     Exit;
   end;
 
   Usuario := FUsuarioService.Login(edtLogin.Text, edtSenha.Text);
   if Usuario <> nil then
   begin
-    TSession.SetUsuario(Usuario);
-    AbrirTelaInicial(Usuario, FDaoLoja.FindBy);
+    AbrirTelaInicial(Usuario, Loja);
   end
 end;
 

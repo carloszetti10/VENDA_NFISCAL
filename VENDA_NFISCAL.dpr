@@ -68,5 +68,6 @@ begin
 
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TftmLogin, ftmLogin);
+  //Application.CreateForm(TfrmTelaPrincipal, frmTelaPrincipal);
   Application.Run;
 end.

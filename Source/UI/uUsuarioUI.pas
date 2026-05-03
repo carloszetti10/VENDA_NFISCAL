@@ -7,23 +7,25 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaBaseCadastroUI, Data.DB, Vcl.Grids,
   Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls,
   Vcl.CheckLst, System.Generics.Collections, uUsuarioModel, uValidarCampo, iUsuarioService,
-  ZAbstractRODataset, ZAbstractDataset, ZDataset;
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, uFuncionarioUI, uFuncionarioService, uFuncionarioModel,
+   uFuncionarioDao, iFuncionarioDAO, iFuncionarioService, uAppServiceConexao;
 
 type
   TTfrmCadastroUsuario = class(TfrmTelaBaseCadastro)
     GroupBox1: TGroupBox;
     Label1: TLabel;
     mskLogin: TMaskEdit;
-    mskSenha: TMaskEdit;
-    mskFuncionario: TMaskEdit;
-    BitBtn1: TBitBtn;
     GroupBox2: TGroupBox;
     clbPermissoes: TCheckListBox;
     ckcTodos: TCheckBox;
     QryPerm: TZQuery;
+    edtFuncionario: TEdit;
+    edtSenha: TEdit;
     procedure ckcTodosClick(Sender: TObject);
+    procedure edtFuncionarioClick(Sender: TObject);
   private
     FService: IUsuarioServiceInterface;
+    FFuncionario: TFuncionarioModel;
   public
     procedure PrencherPermissao;
     procedure MarcarPermissoes(Lista: TList<Integer>);
@@ -69,6 +71,33 @@ begin
   PrencherPermissao;
 end;
 
+
+
+procedure TTfrmCadastroUsuario.edtFuncionarioClick(Sender: TObject);
+var
+  Frm : TfrmCadastroFuncionario;
+  Service: IFuncionarioServiceInterface;
+  Dao: IFuncionarioDAOO;
+begin
+  Dao := TFuncionarioDao.Create(AppServiceConexao.getConexao);
+  Service := TFuncionarioService.Create(Dao);
+  Frm := TfrmCadastroFuncionario.Create(nil,Service);
+  try
+    Frm.ModoTela := mtSelecao;
+
+    if Frm.ShowModal = mrOk then
+    begin
+      FFuncionario := Frm.GetFuncionario;
+
+      edtFuncionario.Text := '';
+      edtFuncionario.Text := FFuncionario.Nome;
+    end;
+
+  finally
+    Frm.Free;
+  end;
+end;
+
 procedure TTfrmCadastroUsuario.HabilitarCampos(Habilitar: Boolean);
 begin
   inherited;
@@ -82,13 +111,14 @@ procedure TTfrmCadastroUsuario.Inserir;
 begin
   inherited;
   TValidarCampos.ValidarCampoVazio(mskLogin, 'Login');
-  TValidarCampos.ValidarCampoVazio(mskSenha, 'Senha');
+  TValidarCampos.ValidarEditVazio(edtSenha, 'Senha');
 
   Lista:= PegarPermissoesMarcadas;
   Usuario:= TUsuarioModel.Create;
   try
     Usuario.Login := mskLogin.Text;
-    Usuario.Senha:= mskSenha.Text;
+    Usuario.Senha:= edtSenha.Text;
+    Usuario.IdFuncionario:= FFuncionario.Id;
     //pegar o id do funcionario depois
     FService.IInserirUsuario(Usuario, Lista);
     ShowMessage('Cadastro realizado!');
@@ -144,7 +174,6 @@ begin
   inherited;
   FService.ListarNaTela(Qry, mskPesquisar.Text, false)
 end;
-
 procedure TTfrmCadastroUsuario.PrencherPermissao;
 begin
   clbPermissoes.Items.Clear;

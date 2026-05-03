@@ -137,8 +137,8 @@
     <Transaction>2026/05/02 23:43:52.000.424,D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Dao\uLojaDao.pas</Transaction>
     <Transaction>2026/05/02 23:46:42.000.586,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
     <Transaction>2026/05/02 23:48:52.000.538,D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Interface\IRepositorio\iLojaDAO.pas</Transaction>
-    <Transaction>2026/05/03 05:38:42.253,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
-    <Transaction>2026/05/03 05:39:35.706,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Utils\uSession.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
+    <Transaction>2026/05/03 05:38:42.000.253,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
+    <Transaction>2026/05/03 05:39:35.000.706,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Utils\uSession.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="Source"/>

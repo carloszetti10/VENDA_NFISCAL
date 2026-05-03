@@ -12,6 +12,7 @@ object ftmLogin: TftmLogin
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poDesktopCenter
+  OnClose = FormClose
   OnCreate = FormCreate
   TextHeight = 15
   object Label1: TLabel

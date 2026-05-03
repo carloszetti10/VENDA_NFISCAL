@@ -12,7 +12,7 @@ uses
   iVendaService, uVendaService, iVendaDAO, uVendaDao,
    iFuncionarioService, uFuncionarioService, iFuncionarioDAO, uFuncionarioDao,
    iItemVendaService, uItemVendaModel, uItemVendaDao, IItemVendaDAOO,uItemVendaService,
-  Vcl.StdCtrls,uAppContext,uSession;
+  Vcl.StdCtrls,uAppContext,uSession, uUsuarioModel;
 
 type
   TfrmTelaPrincipal = class(TForm)
@@ -32,6 +32,17 @@ type
     VENDA1: TMenuItem;
     pnl: TPanel;
     nomeEmpresa: TLabel;
+    lbUsuario: TLabel;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    Panel4: TPanel;
+    Panel5: TPanel;
+    Panel6: TPanel;
+    Panel7: TPanel;
+    Panel8: TPanel;
+    Panel9: TPanel;
+    Panel10: TPanel;
     procedure SAIR1Click(Sender: TObject);
     procedure CLIENTESClick(Sender: TObject);
     procedure PRODUTOClick(Sender: TObject);
@@ -42,6 +53,8 @@ type
     procedure VENDA1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Panel2Click(Sender: TObject);
+
 
 
   private
@@ -113,14 +126,24 @@ begin
   Result := TVendaService.Create(DaoVenda, ProdutoService,ItemVendaService);
 end;
 procedure TfrmTelaPrincipal.EsconderMenuPorPermissao;
+var
+  Usuario: TUsuarioModel;
 begin
-   CLIENTES.Visible := TSession.GetUsuario.TemPermissao('CAD_CLIENTE');
-   CLIENTES.Visible    := TSession.GetUsuario.TemPermissao('CAD_CLIENTE');
-   PRODUTO.Visible     := TSession.GetUsuario.TemPermissao('CAD_PRODUTO');
-   FUNCIONARIO1.Visible:= TSession.GetUsuario.TemPermissao('CAD_FUNCIONARIO');
-   USUARIO1.Visible    := TSession.GetUsuario.TemPermissao('CAD_USUARIO');
-   VENDA1.Visible      := TSession.GetUsuario.TemPermissao('CAD_VENDA');
+  Usuario := TSession.GetUsuario;
 
+  if not Assigned(Usuario) then Exit;
+
+  CLIENTES.Visible     := Usuario.TemPermissao('CAD_CLIENTE');
+  PRODUTO.Visible      := Usuario.TemPermissao('CAD_PRODUTO');
+  FUNCIONARIO1.Visible := Usuario.TemPermissao('CAD_FUNCIONARIO');
+  USUARIO1.Visible     := Usuario.TemPermissao('CAD_USUARIO');
+  VENDA1.Visible       := Usuario.TemPermissao('CAD_VENDA');
+
+  if Usuario.Id = 0 then
+  begin
+    USUARIO1.Visible     := True;
+    FUNCIONARIO1.Visible := True;
+  end;
 end;
 procedure TfrmTelaPrincipal.FORMAPAGAMENTO1Click(Sender: TObject);
 var
@@ -137,16 +160,29 @@ begin
     frm.Free;
   end;
 end;
-procedure TfrmTelaPrincipal.FormClose(Sender: TObject;var Action: TCloseAction);
+procedure TfrmTelaPrincipal.FormClose(Sender: TObject;
+  var Action: TCloseAction);
 begin
-  Application.Terminate;
+   TSession.Logout;
+   AppCtx.ClearAll;
 end;
+
 procedure TfrmTelaPrincipal.FormCreate(Sender: TObject);
 begin
+
+  begin
+  if Assigned(AppCtx.Store) then
+    nomeEmpresa.Caption := AppCtx.Store.Razao
+  else
+    nomeEmpresa.Caption := '';
+  end;
+
   FConn := AppServiceConexao.getConexao;
   nomeEmpresa.Caption := AppCtx.Store.Razao;
+  lbUsuario.Caption := AppCtx.User.Login;
   EsconderMenuPorPermissao;
 end;
+
 procedure TfrmTelaPrincipal.FormResize(Sender: TObject);
 begin
   PanelCentro.Left := (ClientWidth - PanelCentro.Width) div 2;
@@ -166,6 +202,11 @@ begin
     frm.Free;
   end;
 end;
+procedure TfrmTelaPrincipal.Panel2Click(Sender: TObject);
+begin
+  CLIENTES.Click;
+end;
+
 procedure TfrmTelaPrincipal.PRODUTOClick(Sender: TObject);
 var
   frm : TfrmCadastroProduto;
@@ -181,7 +222,7 @@ begin
 end;
 procedure TfrmTelaPrincipal.SAIR1Click(Sender: TObject);
 begin
-   Application.Terminate;
+   Close;
 end;
 procedure TfrmTelaPrincipal.USUARIO1Click(Sender: TObject);
 var

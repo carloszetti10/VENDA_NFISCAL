@@ -91,37 +91,13 @@ inherited TfrmCadastroUsuario: TTfrmCadastroUsuario
           TabOrder = 0
           Text = ''
         end
-        object mskSenha: TMaskEdit
-          Left = 16
-          Top = 111
-          Width = 137
-          Height = 23
-          TabOrder = 1
-          Text = ''
-        end
-        object mskFuncionario: TMaskEdit
-          Left = 16
-          Top = 167
-          Width = 97
-          Height = 23
-          TabOrder = 2
-          Text = ''
-        end
-        object BitBtn1: TBitBtn
-          Left = 119
-          Top = 167
-          Width = 34
-          Height = 25
-          Caption = 'BitBtn1'
-          TabOrder = 3
-        end
         object GroupBox2: TGroupBox
           Left = 176
           Top = 55
           Width = 289
           Height = 257
           Caption = 'PERMISSAO'
-          TabOrder = 4
+          TabOrder = 1
           object clbPermissoes: TCheckListBox
             Left = 3
             Top = 35
@@ -130,6 +106,21 @@ inherited TfrmCadastroUsuario: TTfrmCadastroUsuario
             ItemHeight = 17
             TabOrder = 0
           end
+        end
+        object edtFuncionario: TEdit
+          Left = 16
+          Top = 168
+          Width = 81
+          Height = 23
+          TabOrder = 2
+          OnClick = edtFuncionarioClick
+        end
+        object edtSenha: TEdit
+          Left = 16
+          Top = 111
+          Width = 81
+          Height = 23
+          TabOrder = 3
         end
       end
     end
