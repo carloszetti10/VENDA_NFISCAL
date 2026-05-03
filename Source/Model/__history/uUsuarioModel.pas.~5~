@@ -1,0 +1,36 @@
+unit uUsuarioModel;
+
+interface
+uses
+  System.Generics.Collections, uPermissaoModel;
+type
+   TUsuarioModel = class
+    private
+      FId: Integer;
+      FIdFuncionario: Integer;
+      FNomeFuncionario: string;
+      FLogin: string;
+      FSenha: string;
+      FAtivo: Boolean;
+      FPermissao: TList<TPermissaoModel>;
+    public
+      property Id: Integer read FId write FId;
+      property IdFuncionario: Integer read FIdFuncionario write FIdFuncionario;
+      property NomeFuncionario: string read FNomeFuncionario write FNomeFuncionario;
+      property Login: string read FLogin write FLogin;
+      property Senha: string read FSenha write FSenha;
+      property Ativo: Boolean read FAtivo write FAtivo;
+      property Permissao: TList<TPermissaoModel> read FPermissao write FPermissao;
+      constructor Create; overload;
+  end;
+
+implementation
+
+{ TUsuarioModel }
+
+constructor TUsuarioModel.Create;
+begin
+inherited Create;
+end;
+
+end.

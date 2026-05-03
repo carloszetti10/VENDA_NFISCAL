@@ -1,6 +1,7 @@
 object frmTelaPrincipal: TfrmTelaPrincipal
   Left = 0
   Top = 0
+  Align = alClient
   Caption = 'TELA PRINCIPAL'
   ClientHeight = 441
   ClientWidth = 624
@@ -12,6 +13,7 @@ object frmTelaPrincipal: TfrmTelaPrincipal
   Font.Style = []
   Menu = MainMenu1
   WindowState = wsMaximized
+  OnClose = FormClose
   OnCreate = FormCreate
   OnResize = FormResize
   TextHeight = 15
@@ -22,10 +24,11 @@ object frmTelaPrincipal: TfrmTelaPrincipal
     Height = 400
     TabOrder = 0
     object GridPanel1: TGridPanel
-      Left = 72
-      Top = 72
-      Width = 433
-      Height = 233
+      Left = 1
+      Top = 1
+      Width = 598
+      Height = 398
+      Align = alClient
       Caption = 'GridPanel1'
       ColumnCollection = <
         item
@@ -51,6 +54,21 @@ object frmTelaPrincipal: TfrmTelaPrincipal
         item
         end>
       TabOrder = 0
+    end
+  end
+  object pnl: TPanel
+    Left = 0
+    Top = 0
+    Width = 624
+    Height = 33
+    Align = alTop
+    TabOrder = 1
+    object nomeEmpresa: TLabel
+      Left = 16
+      Top = 9
+      Width = 51
+      Height = 15
+      Caption = 'EMPRESA'
     end
   end
   object MainMenu1: TMainMenu

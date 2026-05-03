@@ -15,15 +15,15 @@ object ftmLogin: TftmLogin
   OnCreate = FormCreate
   TextHeight = 15
   object Label1: TLabel
-    Left = 152
-    Top = 48
+    Left = 147
+    Top = 72
     Width = 35
     Height = 15
     Caption = 'LOGIN'
   end
   object Label2: TLabel
     Left = 144
-    Top = 104
+    Top = 128
     Width = 49
     Height = 15
     Caption = 'USUARIO'
@@ -37,7 +37,7 @@ object ftmLogin: TftmLogin
   end
   object edtLogin: TEdit
     Left = 56
-    Top = 125
+    Top = 149
     Width = 225
     Height = 23
     TabOrder = 0
@@ -52,7 +52,7 @@ object ftmLogin: TftmLogin
   end
   object btnEntrar: TBitBtn
     Left = 40
-    Top = 296
+    Top = 272
     Width = 257
     Height = 25
     Caption = 'ENTRAR'

@@ -20,6 +20,7 @@ type
     GroupBox2: TGroupBox;
     clbPermissoes: TCheckListBox;
     ckcTodos: TCheckBox;
+    QryPerm: TZQuery;
     procedure ckcTodosClick(Sender: TObject);
   private
     FService: IUsuarioServiceInterface;
@@ -34,6 +35,7 @@ type
     procedure Pesquisa; override;
     procedure LimparCampos; override;
     procedure HabilitarCampos(Habilitar: Boolean); override;
+
   end;
 
 var
@@ -58,7 +60,6 @@ begin
   inherited;
   if ckcTodos.Checked then
     FService.ListarNaTela(Qry, '', true)
-
 end;
 
 constructor TTfrmCadastroUsuario.Create(AOwner: TComponent; AService: IUsuarioServiceInterface);
@@ -147,12 +148,17 @@ end;
 procedure TTfrmCadastroUsuario.PrencherPermissao;
 begin
   clbPermissoes.Items.Clear;
+  FService.ListarPermissoes(QryPerm);
 
-  clbPermissoes.Items.AddObject('CADASTRAR CLIENTE', TObject(1));
-  clbPermissoes.Items.AddObject('CADASTRAR PRODUTO', TObject(2));
-  clbPermissoes.Items.AddObject('CADASTRAR FUNCIONARIO', TObject(3));
-  clbPermissoes.Items.AddObject('CADASTRAR FORMA DE PAGAMENTO', TObject(4));
-  clbPermissoes.Items.AddObject('FAZER VENDA', TObject(5));
-  clbPermissoes.Items.AddObject('FATURAR VENDA', TObject(6));
+  QryPerm.First;
+  while not QryPerm.Eof do
+  begin
+      clbPermissoes.Items.AddObject(
+      QryPerm.FieldByName('NOME').AsString,
+      TObject(QryPerm.FieldByName('ID_PERMISSAO').AsInteger)
+    );
+
+    QryPerm.Next;
+  end;
 end;
 end.

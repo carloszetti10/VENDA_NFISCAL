@@ -47,7 +47,13 @@ uses
   IItemVendaDAOO in 'Source\Interface\IRepositorio\IItemVendaDAOO.pas',
   iItemVendaService in 'Source\Interface\IService\iItemVendaService.pas',
   uItemVendaService in 'Source\Service\uItemVendaService.pas',
-  uLoginUI in 'Source\UI\uLoginUI.pas' {ftmLogin};
+  uLoginUI in 'Source\UI\uLoginUI.pas' {ftmLogin},
+  uAppContext in 'Source\Core\AppContext\uAppContext.pas',
+  uPermissaoModel in 'Source\Model\uPermissaoModel.pas',
+  uLojaModel in 'Source\Model\uLojaModel.pas',
+  uLojaDao in 'Source\Dao\uLojaDao.pas',
+  iLojaDAO in 'Source\Interface\IRepositorio\iLojaDAO.pas',
+  uSession in 'Source\Utils\uSession.pas';
 
 {$R *.res}
 

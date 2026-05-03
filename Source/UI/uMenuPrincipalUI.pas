@@ -11,7 +11,8 @@ uses
   IProdutoService, uProdutoService, IProdutoDAO, uProdutoDao,
   iVendaService, uVendaService, iVendaDAO, uVendaDao,
    iFuncionarioService, uFuncionarioService, iFuncionarioDAO, uFuncionarioDao,
-   iItemVendaService, uItemVendaModel, uItemVendaDao, IItemVendaDAOO,uItemVendaService;
+   iItemVendaService, uItemVendaModel, uItemVendaDao, IItemVendaDAOO,uItemVendaService,
+  Vcl.StdCtrls,uAppContext,uSession;
 
 type
   TfrmTelaPrincipal = class(TForm)
@@ -29,6 +30,8 @@ type
     PanelCentro: TPanel;
     GridPanel1: TGridPanel;
     VENDA1: TMenuItem;
+    pnl: TPanel;
+    nomeEmpresa: TLabel;
     procedure SAIR1Click(Sender: TObject);
     procedure CLIENTESClick(Sender: TObject);
     procedure PRODUTOClick(Sender: TObject);
@@ -38,6 +41,9 @@ type
     procedure FormResize(Sender: TObject);
     procedure VENDA1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+
+
   private
     FConn: TZConnection;
   public
@@ -45,6 +51,7 @@ type
     function CriarVendaService: IVendaServiceInterface;
     function CriarFuncionarioService: IFuncionarioServiceInterface;
     function CriarItemVendaService: IItemVendaServiceInterface;
+    procedure EsconderMenuPorPermissao;
   end;
 
 var
@@ -105,6 +112,16 @@ begin
   ItemVendaService := CriarItemVendaService;
   Result := TVendaService.Create(DaoVenda, ProdutoService,ItemVendaService);
 end;
+procedure TfrmTelaPrincipal.EsconderMenuPorPermissao;
+begin
+   CLIENTES.Visible := TSession.GetUsuario.TemPermissao('CAD_CLIENTE');
+   CLIENTES.Visible    := TSession.GetUsuario.TemPermissao('CAD_CLIENTE');
+   PRODUTO.Visible     := TSession.GetUsuario.TemPermissao('CAD_PRODUTO');
+   FUNCIONARIO1.Visible:= TSession.GetUsuario.TemPermissao('CAD_FUNCIONARIO');
+   USUARIO1.Visible    := TSession.GetUsuario.TemPermissao('CAD_USUARIO');
+   VENDA1.Visible      := TSession.GetUsuario.TemPermissao('CAD_VENDA');
+
+end;
 procedure TfrmTelaPrincipal.FORMAPAGAMENTO1Click(Sender: TObject);
 var
   frm : TfrmCadastroPagamento;
@@ -120,11 +137,16 @@ begin
     frm.Free;
   end;
 end;
+procedure TfrmTelaPrincipal.FormClose(Sender: TObject;var Action: TCloseAction);
+begin
+  Application.Terminate;
+end;
 procedure TfrmTelaPrincipal.FormCreate(Sender: TObject);
 begin
   FConn := AppServiceConexao.getConexao;
+  nomeEmpresa.Caption := AppCtx.Store.Razao;
+  EsconderMenuPorPermissao;
 end;
-
 procedure TfrmTelaPrincipal.FormResize(Sender: TObject);
 begin
   PanelCentro.Left := (ClientWidth - PanelCentro.Width) div 2;

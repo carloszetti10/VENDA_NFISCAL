@@ -1,0 +1,22 @@
+unit uLojaDao;
+
+interface
+uses
+  System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection,
+  uException, uLojaModel;
+type
+  TLojaDao = class(TInterfacedObject, ILojaDAOO)
+    private
+      FConexao : TZConnection;
+    public
+     procedure Insert(Loja: TLojaModel);
+     procedure Update(Loja: TLojaModel);
+     function  FindBy : TLojaModel;
+     Constructor Create(Conn:TZConnection);
+  end;
+
+
+implementation
+
+end.

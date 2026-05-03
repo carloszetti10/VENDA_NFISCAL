@@ -2,7 +2,9 @@ unit uUsuarioService;
 
 interface
 uses
-  iUsuarioService,System.Hash,System.SysUtils, uUsuarioModel, iUsuarioDao,System.Generics.Collections, ZConnection, uException,ZDataset;
+  iUsuarioService,System.Hash,System.SysUtils, uUsuarioModel, iUsuarioDao,
+  System.Generics.Collections, ZConnection, uException,ZDataset, uLojaModel,
+  uPermissaoModel, uAppContext;
 type
   TUsuarioService = class(TInterfacedObject, IUsuarioServiceInterface)
   private
@@ -15,6 +17,9 @@ type
     procedure ListarNaTela(Q: TZQuery; Nome: string; Todos: Boolean);
     function HashSenha(const Senha: string): string;
     function Login(ALogin, ASenha: string): TUsuarioModel;
+    procedure PreecherAppContext(UsuarioLogado: TUsuarioModel; Loja: TLojaModel);
+    procedure ListarPermissoes(Q: TZQuery);
+
   end;
 
 implementation
@@ -26,12 +31,10 @@ begin
   FUsuarioDAO:= AUsuarioDao;
   FConexao:= AConexao;
 end;
-
 procedure TUsuarioService.IAlterarUsuario(Usuario: TUsuarioModel);
 begin
 
 end;
-
 procedure TUsuarioService.IInserirUsuario(Usuario: TUsuarioModel; listaPermi: TList<Integer>);
 var
   IdUsuario: Integer;
@@ -59,9 +62,6 @@ begin
     end;
   end;
 end;
-
-
-
 procedure TUsuarioService.ListarNaTela(Q: TZQuery; Nome: string; Todos: Boolean);
 begin
    if Todos then
@@ -71,7 +71,10 @@ begin
    else
      FUsuarioDAO.ListarPorNomeTela(Q,Nome);
 end;
-
+procedure TUsuarioService.ListarPermissoes(Q: TZQuery);
+begin
+   FUsuarioDAO.ListarPermissoes(Q);
+end;
 
 function TUsuarioService.Login(ALogin, ASenha: string): TUsuarioModel;
 begin
@@ -83,7 +86,29 @@ begin
   if Result = nil then
     raise EAppException.Create('Login ou senha inválidos');
 end;
+procedure TUsuarioService.PreecherAppContext(UsuarioLogado: TUsuarioModel; Loja: TLojaModel);
+var
+  Perm: TPermissaoModel;
+begin
 
+if Assigned(UsuarioLogado) or Assigned(Loja) then Exit;
+
+  AppCtx.User.IdUsuario := UsuarioLogado.Id;
+  AppCtx.User.Login := UsuarioLogado.Login;
+
+  AppCtx.User.Permissoes.Clear;
+
+  if Assigned(UsuarioLogado.Permissao) then
+  begin
+    for Perm in UsuarioLogado.Permissao do
+      AppCtx.User.Permissoes.Add(Perm.Id);
+  end;
+
+  AppCtx.Store.CodigoLoja := Loja.Id;
+  AppCtx.Store.CnpjLoja := Loja.Documento;
+  AppCtx.Store.Nome := Loja.Nome;
+  AppCtx.Store.Razao := Loja.RazaoSocial;
+end;
 function TUsuarioService.HashSenha(const Senha: string): string;
 begin
   Result := THashSHA2.GetHashString(Senha, THashSHA2.TSHA2Version.SHA256);

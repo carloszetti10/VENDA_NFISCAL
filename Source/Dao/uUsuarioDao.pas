@@ -2,7 +2,8 @@ unit uUsuarioDao;
 interface
 uses
   IUsuarioDAO, uUsuarioModel, System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
-  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection, uException,  System.Generics.Collections;
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection, uException,  System.Generics.Collections,
+  uPermissaoModel;
 type
   TUsuarioDao = class(TInterfacedObject, IUsuarioDAOO)
     private
@@ -17,12 +18,47 @@ type
       Constructor Create(Conn:TZConnection);
       procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
       procedure ListarTodos(Q: TZQuery);
+      procedure CarregarPermissoes(AUsuario: TUsuarioModel);
       function FindByLogin(const Login: string): TUsuarioModel;
+      procedure ListarPermissoes(Q: TZQuery);
   end;
 
 implementation
 
-{ TProdutoDao }
+procedure TUsuarioDao.CarregarPermissoes(AUsuario: TUsuarioModel);
+var
+  Q: TZQuery;
+  Perm: TPermissaoModel;
+begin
+  Q := TZQuery.Create(nil);
+  try
+    Q.Connection := FConexao;
+
+    Q.SQL.Text :=
+      'SELECT P.ID_PERMISSAO, P.NOME, P.CODIGO '+
+      'FROM PERMISSAO P '+
+      'JOIN USUARIO_PERMISSAO UP ON UP.ID_PERMISSAO = P.ID_PERMISSAO '+
+      'WHERE UP.ID_USUARIO = :ID';
+
+    Q.ParamByName('ID').AsInteger := AUsuario.Id;
+    Q.Open;
+
+    while not Q.Eof do
+    begin
+      Perm := TPermissaoModel.Create;
+      Perm.Id := Q.FieldByName('ID_PERMISSAO').AsInteger;
+      Perm.Nome := Q.FieldByName('NOME').AsString;
+      perm.Codigo := Q.FieldByName('CODIGO').AsString;
+
+      AUsuario.Permissao.Add(Perm);
+
+      Q.Next;
+    end;
+
+  finally
+    Q.Free;
+  end;
+end;
 
 constructor TUsuarioDao.Create(Conn: TZConnection);
 begin
@@ -65,37 +101,6 @@ begin
     on E: EUpdateError do
       raise EInfraException.Create('Erro: '+e.Message);
   end;
-end;
-
-function TUsuarioDao.FindByLogin(const Login: string): TUsuarioModel;
-var
-  Q: TZQuery;
-begin
-  Result := nil;
-
-  Q := TZQuery.Create(nil);
-  try
-    Q.Connection := FConexao;
-
-    Q.SQL.Text :=
-      'SELECT ID_USUARIO, LOGIN ' +
-      'FROM USUARIO ' +
-      'WHERE LOGIN = :LOGIN';
-
-    Q.ParamByName('LOGIN').AsString := Login;
-    Q.Open;
-
-    if not Q.IsEmpty then
-    begin
-      Result := TUsuarioModel.Create;
-      Result.Id := Q.FieldByName('ID_USUARIO').AsInteger;
-      Result.Login := Q.FieldByName('LOGIN').AsString;
-    end;
-
-  finally
-    Q.Free;
-  end;
-
 end;
 
 function TUsuarioDao.Insert(Usuario: TUsuarioModel): Integer;
@@ -193,6 +198,7 @@ begin
     Q.Free;
   end;
 end;
+
 procedure TUsuarioDao.ListarPorNomeTela(Q: TZQuery; Nome: string);
 begin
   Q.Close;
@@ -240,6 +246,8 @@ begin
       Result := TUsuarioModel.Create;
       Result.Id := Q.FieldByName('ID_USUARIO').AsInteger;
       Result.Login := Q.FieldByName('LOGIN').AsString;
+
+      CarregarPermissoes(Result);
     end;
 
   finally
@@ -248,11 +256,48 @@ begin
 end;
 
 procedure TUsuarioDao.Update(Usuario: TUsuarioModel);
-
-
 begin
 
 end;
 
+function TUsuarioDao.FindByLogin(const Login: string): TUsuarioModel;
+var
+  Q: TZQuery;
+begin
+  Result := nil;
 
+  Q := TZQuery.Create(nil);
+  try
+    Q.Connection := FConexao;
+
+    Q.SQL.Text :=
+      'SELECT ID_USUARIO, LOGIN ' +
+      'FROM USUARIO ' +
+      'WHERE LOGIN = :LOGIN';
+
+    Q.ParamByName('LOGIN').AsString := Login;
+    Q.Open;
+
+    if not Q.IsEmpty then
+    begin
+      Result := TUsuarioModel.Create;
+      Result.Id := Q.FieldByName('ID_USUARIO').AsInteger;
+      Result.Login := Q.FieldByName('LOGIN').AsString;
+    end;
+
+  finally
+    Q.Free;
+  end;
+
+end;
+
+procedure TUsuarioDao.ListarPermissoes(Q: TZQuery);
+begin
+  Q.Close;
+  Q.Connection := FConexao;
+
+  Q.SQL.Text :=
+    'SELECT ID_PERMISSAO, NOME, CODIGO FROM PERMISSAO ORDER BY NOME';
+  Q.Open;
+end;
 end.

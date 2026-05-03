@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, uUsuarioService,
   iUsuarioService, uUsuarioModel, uUsuarioDao, uUsuarioUI,IUsuarioDAO, uException, uAppServiceConexao,
-  uValidarCampo,ZConnection, uMenuPrincipalUI;
+  uValidarCampo,ZConnection, uMenuPrincipalUI,uLojaModel, uAppContext, iLojaDAO,uLojaDao,uSession;
 
 type
   TftmLogin = class(TForm)
@@ -20,9 +20,12 @@ type
     procedure btnEntrarClick(Sender: TObject);
   private
      FUsuarioService: IUsuarioServiceInterface;
+     FDaoLoja: ILojaDAOO; //criar o service depois
   public
     procedure Logar;
-    function VerificarUsurMaster(user, senha: string): Boolean;
+    function  VerificarUsurMaster(user, senha: string): Boolean;
+    procedure AbrirTelaInicial(UsuarioLogado: TUsuarioModel; Loja: TLojaModel);
+    procedure VerificarLojaCadastrada;
   end;
 
 var
@@ -31,6 +34,14 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TftmLogin.AbrirTelaInicial(UsuarioLogado: TUsuarioModel; Loja: TLojaModel);
+begin
+   frmTelaPrincipal := TfrmTelaPrincipal.Create(nil);
+   frmTelaPrincipal.Show;
+   Self.Hide;
+   FUsuarioService.PreecherAppContext(UsuarioLogado, Loja);
+end;
 
 procedure TftmLogin.btnEntrarClick(Sender: TObject);
 begin
@@ -43,9 +54,11 @@ var
   Conexao: TZConnection;
 begin
   Conexao := AppServiceConexao.getConexao;
-  Dao := TUsuarioDao.Create(Conexao);
+  FDaoLoja := TLojaDao.Create(Conexao);
 
+  Dao := TUsuarioDao.Create(Conexao);
   FUsuarioService := TUsuarioService.Create(Dao, Conexao);
+  VerificarLojaCadastrada; //não deve esta aqui mais de inicio vou implementar aqui.
 end;
 
 procedure TftmLogin.Logar;
@@ -58,18 +71,18 @@ begin
 
   if VerificarUsurMaster(edtLogin.Text, edtSenha.Text) then
   begin
-    frmTelaPrincipal := TfrmTelaPrincipal.Create(nil);
-    frmTelaPrincipal.Show;
-    Self.Hide;
-    Exit
+    Usuario := TUsuarioModel.Create;
+    Usuario.Login := 'ZETTI';
+    TSession.SetUsuario(Usuario);
+    AbrirTelaInicial(Usuario, FDaoLoja.FindBy);
+    Exit;
   end;
 
   Usuario := FUsuarioService.Login(edtLogin.Text, edtSenha.Text);
   if Usuario <> nil then
   begin
-    frmTelaPrincipal := TfrmTelaPrincipal.Create(nil);
-    frmTelaPrincipal.Show;
-    Self.Hide;
+    TSession.SetUsuario(Usuario);
+    AbrirTelaInicial(Usuario, FDaoLoja.FindBy);
   end
 end;
 
@@ -80,4 +93,18 @@ begin
     result:= true;
 end;
 
+procedure TftmLogin.VerificarLojaCadastrada;
+var
+  Loja: TLojaModel;
+begin
+  Loja := FDaoLoja.FindBy;
+
+
+  if not Assigned(Loja) then
+  begin
+    //AbrirTelaInicial(nil,nil);
+    Exit;
+  end;
+
+end;
 end.

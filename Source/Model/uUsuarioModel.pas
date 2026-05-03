@@ -1,6 +1,8 @@
 unit uUsuarioModel;
 
 interface
+uses
+  System.Generics.Collections, uPermissaoModel;
 type
    TUsuarioModel = class
     private
@@ -10,6 +12,7 @@ type
       FLogin: string;
       FSenha: string;
       FAtivo: Boolean;
+      FPermissao: TList<TPermissaoModel>;
     public
       property Id: Integer read FId write FId;
       property IdFuncionario: Integer read FIdFuncionario write FIdFuncionario;
@@ -17,7 +20,10 @@ type
       property Login: string read FLogin write FLogin;
       property Senha: string read FSenha write FSenha;
       property Ativo: Boolean read FAtivo write FAtivo;
+      property Permissao: TList<TPermissaoModel> read FPermissao write FPermissao;
       constructor Create; overload;
+      destructor Destroy;
+      function TemPermissao(const ACodigo: string): Boolean;
   end;
 
 implementation
@@ -27,6 +33,26 @@ implementation
 constructor TUsuarioModel.Create;
 begin
 inherited Create;
+FPermissao := TList<TPermissaoModel>.Create;
+end;
+
+destructor TUsuarioModel.Destroy;
+begin
+  FPermissao.Free;
+  inherited;
+end;
+
+function TUsuarioModel.TemPermissao(const ACodigo: string): Boolean;
+var
+  Perm: TPermissaoModel;
+begin
+  Result := False;
+
+  for Perm in FPermissao do
+  begin
+    if Perm.Codigo = ACodigo then
+      Exit(True);
+  end;
 end;
 
 end.

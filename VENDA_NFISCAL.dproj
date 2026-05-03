@@ -196,6 +196,12 @@
             <Form>ftmLogin</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Source\Core\AppContext\uAppContext.pas"/>
+        <DCCReference Include="Source\Model\uPermissaoModel.pas"/>
+        <DCCReference Include="Source\Model\uLojaModel.pas"/>
+        <DCCReference Include="Source\Dao\uLojaDao.pas"/>
+        <DCCReference Include="Source\Interface\IRepositorio\iLojaDAO.pas"/>
+        <DCCReference Include="Source\Utils\uSession.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

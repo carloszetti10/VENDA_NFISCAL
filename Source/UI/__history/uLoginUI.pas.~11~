@@ -1,0 +1,92 @@
+unit uLoginUI;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, uUsuarioService,
+  iUsuarioService, uUsuarioModel, uUsuarioDao, uUsuarioUI,IUsuarioDAO, uException, uAppServiceConexao,
+  uValidarCampo,ZConnection, uMenuPrincipalUI,uLojaModel, uAppContext, iLojaDAO,uLojaDao;
+
+type
+  TftmLogin = class(TForm)
+    Label1: TLabel;
+    edtLogin: TEdit;
+    edtSenha: TEdit;
+    Label2: TLabel;
+    btnEntrar: TBitBtn;
+    Label3: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure btnEntrarClick(Sender: TObject);
+  private
+     FUsuarioService: IUsuarioServiceInterface;
+     FDaoLoja: ILojaDAOO; //criar o service depois
+  public
+    procedure Logar;
+    function  VerificarUsurMaster(user, senha: string): Boolean;
+    procedure AbrirTelaInicial(UsuarioLogado: TUsuarioModel; Loja: TLojaModel);
+  end;
+
+var
+  ftmLogin: TftmLogin;
+
+implementation
+
+{$R *.dfm}
+
+procedure TftmLogin.AbrirTelaInicial(UsuarioLogado: TUsuarioModel; Loja: TLojaModel);
+begin
+   frmTelaPrincipal := TfrmTelaPrincipal.Create(nil);
+   frmTelaPrincipal.Show;
+   Self.Hide;
+   FUsuarioService.PreecherAppContext(UsuarioLogado, Loja);
+end;
+
+procedure TftmLogin.btnEntrarClick(Sender: TObject);
+begin
+  Logar;
+end;
+
+procedure TftmLogin.FormCreate(Sender: TObject);
+var
+  Dao: IUsuarioDAOO;
+  Conexao: TZConnection;
+begin
+  Conexao := AppServiceConexao.getConexao;
+  FDaoLoja := TLojaDao.Create(Conexao);
+
+  Dao := TUsuarioDao.Create(Conexao);
+  FUsuarioService := TUsuarioService.Create(Dao, Conexao);
+end;
+
+procedure TftmLogin.Logar;
+var
+  Usuario: TUsuarioModel;
+begin
+
+  TValidarCampos.ValidarEditVazio(edtLogin, 'Usuario');
+  TValidarCampos.ValidarEditVazio(edtSenha, 'Senha');
+
+  if VerificarUsurMaster(edtLogin.Text, edtSenha.Text) then
+  begin
+    Usuario := TUsuarioModel.Create;
+    Usuario.Login := 'MASTER';
+    AbrirTelaInicial(Usuario, FDaoLoja.FindBy);
+    Exit;
+  end;
+
+  Usuario := FUsuarioService.Login(edtLogin.Text, edtSenha.Text);
+  if Usuario <> nil then
+  begin
+    AbrirTelaInicial(Usuario, FDaoLoja.FindBy);
+  end
+end;
+
+function TftmLogin.VerificarUsurMaster(user, senha: string): Boolean;
+begin
+  Result := False;
+  if (user = 'MASTER') and (senha = '123') then
+    result:= true;
+end;
+
+end.

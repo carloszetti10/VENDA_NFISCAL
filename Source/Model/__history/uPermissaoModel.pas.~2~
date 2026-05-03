@@ -1,0 +1,24 @@
+unit uPermissaoModel;
+
+interface
+type
+   TPermissaoModel = class
+    private
+      FId: Integer;
+      FNome: string;
+      FDescricao: string;
+    public
+      property Id: Integer read FId write FId;
+      property Nome: string read FNome write FNome;
+      property Descricao: string read FDescricao write FDescricao;
+      constructor Create; overload;
+  end;
+
+implementation
+
+constructor TPermissaoModel.Create;
+begin
+  inherited;
+end;
+
+end.
