@@ -133,8 +133,6 @@ begin
       Q.ParamByName('ID_FUNC').AsInteger   := IdFunc;
       Q.ParamByName('ID_VENDA').AsInteger := IdVenda;
       Q.Open;
-
-      Result := Q.FieldByName('ID_ID_VENDEDOR').AsInteger;
     except
       on E: EDatabaseError do
         raise EInfraException.Create('Erro ao adicionar vendedor: ' + E.Message);

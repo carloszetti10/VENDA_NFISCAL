@@ -12,11 +12,17 @@ type
      procedure Alterar(Produto: TProdutoModel);
      constructor Create(AProdDao: IProdutoDAOO);
      procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
+     procedure BaixarEstoque(id: integer; quant :Currency);
    end;
 
 implementation
 
 { TProdutoService }
+
+procedure TProdutoService.BaixarEstoque(id: integer; quant: Currency);
+begin
+  FProdutoDAO.BaixarEstoque(id,quant);
+end;
 
 constructor TProdutoService.Create(AProdDao: IProdutoDAOO);
 begin

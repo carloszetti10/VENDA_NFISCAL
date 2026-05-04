@@ -4,7 +4,7 @@ interface
 uses
   iVendaService, iVendaDAO, uVendaModel,System.Generics.Collections,
   ZConnection, uException,ZDataset, IProdutoService, uProdutoService,
-  uUsuarioModel, iItemVendaService, uItemVendaModel;
+  uUsuarioModel, iItemVendaService, uItemVendaModel,uAppServiceConexao,System.SysUtils;
 type
    TVendaService = class(TInterfacedObject, IVendaServiceInterface)
    private
@@ -25,6 +25,8 @@ type
      function CalcularTotalVenda(IdVenda: Integer): Currency;
      {===== CANCELAR VENDA ====}
      procedure CancelarVenda(IdVenda: Integer);
+
+     procedure FaturarVenda(IdVenda: Integer; vlrTot, vlrLiqui,vlrDesc : Currency);
    end;
 
 implementation
@@ -80,7 +82,7 @@ end;
 
 function TVendaService.UpdateFuncionario(IdFunc, IdVenda: Integer): Integer;
 begin
-
+  Result := FVendaDAO.UpdateFuncionario(IdFunc, IdVenda);
 end;
 
 
@@ -94,4 +96,74 @@ procedure TVendaService.CancelarVenda(IdVenda: Integer);
 begin
   FVendaDAO.UpdateStatus(IdVenda, svCancelado);
 end;
+
+procedure TVendaService.FaturarVenda(IdVenda: Integer; vlrTot, vlrLiqui, vlrDesc: Currency);
+var
+  Q: TZQuery;
+  Con: TZConnection;
+begin
+  Con := AppServiceConexao.getConexao;
+
+  Q := TZQuery.Create(nil);
+  try
+    Q.Connection := Con;
+    Con.StartTransaction;
+
+    try
+      Q.SQL.Text :=
+        'SELECT ID_PRODUTO, QUANTIDADE ' +
+        'FROM ITEM_VENDA ' +
+        'WHERE ID_VENDA = :ID';
+
+      Q.ParamByName('ID').AsInteger := IdVenda;
+      Q.Open;
+
+      if Q.IsEmpty then
+        raise EAppException.Create('Venda sem itens');
+
+      while not Q.Eof do
+      begin
+        FProdutoService.BaixarEstoque(
+          Q.FieldByName('ID_PRODUTO').AsInteger,
+          Q.FieldByName('QUANTIDADE').AsCurrency
+        );
+
+        Q.Next;
+      end;
+
+      Q.Close;
+
+      Q.SQL.Text :=
+        'UPDATE VENDA SET ' +
+        'VALOR_TOTAL = :TOTAL, ' +
+        'VALOR_LIQUIDO = :LIQUIDO, ' +
+        'VALOR_DESC = :DESCONTO ' +
+        'WHERE ID_VENDA = :ID';
+
+      Q.ParamByName('TOTAL').AsCurrency := vlrTot;
+      Q.ParamByName('LIQUIDO').AsCurrency := vlrLiqui;
+      Q.ParamByName('DESCONTO').AsCurrency := vlrDesc;
+      Q.ParamByName('ID').AsInteger := IdVenda;
+
+      Q.ExecSQL;
+
+      FVendaDAO.UpdateStatus(IdVenda, svFaturada);
+
+      Con.Commit;
+
+    except
+      on E: Exception do
+      begin
+        Con.Rollback;
+        raise;
+      end;
+    end;
+
+  finally
+    Q.Free;
+  end;
+end;
+
+
+
 end.

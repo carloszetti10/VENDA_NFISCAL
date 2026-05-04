@@ -3,7 +3,7 @@ interface
 uses
   IVendaDAO, uVendaModel, System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
   ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection, uException,
-  System.Generics.Collections, uItemVendaModel, IItemVendaDAOO;
+  System.Generics.Collections, uItemVendaModel, IItemVendaDAOO, uProdutoModel;
 type
   TItemVendaDao = class(TInterfacedObject, IItemVendaDAO)
   private
@@ -15,6 +15,8 @@ type
     procedure Update(AItem: TItemVendaModel);
     procedure Deletar(IdVenda, IdProduto: Integer);
     procedure ListarPorVenda(Q: TZQuery; IdVenda: Integer);
+    function  FindByItemVenda(AItem: TItemVendaModel): TItemVendaModel;
+    function ListarProdutosPorVenda(IdVenda: Integer): TObjectList<TProdutoModel>;
   end;
 
 implementation
@@ -34,6 +36,45 @@ begin
 
 end;
 
+
+function TItemVendaDao.FindByItemVenda(AItem: TItemVendaModel): TItemVendaModel;
+var
+  Q: TZQuery;
+  Item: TItemVendaModel;
+begin
+  Result := nil;
+
+  Q := TZQuery.Create(nil);
+  try
+    Q.Connection := FConexao;
+
+    Q.SQL.Text :=
+      'SELECT ID_VENDA, ID_PRODUTO, QUANTIDADE, VALOR_DESC, VALOR_UNITARIO, VALOR_TOTAL ' +
+      'FROM ITEM_VENDA ' +
+      'WHERE ID_VENDA = :ID_VENDA AND ID_PRODUTO = :ID_PRODUTO';
+
+    Q.ParamByName('ID_VENDA').AsInteger := AItem.IdVenda;
+    Q.ParamByName('ID_PRODUTO').AsInteger := AItem.IdProduto;
+
+    Q.Open;
+
+    if not Q.IsEmpty then
+    begin
+      Item := TItemVendaModel.Create;
+      Item.IdVenda       := Q.FieldByName('ID_VENDA').AsInteger;
+      Item.IdProduto     := Q.FieldByName('ID_PRODUTO').AsInteger;
+      Item.Quantidade    := Q.FieldByName('QUANTIDADE').AsFloat;
+      Item.ValorDesc     := Q.FieldByName('VALOR_DESC').AsCurrency;
+      Item.ValorUnitario := Q.FieldByName('VALOR_UNITARIO').AsCurrency;
+      Item.ValorTotal    := Q.FieldByName('VALOR_TOTAL').AsCurrency;
+
+      Result := Item;
+    end;
+
+  finally
+    Q.Free;
+  end;
+end;
 
 { ================== INSERT ================== }
 procedure TItemVendaDao.Insert(AItem: TItemVendaModel);
@@ -83,8 +124,73 @@ begin
 end;
 
 procedure TItemVendaDao.Update(AItem: TItemVendaModel);
+var
+  Q: TZQuery;
 begin
+  Q := TZQuery.Create(nil);
+  try
+    Q.Connection := FConexao;
 
+    Q.SQL.Text :=
+      'UPDATE ITEM_VENDA SET ' +
+      'QUANTIDADE = :QUANTIDADE, ' +
+      'VALOR_DESC = :VALOR_DESC, ' +
+      'VALOR_UNITARIO = :VALOR_UNITARIO, ' +
+      'VALOR_TOTAL = :VALOR_TOTAL ' +
+      'WHERE ID_VENDA = :ID_VENDA AND ID_PRODUTO = :ID_PRODUTO';
+
+    Q.ParamByName('ID_VENDA').AsInteger := AItem.IdVenda;
+    Q.ParamByName('ID_PRODUTO').AsInteger := AItem.IdProduto;
+    Q.ParamByName('QUANTIDADE').AsFloat := AItem.Quantidade;
+    Q.ParamByName('VALOR_DESC').AsCurrency := AItem.ValorDesc;
+    Q.ParamByName('VALOR_UNITARIO').AsCurrency := AItem.ValorUnitario;
+    Q.ParamByName('VALOR_TOTAL').AsCurrency := AItem.ValorTotal;
+
+    Q.ExecSQL;
+  finally
+    Q.Free;
+  end;
+end;
+
+
+function TItemVendaDao.ListarProdutosPorVenda(IdVenda: Integer): TObjectList<TProdutoModel>;
+var
+  Q: TZQuery;
+  Produto: TProdutoModel;
+begin
+  Result := TObjectList<TProdutoModel>.Create;
+
+  Q := TZQuery.Create(nil);
+  try
+    Q.Connection := FConexao;
+
+    Q.SQL.Text :=
+      'SELECT P.ID_PRODUTO, P.NOME, P.COD_BARRA, P.ESTOQUE, P.VALOR_UNITARIO ' +
+      'FROM ITEM_VENDA I ' +
+      'JOIN PRODUTO P ON P.ID_PRODUTO = I.ID_PRODUTO ' +
+      'WHERE I.ID_VENDA = :ID';
+
+    Q.ParamByName('ID').AsInteger := IdVenda;
+    Q.Open;
+
+    while not Q.Eof do
+    begin
+      Produto := TProdutoModel.Create;
+
+      Produto.IdProduto := Q.FieldByName('ID_PRODUTO').AsInteger;
+      Produto.Nome := Q.FieldByName('NOME').AsString;
+      Produto.CodBarra := Q.FieldByName('COD_BARRA').AsString;
+      Produto.Estoque := Q.FieldByName('ESTOQUE').AsCurrency;
+      Produto.ValorUnitario := Q.FieldByName('VALOR_UNITARIO').AsCurrency;
+
+      Result.Add(Produto);
+
+      Q.Next;
+    end;
+
+  finally
+    Q.Free;
+  end;
 end;
 
 end.

@@ -1,0 +1,51 @@
+unit uPagamentoVendaDao;
+
+interface
+
+uses
+  System.SysUtils, ZDataset, ZConnection,
+  uPagamentoVendaModel, iPagamentoVendaDAO;
+
+type
+  TPagamentoVendaDao = class(TInterfacedObject, IPagamentoVendaDAOO)
+  private
+    FConexao: TZConnection;
+  public
+    constructor Create(AConexao: TZConnection);
+    procedure Insert(AItem: TPagamentoVendaModel);
+  end;
+
+implementation
+
+{ TPagamentoVendaDao }
+
+constructor TPagamentoVendaDao.Create(AConexao: TZConnection);
+begin
+  FConexao := AConexao;
+end;
+
+procedure TPagamentoVendaDao.Insert(AItem: TPagamentoVendaModel);
+var
+  Q: TZQuery;
+begin
+  Q := TZQuery.Create(nil);
+  try
+    Q.Connection := FConexao;
+
+    Q.SQL.Text :=
+      'INSERT INTO PAGAMENTO_VENDA ' +
+      '(ID_VENDA, ID_PAGAMENTO, PARCELA, VALOR) ' +
+      'VALUES (:ID_VENDA, :ID_PAGAMENTO, :PARCELA, :VALOR)';
+
+    Q.ParamByName('ID_VENDA').AsInteger := AItem.IdVenda;
+    Q.ParamByName('ID_PAGAMENTO').AsInteger := AItem.IdPagamento;
+    Q.ParamByName('PARCELA').AsInteger := AItem.Parcela;
+    Q.ParamByName('VALOR').AsCurrency := AItem.Valor;
+
+    Q.ExecSQL;
+  finally
+    Q.Free;
+  end;
+end;
+
+end.

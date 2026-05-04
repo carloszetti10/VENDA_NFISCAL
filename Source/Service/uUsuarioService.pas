@@ -90,9 +90,6 @@ procedure TUsuarioService.PreecherAppContext(UsuarioLogado: TUsuarioModel; Loja:
 var
   Perm: TPermissaoModel;
 begin
-
-if Assigned(UsuarioLogado) or Assigned(Loja) then Exit;
-
   AppCtx.User.IdUsuario := UsuarioLogado.Id;
   AppCtx.User.Login := UsuarioLogado.Login;
 

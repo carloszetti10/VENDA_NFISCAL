@@ -198,9 +198,9 @@ begin
         tipoCliente.ItemIndex := 0;
       end
       else
-         tipoCliente.ItemIndex := 1;
-      ControlarBotoes(false);
-      EstadoCadastro := ecAlterar;
+        tipoCliente.ItemIndex := 1;
+        ControlarBotoes(false);
+        EstadoCadastro := ecAlterar;
 
     finally
        CliBanco.Free;

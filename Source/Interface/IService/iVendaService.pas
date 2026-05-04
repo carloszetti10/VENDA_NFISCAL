@@ -14,6 +14,7 @@ type
     procedure AdicionarItemVenda(Item: TItemVendaModel);
     procedure ListarNaTelaGridVenda(Q: TZQuery; IdVenda: Integer);
     function CalcularTotalVenda(IdVenda: Integer): Currency;
+    procedure FaturarVenda(IdVenda: Integer; vlrTot, vlrLiqui,vlrDesc : Currency);
    end;
 
 implementation

@@ -9,6 +9,7 @@ type
     procedure Update(Produto: TProdutoModel);
     function  FindByCodBarra(cod: string): TProdutoModel;
     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
+    procedure BaixarEstoque(id: integer; quant :Currency);
    end;
 
 implementation

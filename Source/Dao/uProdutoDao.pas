@@ -15,6 +15,7 @@ type
      function  FindByCodBarra(cod: string): TProdutoModel;
      procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
      Constructor Create(Conn:TZConnection);
+     procedure BaixarEstoque(IdProduto: Integer; Quantidade: Currency);
   end;
 
 implementation
@@ -144,6 +145,37 @@ begin
 
   Q.ParamByName('NOME').AsString := Trim(Nome) +'%';
   Q.Open;
+end;
+
+procedure TProdutoDao.BaixarEstoque(IdProduto: Integer; Quantidade: Currency);
+var
+  Q: TZQuery;
+begin
+  Q := TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
+
+      Q.SQL.Text :=
+        'UPDATE PRODUTO ' +
+        'SET ESTOQUE = ESTOQUE - :QTD ' +
+        'WHERE ID_PRODUTO = :ID';
+
+      Q.ParamByName('ID').AsInteger := IdProduto;
+      Q.ParamByName('QTD').AsCurrency := Quantidade;
+
+      Q.ExecSQL;
+
+      if Q.RowsAffected = 0 then
+        raise EInfraException.Create('Produto não encontrado');
+
+    except
+      on E: EDatabaseError do
+        raise EInfraException.Create('Erro ao baixar estoque: ' + E.Message);
+    end;
+  finally
+    Q.Free;
+  end;
 end;
 
 end.

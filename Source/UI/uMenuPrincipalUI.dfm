@@ -29,7 +29,6 @@ object frmTelaPrincipal: TfrmTelaPrincipal
       Width = 598
       Height = 398
       Align = alClient
-      Caption = 'GridPanel1'
       ColumnCollection = <
         item
           Value = 33.771905196898100000
@@ -48,42 +47,32 @@ object frmTelaPrincipal: TfrmTelaPrincipal
         end
         item
           Column = 1
-          Control = Panel3
+          Control = pnlProd
           Row = 0
         end
         item
           Column = 2
-          Control = Panel4
+          Control = pnlUser
           Row = 0
         end
         item
           Column = 0
-          Control = Panel5
+          Control = pnlFun
           Row = 1
         end
         item
           Column = 1
-          Control = Panel6
-          Row = 1
-        end
-        item
-          Column = 2
-          Control = Panel7
+          Control = pnlForP
           Row = 1
         end
         item
           Column = 0
-          Control = Panel8
+          Control = pnlVen
           Row = 2
         end
         item
           Column = 1
-          Control = Panel9
-          Row = 2
-        end
-        item
-          Column = 2
-          Control = Panel10
+          Control = pnlFat
           Row = 2
         end>
       RowCollection = <
@@ -109,9 +98,8 @@ object frmTelaPrincipal: TfrmTelaPrincipal
         Caption = 'CLIENTE'
         TabOrder = 0
         OnClick = Panel2Click
-        ExplicitTop = -2
       end
-      object Panel3: TPanel
+      object pnlProd: TPanel
         Left = 208
         Top = 22
         Width = 185
@@ -119,9 +107,8 @@ object frmTelaPrincipal: TfrmTelaPrincipal
         Anchors = []
         Caption = 'PRODUTO'
         TabOrder = 1
-        ExplicitLeft = 215
       end
-      object Panel4: TPanel
+      object pnlUser: TPanel
         Left = 406
         Top = 22
         Width = 185
@@ -129,9 +116,8 @@ object frmTelaPrincipal: TfrmTelaPrincipal
         Anchors = []
         Caption = 'USUARIO'
         TabOrder = 2
-        ExplicitTop = -2
       end
-      object Panel5: TPanel
+      object pnlFun: TPanel
         Left = 9
         Top = 147
         Width = 185
@@ -139,57 +125,33 @@ object frmTelaPrincipal: TfrmTelaPrincipal
         Anchors = []
         Caption = 'FUNCIONARIO'
         TabOrder = 3
-        ExplicitTop = 116
       end
-      object Panel6: TPanel
+      object pnlForP: TPanel
         Left = 208
         Top = 150
         Width = 185
         Height = 97
         Anchors = []
-        Caption = 'Panel6'
+        Caption = 'FORMA PAGAMENTO'
         TabOrder = 4
-        ExplicitTop = 147
       end
-      object Panel7: TPanel
-        Left = 406
-        Top = 153
-        Width = 185
-        Height = 91
-        Anchors = []
-        Caption = 'Panel7'
-        TabOrder = 5
-        ExplicitTop = 128
-      end
-      object Panel8: TPanel
+      object pnlVen: TPanel
         Left = 9
         Top = 287
         Width = 185
         Height = 88
         Anchors = []
         Caption = 'VENDA'
-        TabOrder = 6
-        ExplicitTop = 264
+        TabOrder = 5
       end
-      object Panel9: TPanel
+      object pnlFat: TPanel
         Left = 208
         Top = 287
         Width = 185
         Height = 88
         Anchors = []
         Caption = 'FATURAR VENDA'
-        TabOrder = 7
-        ExplicitTop = 264
-      end
-      object Panel10: TPanel
-        Left = 406
-        Top = 287
-        Width = 185
-        Height = 88
-        Anchors = []
-        Caption = 'Panel10'
-        TabOrder = 8
-        ExplicitTop = 264
+        TabOrder = 6
       end
     end
   end

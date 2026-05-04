@@ -35,14 +35,12 @@ type
     lbUsuario: TLabel;
     Panel1: TPanel;
     Panel2: TPanel;
-    Panel3: TPanel;
-    Panel4: TPanel;
-    Panel5: TPanel;
-    Panel6: TPanel;
-    Panel7: TPanel;
-    Panel8: TPanel;
-    Panel9: TPanel;
-    Panel10: TPanel;
+    pnlProd: TPanel;
+    pnlUser: TPanel;
+    pnlFun: TPanel;
+    pnlForP: TPanel;
+    pnlVen: TPanel;
+    pnlFat: TPanel;
     procedure SAIR1Click(Sender: TObject);
     procedure CLIENTESClick(Sender: TObject);
     procedure PRODUTOClick(Sender: TObject);
@@ -139,6 +137,12 @@ begin
   USUARIO1.Visible     := Usuario.TemPermissao('CAD_USUARIO');
   VENDA1.Visible       := Usuario.TemPermissao('CAD_VENDA');
 
+  //pnlProd.Enabled := Usuario.TemPermissao('CAD_PRODUTO');
+  //pnlUser.Enabled:= Usuario.TemPermissao('CAD_USUARIO');
+  //pnlFun.Enabled := Usuario.TemPermissao('CAD_FUNCIONARIO');
+  //pnlForP.Enabled := Usuario.TemPermissao('CAD_USUARIO');
+  //pnlVen.Enabled :=  Usuario.TemPermissao('CAD_USUARIO');
+  //pnlFat.Enabled := false;
   if Usuario.Id = 0 then
   begin
     USUARIO1.Visible     := True;
@@ -165,6 +169,8 @@ procedure TfrmTelaPrincipal.FormClose(Sender: TObject;
 begin
    TSession.Logout;
    AppCtx.ClearAll;
+
+    Action := caFree;
 end;
 
 procedure TfrmTelaPrincipal.FormCreate(Sender: TObject);

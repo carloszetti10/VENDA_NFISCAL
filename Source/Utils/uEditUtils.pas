@@ -8,12 +8,27 @@ uses
 type
   TFormatacao = class
   public
+
+    class procedure AplicarSoNumero(Edit: TEdit);
+    class procedure KeyPressSoNumero(Sender: TObject; var Key: Char);
+
     class procedure AplicarNumero(Edit: TEdit);
     class procedure KeyPressNumero(Sender: TObject; var Key: Char);
     class procedure ExitNumero(Sender: TObject);
   end;
 
 implementation
+
+class procedure TFormatacao.AplicarSoNumero(Edit: TEdit);
+begin
+  Edit.OnKeyPress := KeyPressSoNumero;
+end;
+
+class procedure TFormatacao.KeyPressSoNumero(Sender: TObject; var Key: Char);
+begin
+  if not CharInSet(Key, ['0'..'9', #8, #13]) then
+    Key := #0;
+end;
 
 class procedure TFormatacao.AplicarNumero(Edit: TEdit);
 begin

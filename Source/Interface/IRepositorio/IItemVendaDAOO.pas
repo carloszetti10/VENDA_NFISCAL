@@ -11,6 +11,7 @@ type
     procedure Update(AItem: TItemVendaModel);
     procedure Deletar(IdVenda, IdProduto: Integer);
     procedure ListarPorVenda(Q: TZQuery; IdVenda: Integer);
+    function  FindByItemVenda(AItem: TItemVendaModel): TItemVendaModel;
    end;
 
 implementation

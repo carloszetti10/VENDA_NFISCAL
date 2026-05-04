@@ -1,0 +1,156 @@
+unit uVendaService;
+
+interface
+uses
+  iVendaService, iVendaDAO, uVendaModel,System.Generics.Collections,
+  ZConnection, uException,ZDataset, IProdutoService, uProdutoService,
+  uUsuarioModel, iItemVendaService, uItemVendaModel,uAppServiceConexao,System.SysUtils;
+type
+   TVendaService = class(TInterfacedObject, IVendaServiceInterface)
+   private
+   FVendaDAO : IVendaDAOO;
+   FProdutoService: IProdutoServiceInterface;
+   FItemVendaService: IItemVendaServiceInterface;
+   public
+     Function IIniciarVenda(IdUsuario: Integer):Integer;
+     procedure IAlterarVenda(Venda: TVendaModel);
+     procedure ListarNaTelaGridEstoque(Q: TZQuery; Nome: string);
+     procedure ListarNaTelaGridVenda(Q: TZQuery; IdVenda: Integer);
+     constructor Create(AVendaDao: IVendaDAOO; AProdutoService: IProdutoServiceInterface; AItemVendaService: IItemVendaServiceInterface);
+
+     {===== ATUALIZAÇÃO VENDA ====}
+     function UpdateCliente(IdCliente: Integer; IdVenda: Integer): Integer;
+     function UpdateFuncionario(IdFunc: Integer; IdVenda: Integer): Integer;
+     procedure AdicionarItemVenda(Item: TItemVendaModel);
+     function CalcularTotalVenda(IdVenda: Integer): Currency;
+     {===== CANCELAR VENDA ====}
+     procedure CancelarVenda(IdVenda: Integer);
+
+     procedure FaturarVenda(IdVenda: Integer);
+   end;
+
+implementation
+
+{ TVendaService }
+
+
+{ ================== CONSTRUTOR ================== }
+constructor TVendaService.Create(AVendaDao: IVendaDAOO; AProdutoService: IProdutoServiceInterface;AItemVendaService: IItemVendaServiceInterface );
+begin
+  FProdutoService:= AProdutoService;
+  FVendaDAO:= AVendaDao;
+  FItemVendaService:= AItemVendaService;
+end;
+
+procedure TVendaService.IAlterarVenda(Venda: TVendaModel);
+begin
+
+end;
+
+{ ================== INICIAR VENDA ================== }
+function TVendaService.IIniciarVenda(IdUsuario: Integer): Integer;
+begin
+  Result:= FVendaDAO.Insert(IdUsuario);
+end;
+
+procedure TVendaService.ListarNaTelaGridEstoque(Q: TZQuery; Nome: string);
+begin
+  FProdutoService.ListarPorNomeTela(Q,Nome);
+end;
+
+procedure TVendaService.ListarNaTelaGridVenda(Q: TZQuery; IdVenda: Integer);
+begin
+  FItemVendaService.ListarProdutoVenda(Q, IdVenda);
+end;
+
+procedure TVendaService.AdicionarItemVenda(Item: TItemVendaModel);
+
+
+begin
+  //ver se ja tem
+
+  //inserir
+  FItemVendaService.InserirItem(Item);
+end;
+
+
+{ ================== ATUALIZAR VENDA CLIENTE/VENDEDOR ================== }
+function TVendaService.UpdateCliente(IdCliente, IdVenda: Integer): Integer;
+begin
+  Result := FVendaDAO.UpdateCliente(IdCliente, IdVenda);
+end;
+
+function TVendaService.UpdateFuncionario(IdFunc, IdVenda: Integer): Integer;
+begin
+  Result := FVendaDAO.UpdateFuncionario(IdFunc, IdVenda);
+end;
+
+
+function TVendaService.CalcularTotalVenda(IdVenda: Integer): Currency;
+begin
+  Result := FVendaDAO.CalcularTotalVenda(IdVenda);
+end;
+
+{===== CANCELAR VENDA ====}
+procedure TVendaService.CancelarVenda(IdVenda: Integer);
+begin
+  FVendaDAO.UpdateStatus(IdVenda, svCancelado);
+end;
+
+
+
+procedure TVendaService.FaturarVenda(IdVenda: Integer);
+var
+  Q: TZQuery;
+  Con: TZConnection;
+begin
+  Con := AppServiceConexao.getConexao;
+
+  Q := TZQuery.Create(nil);
+  try
+    Q.Connection := Con;
+
+    //INICIA TRANSAÇÃO
+    Con.StartTransaction;
+
+    try
+      Q.SQL.Text :=
+        'SELECT ID_PRODUTO, QUANTIDADE ' +
+        'FROM ITEM_VENDA ' +
+        'WHERE ID_VENDA = :ID';
+
+      Q.ParamByName('ID').AsInteger := IdVenda;
+      Q.Open;
+
+      if Q.IsEmpty then
+        raise EAppException.Create('Venda sem itens');
+
+      while not Q.Eof do
+      begin
+        FProdutoService.BaixarEstoque(
+          Q.FieldByName('ID_PRODUTO').AsInteger,
+          Q.FieldByName('QUANTIDADE').AsCurrency
+        );
+
+        Q.Next;
+      end;
+
+      FVendaDAO.UpdateStatus(IdVenda, svFaturada);
+      Con.Commit;
+
+    except
+      on E: Exception do
+      begin
+        Con.Rollback;
+        raise;
+      end;
+    end;
+
+  finally
+    Q.Free;
+  end;
+end;
+
+
+
+end.

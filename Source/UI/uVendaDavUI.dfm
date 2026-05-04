@@ -4,8 +4,8 @@ object frmVendaDav: TfrmVendaDav
   Align = alClient
   BorderStyle = bsNone
   Caption = 'VENDA'
-  ClientHeight = 449
-  ClientWidth = 785
+  ClientHeight = 480
+  ClientWidth = 793
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object frmVendaDav: TfrmVendaDav
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 785
+    Width = 793
     Height = 89
     Align = alTop
     TabOrder = 0
@@ -87,7 +87,7 @@ object frmVendaDav: TfrmVendaDav
       OnClick = edtVendedorClick
     end
     object btnSair: TButton
-      Left = 709
+      Left = 717
       Top = 1
       Width = 75
       Height = 87
@@ -99,8 +99,8 @@ object frmVendaDav: TfrmVendaDav
   end
   object Panel2: TPanel
     Left = 0
-    Top = 319
-    Width = 785
+    Top = 350
+    Width = 793
     Height = 130
     Align = alBottom
     TabOrder = 1
@@ -156,6 +156,7 @@ object frmVendaDav: TfrmVendaDav
       Height = 25
       Caption = '&NOVO'
       TabOrder = 3
+      OnClick = btnNovaVendaClick
     end
     object btnCancelar: TBitBtn
       Left = 97
@@ -173,26 +174,66 @@ object frmVendaDav: TfrmVendaDav
       Height = 25
       Caption = '&GRAVAR'
       TabOrder = 5
+      OnClick = btnGravarClick
+    end
+    object btnDesconto: TBitBtn
+      Left = 340
+      Top = 16
+      Width = 77
+      Height = 34
+      Caption = 'DESCONTO'
+      TabOrder = 6
+      OnClick = btnDescontoClick
+    end
+    object pnlDesconto: TPanel
+      Left = 423
+      Top = 6
+      Width = 202
+      Height = 75
+      TabOrder = 7
+      object TLabel
+        Left = 16
+        Top = 11
+        Width = 122
+        Height = 15
+        Caption = 'DESCONTO EM VALOR:'
+      end
+      object desc: TEdit
+        Left = 17
+        Top = 32
+        Width = 121
+        Height = 23
+        TabOrder = 0
+      end
+      object btnAddDes: TBitBtn
+        Left = 144
+        Top = 24
+        Width = 44
+        Height = 33
+        Caption = 'Add'
+        TabOrder = 1
+        OnClick = btnAddDesClick
+      end
     end
   end
   object Panel3: TPanel
     Left = 0
     Top = 89
-    Width = 785
-    Height = 230
+    Width = 793
+    Height = 261
     Align = alClient
     TabOrder = 2
     object Panel4: TPanel
       Left = 1
       Top = 1
-      Width = 783
-      Height = 228
+      Width = 791
+      Height = 259
       Align = alClient
       TabOrder = 0
       object Panel5: TPanel
         Left = 1
         Top = 1
-        Width = 781
+        Width = 789
         Height = 56
         Align = alTop
         TabOrder = 0
@@ -204,7 +245,7 @@ object frmVendaDav: TfrmVendaDav
           Caption = 'VALOR:'
         end
         object Label8: TLabel
-          Left = 477
+          Left = 486
           Top = 4
           Width = 76
           Height = 15
@@ -231,7 +272,7 @@ object frmVendaDav: TfrmVendaDav
           Width = 105
           Height = 23
           TabOrder = 1
-          Text = '1,00'
+          Text = '0'
           OnChange = edtQuantidadeProdutoSelecionadoChange
           OnKeyDown = edtQuantidadeProdutoSelecionadoKeyDown
         end
@@ -248,8 +289,8 @@ object frmVendaDav: TfrmVendaDav
       object Panel6: TPanel
         Left = 1
         Top = 57
-        Width = 781
-        Height = 170
+        Width = 789
+        Height = 201
         Align = alClient
         TabOrder = 1
         object painelEstoque: TPanel

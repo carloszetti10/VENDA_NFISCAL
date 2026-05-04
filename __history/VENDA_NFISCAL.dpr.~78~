@@ -1,0 +1,77 @@
+program VENDA_NFISCAL;
+
+uses
+  Vcl.Forms,
+  uMenuPrincipalUI in 'Source\UI\uMenuPrincipalUI.pas' {frmTelaPrincipal},
+  uTelaBaseCadastroUI in 'Source\UI\uTelaBaseCadastroUI.pas' {frmTelaBaseCadastro},
+  uClientesUI in 'Source\UI\uClientesUI.pas' {frmCadastroCliente},
+  uAppConfigConexao in 'Source\Core\AppConfig\uAppConfigConexao.pas',
+  uAppServiceConexao in 'Source\Core\AppService\uAppServiceConexao.pas',
+  uClienteModel in 'Source\Model\uClienteModel.pas',
+  uClienteDao in 'Source\Dao\uClienteDao.pas',
+  uValidarCampo in 'Source\Utils\uValidarCampo.pas',
+  uException in 'Source\Utils\uException.pas',
+  iClienteService in 'Source\Interface\IService\iClienteService.pas',
+  uClienteService in 'Source\Service\uClienteService.pas',
+  uValidadorDocumento in 'Source\Utils\uValidadorDocumento.pas',
+  IClienteDAO in 'Source\Interface\IRepositorio\IClienteDAO.pas',
+  uProdutoModel in 'Source\Model\uProdutoModel.pas',
+  uUsuarioModel in 'Source\Model\uUsuarioModel.pas',
+  IProdutoService in 'Source\Interface\IService\IProdutoService.pas',
+  IProdutoDAO in 'Source\Interface\IRepositorio\IProdutoDAO.pas',
+  uProdutoUI in 'Source\UI\uProdutoUI.pas' {frmCadastroProduto},
+  uProdutoDao in 'Source\Dao\uProdutoDao.pas',
+  uProdutoService in 'Source\Service\uProdutoService.pas',
+  uFuncionarioUI in 'Source\UI\uFuncionarioUI.pas' {frmCadastroFuncionario},
+  uFormaPagamentoUI in 'Source\UI\uFormaPagamentoUI.pas' {frmCadastroPagamento},
+  uUsuarioUI in 'Source\UI\uUsuarioUI.pas' {TfrmCadastroUsuario},
+  uFuncionarioModel in 'Source\Model\uFuncionarioModel.pas',
+  uFormaPagModel in 'Source\Model\uFormaPagModel.pas',
+  iUsuarioService in 'Source\Interface\IService\iUsuarioService.pas',
+  iFuncionarioService in 'Source\Interface\IService\iFuncionarioService.pas',
+  IUsuarioDAO in 'Source\Interface\IRepositorio\IUsuarioDAO.pas',
+  uUsuarioDao in 'Source\Dao\uUsuarioDao.pas',
+  uFuncionarioDao in 'Source\Dao\uFuncionarioDao.pas',
+  iFuncionarioDAO in 'Source\Interface\IRepositorio\iFuncionarioDAO.pas',
+  uUsuarioService in 'Source\Service\uUsuarioService.pas',
+  uEditUtils in 'Source\Utils\uEditUtils.pas',
+  uVendaDavUI in 'Source\UI\uVendaDavUI.pas' {frmVendaDav},
+  uVendaModel in 'Source\Model\uVendaModel.pas',
+  uItemVendaModel in 'Source\Model\uItemVendaModel.pas',
+  uVendaService in 'Source\Service\uVendaService.pas',
+  iVendaService in 'Source\Interface\IService\iVendaService.pas',
+  uVendaDao in 'Source\Dao\uVendaDao.pas',
+  iVendaDAO in 'Source\Interface\IRepositorio\iVendaDAO.pas',
+  uFuncionarioService in 'Source\Service\uFuncionarioService.pas',
+  uItemVendaDao in 'Source\Dao\uItemVendaDao.pas',
+  IItemVendaDAOO in 'Source\Interface\IRepositorio\IItemVendaDAOO.pas',
+  iItemVendaService in 'Source\Interface\IService\iItemVendaService.pas',
+  uItemVendaService in 'Source\Service\uItemVendaService.pas',
+  uLoginUI in 'Source\UI\uLoginUI.pas' {ftmLogin},
+  uAppContext in 'Source\Core\AppContext\uAppContext.pas',
+  uPermissaoModel in 'Source\Model\uPermissaoModel.pas',
+  uLojaModel in 'Source\Model\uLojaModel.pas',
+  uLojaDao in 'Source\Dao\uLojaDao.pas',
+  iLojaDAO in 'Source\Interface\IRepositorio\iLojaDAO.pas',
+  uSession in 'Source\Utils\uSession.pas',
+  uDialogServiceImpl in 'Source\Utils\uDialogServiceImpl.pas',
+  uPagamentoVendaModel in 'Source\Model\uPagamentoVendaModel.pas',
+  uPagamentoVendaDao in 'Source\Dao\uPagamentoVendaDao.pas',
+  iPagamentoVendaDAO in 'Source\Interface\IRepositorio\iPagamentoVendaDAO.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+
+
+  AppConfigConexao := TAppConfigConexao.Create;
+  AppConfigConexao.lerMbanco;
+
+  AppServiceConexao := TAppServiceConexao.Create;
+
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TftmLogin, ftmLogin);
+  //Application.CreateForm(TfrmTelaPrincipal, frmTelaPrincipal);
+  Application.Run;
+end.

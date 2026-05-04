@@ -1,0 +1,45 @@
+unit uDialogServiceImpl;
+
+interface
+
+uses
+ System.SysUtils,System.UITypes,Vcl.Dialogs,Vcl.Forms;
+
+type
+  TDialogService = class
+  public
+    class procedure ShowInfo(const Msg: string; const Title: string = 'Informação');
+    class procedure ShowSuccess(const Msg: string; const Title: string = 'Sucesso');
+    class procedure ShowAtenc(const Msg: string; const Title: string = 'Atenção');
+    class procedure ShowError(const Msg: string; const Title: string = 'Erro');
+    class function Confirm(const Msg: string; const Title: string = 'Confirmação'): Boolean;
+  end;
+
+implementation
+
+class procedure TDialogService.ShowInfo(const Msg: string; const Title: string);
+begin
+  MessageDlg(Msg, mtInformation, [mbOK], 0);
+end;
+
+class procedure TDialogService.ShowSuccess(const Msg: string; const Title: string);
+begin
+  MessageDlg(Msg, mtInformation, [mbOK], 0);
+end;
+
+class procedure TDialogService.ShowAtenc(const Msg: string; const Title: string);
+begin
+  MessageDlg(Msg, mtWarning, [mbOK], 0);
+end;
+
+class procedure TDialogService.ShowError(const Msg: string; const Title: string);
+begin
+  MessageDlg(Msg, mtError, [mbOK], 0);
+end;
+
+class function TDialogService.Confirm(const Msg: string; const Title: string): Boolean;
+begin
+  Result := MessageDlg(Msg, mtConfirmation, [mbYes, mbNo], 0) = mrYes;
+end;
+
+end.

@@ -1,0 +1,17 @@
+unit uPagamentoVendaDao;
+
+interface
+uses
+  System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection, uException,
+  uPagamentoVendaModel;
+type
+  TClienteDao = class(TInterfacedObject, IClienteDAOO)
+    private
+      FConexao : TZConnection;
+    public
+     procedure Insert(Cliente: TClienteModel);
+
+implementation
+
+end.

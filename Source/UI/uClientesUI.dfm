@@ -3,6 +3,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
   StyleElements = [seFont, seClient, seBorder]
   TextHeight = 15
   inherited PageControlHerenca: TPageControl
+    ActivePage = TabCadastro
     inherited TabConsulta: TTabSheet
       inherited Panel1: TPanel
         StyleElements = [seFont, seClient, seBorder]

@@ -75,7 +75,7 @@ begin
      if Cliente.TipoPessoa = TTipoPessoa.J then
        //validar cnpj
         isCnpjValido := TValidadorDocumento.ValidarCNPJ(Cliente.CpfCnpj);
-     if (not isCpfValido) and (not isCnpjValido) then
+     if (isCpfValido) and (isCnpjValido) then
        raise EAppException.Create('Documento invalido!');
      //verificar se ja existe
      if (FClienteDAO.FindByDocumento(Cliente.CpfCnpj) <> nil) then

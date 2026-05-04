@@ -53,7 +53,14 @@ uses
   uLojaModel in 'Source\Model\uLojaModel.pas',
   uLojaDao in 'Source\Dao\uLojaDao.pas',
   iLojaDAO in 'Source\Interface\IRepositorio\iLojaDAO.pas',
-  uSession in 'Source\Utils\uSession.pas';
+  uSession in 'Source\Utils\uSession.pas',
+  uDialogServiceImpl in 'Source\Utils\uDialogServiceImpl.pas',
+  uPagamentoVendaModel in 'Source\Model\uPagamentoVendaModel.pas',
+  uPagamentoVendaDao in 'Source\Dao\uPagamentoVendaDao.pas',
+  iPagamentoVendaDAO in 'Source\Interface\IRepositorio\iPagamentoVendaDAO.pas',
+  iPagamentoVendaService in 'Source\Interface\IService\iPagamentoVendaService.pas',
+  uPagamentoVendaService in 'Source\Service\uPagamentoVendaService.pas',
+  uPagamentoUI in 'Source\UI\uPagamentoUI.pas' {frmPagamento};
 
 {$R *.res}
 
@@ -68,6 +75,7 @@ begin
 
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TftmLogin, ftmLogin);
+  Application.CreateForm(TfrmPagamento, frmPagamento);
   //Application.CreateForm(TfrmTelaPrincipal, frmTelaPrincipal);
   Application.Run;
 end.
