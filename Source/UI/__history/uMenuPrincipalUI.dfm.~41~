@@ -106,6 +106,7 @@ object frmTelaPrincipal: TfrmTelaPrincipal
           Caption = 'CLIENTE'
           TabOrder = 0
           OnClick = btnClienteClick
+          ExplicitTop = 0
         end
       end
       object pnlProd: TPanel
@@ -116,6 +117,7 @@ object frmTelaPrincipal: TfrmTelaPrincipal
         Anchors = []
         Caption = 'PRODUTO'
         TabOrder = 1
+        ExplicitLeft = 215
         object btnProd: TBitBtn
           Left = 1
           Top = 1
@@ -125,6 +127,8 @@ object frmTelaPrincipal: TfrmTelaPrincipal
           Caption = 'PRODUTO'
           TabOrder = 0
           OnClick = btnProdClick
+          ExplicitTop = 56
+          ExplicitHeight = 31
         end
       end
       object pnlUser: TPanel
@@ -144,6 +148,10 @@ object frmTelaPrincipal: TfrmTelaPrincipal
           Caption = 'USUARIO'
           TabOrder = 0
           OnClick = btnUsuarioClick
+          ExplicitLeft = 56
+          ExplicitTop = 55
+          ExplicitWidth = 81
+          ExplicitHeight = 25
         end
       end
       object pnlFun: TPanel
@@ -163,6 +171,10 @@ object frmTelaPrincipal: TfrmTelaPrincipal
           Caption = 'FUNCIONARIO'
           TabOrder = 0
           OnClick = btnFuncioClick
+          ExplicitLeft = 56
+          ExplicitTop = 63
+          ExplicitWidth = 81
+          ExplicitHeight = 25
         end
       end
       object pnlForP: TPanel
@@ -182,6 +194,10 @@ object frmTelaPrincipal: TfrmTelaPrincipal
           Caption = 'FORMA PAGAMENTO'
           TabOrder = 0
           OnClick = BitBtn5Click
+          ExplicitLeft = 64
+          ExplicitTop = 63
+          ExplicitWidth = 81
+          ExplicitHeight = 25
         end
       end
       object pnlVen: TPanel
@@ -201,6 +217,10 @@ object frmTelaPrincipal: TfrmTelaPrincipal
           Caption = 'VENDA'
           TabOrder = 0
           OnClick = btnVendaClick
+          ExplicitLeft = 40
+          ExplicitTop = 55
+          ExplicitWidth = 81
+          ExplicitHeight = 25
         end
       end
       object pnlFat: TPanel
@@ -219,6 +239,10 @@ object frmTelaPrincipal: TfrmTelaPrincipal
           Align = alClient
           Caption = 'FATURAR VENDA'
           TabOrder = 0
+          ExplicitLeft = 64
+          ExplicitTop = 55
+          ExplicitWidth = 81
+          ExplicitHeight = 25
         end
       end
     end
@@ -240,7 +264,7 @@ object frmTelaPrincipal: TfrmTelaPrincipal
     object Label2: TLabel
       Left = 9
       Top = 9
-      Width = 30
+      Width = 32
       Height = 15
       Caption = 'LOJA:'
     end
@@ -297,10 +321,6 @@ object frmTelaPrincipal: TfrmTelaPrincipal
     end
     object RELATORIOS1: TMenuItem
       Caption = 'RELATORIOS'
-      object CLIENTES1: TMenuItem
-        Caption = 'CLIENTES'
-        OnClick = CLIENTES1Click
-      end
     end
     object EMPRESA1: TMenuItem
       Caption = 'EMPRESA'

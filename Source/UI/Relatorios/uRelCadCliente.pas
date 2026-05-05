@@ -1,0 +1,73 @@
+unit uRelCadCliente;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RLReport, RLFilters, RLPDFFilter,
+  Data.DB, ZAbstractRODataset, ZAbstractDataset, ZDataset, RLXLSFilter, uAppServiceConexao,
+  RLXLSXFilter;
+
+type
+  TfrmRelCadCliente = class(TForm)
+    Relatorio: TRLReport;
+    Cabecalho: TRLBand;
+    RLLabel1: TRLLabel;
+    RLDraw1: TRLDraw;
+    RLPDFFilter1: TRLPDFFilter;
+    RegistrosDB: TRLBand;
+    Qry: TZQuery;
+    dts: TDataSource;
+    RLDBText1: TRLDBText;
+    nome: TRLDBText;
+    CabecalhoLabel: TRLBand;
+    RLPanel1: TRLPanel;
+    RLLabel4: TRLLabel;
+    RLLabel5: TRLLabel;
+    Rodape: TRLBand;
+    RLSystemInfo3: TRLSystemInfo;
+    RLLabel3: TRLLabel;
+    RLSystemInfo2: TRLSystemInfo;
+    RLLabel2: TRLLabel;
+    RLSystemInfo1: TRLSystemInfo;
+    RLDraw2: TRLDraw;
+    procedure FormDestroy(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    procedure PreencherRelatorio;
+  end;
+
+var
+  frmRelCadCliente : TfrmRelCadCliente;
+
+implementation
+
+{$R *.dfm}
+
+
+
+procedure TfrmRelCadCliente.FormDestroy(Sender: TObject);
+begin
+  Qry.Close;
+end;
+
+
+
+
+procedure TfrmRelCadCliente.PreencherRelatorio;
+begin
+   Qry.Close;
+   //Qry.Connection := TAppServiceConexao.getConexao;
+
+   Qry.SQL.Text := 'SELECT ID_CLIENTE, NOME, RAZAO_SOCIAL, CPF_CNPJ, TELEFONE, ' +
+                'CASE TIPO_PESSOA WHEN ''F'' THEN ''FÍSICA'' ELSE ''JURÍDICA'' END AS TIPO_PESSOA, ' +
+                'CASE ATIVO WHEN 1 THEN ''ATIVO'' ELSE ''INATIVO'' END AS STATUS, ' +
+                'DT_CADASTRO ' +
+                'FROM CLIENTE ' +
+                'ORDER BY NOME';
+
+   Qry.Open;
+end;
+
+end.

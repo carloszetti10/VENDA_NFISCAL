@@ -12,7 +12,7 @@ uses
   iVendaService, uVendaService, iVendaDAO, uVendaDao,
    iFuncionarioService, uFuncionarioService, iFuncionarioDAO, uFuncionarioDao,
    iItemVendaService, uItemVendaModel, uItemVendaDao, IItemVendaDAOO,uItemVendaService,
-  Vcl.StdCtrls,uAppContext,uSession, uUsuarioModel, Vcl.Buttons;
+  Vcl.StdCtrls,uAppContext,uSession, uUsuarioModel, Vcl.Buttons,uRelCadClientes;
 
 type
   TfrmTelaPrincipal = class(TForm)
@@ -50,6 +50,7 @@ type
     btnFaturam: TBitBtn;
     Label1: TLabel;
     Label2: TLabel;
+    CLIENTES1: TMenuItem;
     procedure SAIR1Click(Sender: TObject);
     procedure CLIENTESClick(Sender: TObject);
     procedure PRODUTOClick(Sender: TObject);
@@ -67,6 +68,7 @@ type
     procedure BitBtn5Click(Sender: TObject);
     procedure btnVendaClick(Sender: TObject);
     procedure btnClienteClick(Sender: TObject);
+    procedure CLIENTES1Click(Sender: TObject);
 
 
 
@@ -115,6 +117,17 @@ end;
 procedure TfrmTelaPrincipal.btnVendaClick(Sender: TObject);
 begin
   VENDA1.Click;
+end;
+
+procedure TfrmTelaPrincipal.CLIENTES1Click(Sender: TObject);
+begin
+  frmRelCadClientes := TfrmRelCadClientes.Create(nil);
+  try
+    frmRelCadClientes.PreencherRelatorio;
+    frmRelCadClientes.Relatorio.Preview;
+  finally
+    frmRelCadClientes.Free;
+  end;
 end;
 
 procedure TfrmTelaPrincipal.CLIENTESClick(Sender: TObject);
