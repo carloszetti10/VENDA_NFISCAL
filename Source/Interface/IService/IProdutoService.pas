@@ -6,7 +6,7 @@ uses
 type
     IProdutoServiceInterface = interface
     procedure Inserir(Produto: TProdutoModel);
-    procedure Alterar(Produto: TProdutoModel);
+    function Atualizar(Produto: TProdutoModel): Boolean;
     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
     procedure BaixarEstoque(id: integer; quant :Currency);
    end;

@@ -9,19 +9,23 @@ type
     private
       FConexao : TZConnection;
     public
-     procedure Insert(Produto: TProdutoModel);
      procedure Update(Produto: TProdutoModel);
      function FindByID(ID: Integer): TProdutoModel;
      function  FindByCodBarra(cod: string): TProdutoModel;
      procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
      Constructor Create(Conn:TZConnection);
      procedure BaixarEstoque(IdProduto: Integer; Quantidade: Currency);
+
+
+    function Inserir(Produto: TProdutoModel): Boolean;
+    function Atualizar(Produto: TProdutoModel): Boolean;
+    function Apagar(Id: Integer): Boolean;
+    function Selecionar(Id: Integer): TProdutoModel;
+
+
   end;
 
 implementation
-
-
-
 { TProdutoDao }
 
 constructor TProdutoDao.Create(Conn: TZConnection);
@@ -29,7 +33,6 @@ begin
   inherited Create;
   FConexao := Conn;
 end;
-
 function TProdutoDao.FindByCodBarra(cod: string): TProdutoModel;
 var
   Q: TZQuery;
@@ -64,7 +67,6 @@ begin
       raise EInfraException.Create('Erro: '+e.Message);
     end;
 end;
-
 function TProdutoDao.FindByID(ID: Integer): TProdutoModel;
 var
   Q: TZQuery;
@@ -99,40 +101,10 @@ begin
       raise EInfraException.Create('Erro: '+e.Message);
     end;
 end;
-
-procedure TProdutoDao.Insert(Produto: TProdutoModel);
-var
-  Q: TZQuery;
-begin
-  Q:= TZQuery.Create(nil);
-  try
-    try
-      Q.Connection := FConexao;
-
-      Q.SQL.Text := 'INSERT INTO PRODUTO (NOME, COD_BARRA, ESTOQUE, VALOR_UNITARIO)'+
-      'VALUES (:NOME, :COD_BARRA, :ESTOQUE, :VALOR_UNITARIO)';
-      Q.ParamByName('NOME').AsString := Produto.Nome;
-      Q.ParamByName('COD_BARRA').AsString := Produto.CodBarra;
-      Q.ParamByName('ESTOQUE').AsCurrency := Produto.Estoque;
-      Q.ParamByName('VALOR_UNITARIO').AsCurrency := Produto.ValorUnitario;
-      Q.ExecSQL;
-
-    except
-      on E: EDatabaseError do
-        raise EInfraException.Create('Erro ao realizar o cadastro' + E.Message);
-    end;
-  finally
-    Q.Free;
-  end;
-
-
-end;
-
 procedure TProdutoDao.Update(Produto: TProdutoModel);
 begin
 
 end;
-
 procedure TProdutoDao.ListarPorNomeTela(Q: TZQuery; Nome: string);
 begin
   Q.Close;
@@ -146,7 +118,6 @@ begin
   Q.ParamByName('NOME').AsString := Trim(Nome) +'%';
   Q.Open;
 end;
-
 procedure TProdutoDao.BaixarEstoque(IdProduto: Integer; Quantidade: Currency);
 var
   Q: TZQuery;
@@ -178,4 +149,132 @@ begin
   end;
 end;
 
+
+function TProdutoDao.Apagar(Id: Integer): Boolean;
+var
+  Qry: TZQuery;
+begin
+  Result := True;
+
+  Qry := TZQuery.Create(nil);
+  try
+    Qry.Connection := FConexao;
+
+    Qry.SQL.Clear;
+    Qry.SQL.Add('DELETE FROM PRODUTO WHERE ID_PRODUTO = :ID');
+
+    Qry.ParamByName('ID').AsInteger := Id;
+
+    try
+      Qry.ExecSQL;
+    except
+      Result := False;
+    end;
+
+  finally
+    Qry.Free;
+  end;
+end;
+function TProdutoDao.Atualizar(Produto: TProdutoModel): Boolean;
+var
+  Qry: TZQuery;
+begin
+  Result := True;
+
+  Qry := TZQuery.Create(nil);
+  try
+    Qry.Connection := FConexao;
+
+    Qry.SQL.Clear;
+    Qry.SQL.Add(
+      'UPDATE PRODUTO SET ' +
+      'NOME = :NOME, ' +
+      'COD_BARRA = :COD, ' +
+      'ESTOQUE = :ESTOQUE, ' +
+      'VALOR_UNITARIO = :VALOR ' +
+      'WHERE ID_PRODUTO = :ID'
+    );
+
+    Qry.ParamByName('ID').AsInteger := Produto.IdProduto;
+    Qry.ParamByName('NOME').AsString := Produto.Nome;
+    Qry.ParamByName('COD').AsString := Produto.CodBarra;
+    Qry.ParamByName('ESTOQUE').AsCurrency := Produto.Estoque;
+    Qry.ParamByName('VALOR').AsCurrency := Produto.ValorUnitario;
+
+    try
+      Qry.ExecSQL;
+    except
+      Result := False;
+    end;
+
+  finally
+    Qry.Free;
+  end;
+end;
+function TProdutoDao.Inserir(Produto: TProdutoModel): Boolean;
+var
+  Qry: TZQuery;
+begin
+  Result := True;
+
+  Qry := TZQuery.Create(nil);
+  try
+    Qry.Connection := FConexao;
+
+    Qry.SQL.Clear;
+    Qry.SQL.Add(
+      'INSERT INTO PRODUTO (NOME, COD_BARRA, ESTOQUE, VALOR_UNITARIO) ' +
+      'VALUES (:NOME, :COD, :ESTOQUE, :VALOR)'
+    );
+
+    Qry.ParamByName('NOME').AsString := Produto.Nome;
+    Qry.ParamByName('COD').AsString := Produto.CodBarra;
+    Qry.ParamByName('ESTOQUE').AsCurrency := Produto.Estoque;
+    Qry.ParamByName('VALOR').AsCurrency := Produto.ValorUnitario;
+
+    try
+      Qry.ExecSQL;
+    except
+      Result := False;
+    end;
+
+  finally
+    Qry.Free;
+  end;
+end;
+function TProdutoDao.Selecionar(Id: Integer): TProdutoModel;
+var
+  Qry: TZQuery;
+begin
+  Result := nil;
+
+  Qry := TZQuery.Create(nil);
+  try
+    Qry.Connection := FConexao;
+
+    Qry.SQL.Clear;
+    Qry.SQL.Add(
+      'SELECT ID_PRODUTO, NOME, COD_BARRA, ESTOQUE, VALOR_UNITARIO ' +
+      'FROM PRODUTO ' +
+      'WHERE ID_PRODUTO = :ID'
+    );
+
+    Qry.ParamByName('ID').AsInteger := Id;
+
+    Qry.Open;
+
+    if not Qry.IsEmpty then
+    begin
+      Result := TProdutoModel.Create;
+      Result.IdProduto := Qry.FieldByName('ID_PRODUTO').AsInteger;
+      Result.Nome := Qry.FieldByName('NOME').AsString;
+      Result.CodBarra := Qry.FieldByName('COD_BARRA').AsString;
+      Result.Estoque := Qry.FieldByName('ESTOQUE').AsCurrency;
+      Result.ValorUnitario := Qry.FieldByName('VALOR_UNITARIO').AsCurrency;
+    end;
+
+  finally
+    Qry.Free;
+  end;
+end;
 end.

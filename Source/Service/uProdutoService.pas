@@ -9,7 +9,7 @@ type
    FProdutoDAO : IProdutoDAOO;
    public
      procedure Inserir(Produto: TProdutoModel);
-     procedure Alterar(Produto: TProdutoModel);
+     function Atualizar(Produto: TProdutoModel): Boolean;
      constructor Create(AProdDao: IProdutoDAOO);
      procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
      procedure BaixarEstoque(id: integer; quant :Currency);
@@ -23,18 +23,15 @@ procedure TProdutoService.BaixarEstoque(id: integer; quant: Currency);
 begin
   FProdutoDAO.BaixarEstoque(id,quant);
 end;
-
 constructor TProdutoService.Create(AProdDao: IProdutoDAOO);
 begin
   inherited Create;
   FProdutoDAO:= AProdDao;
 end;
-
-procedure TProdutoService.Alterar(Produto: TProdutoModel);
+function TProdutoService.Atualizar(Produto: TProdutoModel): Boolean;
 begin
-
+  Result := FProdutoDAO.Atualizar(Produto);
 end;
-
 procedure TProdutoService.Inserir(Produto: TProdutoModel);
 var
   Prod: TProdutoModel;
@@ -46,7 +43,7 @@ begin
     //verificar se o cod de barra ja está cadastrado
     if Prod <> nil then
       raise EAppException.Create('Codigo de barra já cadastrado no produto: '+Prod.Nome);
-    FProdutoDAO.Insert(Produto);
+    FProdutoDAO.Inserir(Produto);
   except
   on E: EAppException do
     raise;
@@ -54,7 +51,6 @@ begin
     raise EInfraException.Create('Error: '+ Ex.Message);
   end;
 end;
-
 procedure TProdutoService.ListarPorNomeTela(Q: TZQuery; Nome: string);
 begin
   FProdutoDAO.ListarPorNomeTela(Q, nome);

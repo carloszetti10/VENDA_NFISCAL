@@ -50,20 +50,13 @@ object frmPagamento: TfrmPagamento
     Style = csDropDownList
     TabOrder = 0
   end
-  object edtValor: TEdit
-    Left = 48
-    Top = 168
-    Width = 137
-    Height = 23
-    TabOrder = 1
-  end
   object btnConfirmar: TBitBtn
     Left = 102
     Top = 261
     Width = 75
     Height = 25
     Caption = 'GRAVAR'
-    TabOrder = 2
+    TabOrder = 1
     OnClick = btnConfirmarClick
   end
   object btnCancelar: TBitBtn
@@ -72,7 +65,15 @@ object frmPagamento: TfrmPagamento
     Width = 75
     Height = 25
     Caption = 'CANCELAR'
-    TabOrder = 3
+    TabOrder = 2
     OnClick = btnCancelarClick
+  end
+  object edtValor: TCurrencyEdit
+    Left = 48
+    Top = 168
+    Width = 137
+    Height = 21
+    ReadOnly = True
+    TabOrder = 3
   end
 end

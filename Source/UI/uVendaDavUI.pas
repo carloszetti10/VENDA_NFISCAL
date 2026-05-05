@@ -56,18 +56,18 @@ type
     QRYProdEstoque: TZQuery;
     DTSProdVenda: TDataSource;
     QRYProdVenda: TZQuery;
-    btnSair: TButton;
     btnDesconto: TBitBtn;
     pnlDesconto: TPanel;
     desc: TEdit;
     btnAddDes: TBitBtn;
+    btnSair: TBitBtn;
     procedure FormShow(Sender: TObject);
     procedure edtVendedorClick(Sender: TObject);
     procedure edtClienteClick(Sender: TObject);
     procedure edtPesquisaProdutoChange(Sender: TObject);
     procedure edtPesquisaProdutoKeyPress(Sender: TObject; var Key: Char);
     procedure btnSairClick(Sender: TObject);
-    procedure edtNumeroVendaKeyPress(Sender: TObject; var Key: Char);
+
     procedure btnCancelarClick(Sender: TObject);
 
     procedure dbProdEsqtqueKeyPress(Sender: TObject; var Key: Char);
@@ -79,6 +79,7 @@ type
     procedure btnDescontoClick(Sender: TObject);
     procedure descEnter(Sender: TObject);
     procedure btnAddDesClick(Sender: TObject);
+    procedure edtNumeroVendaKeyPress(Sender: TObject; var Key: Char);
   private
     FModoTela: TModoTela;
     FIdVenda: Integer;
@@ -181,14 +182,8 @@ begin
   AlternaPainel(painelEstoque,painelVenda);
   PreencherGrildProdutosEstoque(edtPesquisaProduto.Text);
 end;
-procedure TfrmVendaDav.edtNumeroVendaKeyPress(Sender: TObject; var Key: Char);
-begin
-  if Key = #13 then
-    begin
-      Key := #0;
-      IniciarVenda;
-    end;
-end;
+
+
 procedure TfrmVendaDav.edtPesquisaProdutoKeyPress(Sender: TObject; var Key: Char);
 begin
   IrParaOEdtQuantidade(key);
@@ -411,6 +406,15 @@ begin
     Frm.Free;
   end;
 
+end;
+
+procedure TfrmVendaDav.edtNumeroVendaKeyPress(Sender: TObject; var Key: Char);
+begin
+ if Key = #13 then
+  begin
+    IniciarVenda;
+    Key := #0;
+  end;
 end;
 
 { ================== CONSULTA GRID ================== }

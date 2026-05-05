@@ -12,7 +12,7 @@ uses
   iVendaService, uVendaService, iVendaDAO, uVendaDao,
    iFuncionarioService, uFuncionarioService, iFuncionarioDAO, uFuncionarioDao,
    iItemVendaService, uItemVendaModel, uItemVendaDao, IItemVendaDAOO,uItemVendaService,
-  Vcl.StdCtrls,uAppContext,uSession, uUsuarioModel;
+  Vcl.StdCtrls,uAppContext,uSession, uUsuarioModel, Vcl.Buttons;
 
 type
   TfrmTelaPrincipal = class(TForm)
@@ -41,6 +41,15 @@ type
     pnlForP: TPanel;
     pnlVen: TPanel;
     pnlFat: TPanel;
+    btnCliente: TBitBtn;
+    btnProd: TBitBtn;
+    btnUsuario: TBitBtn;
+    btnFuncio: TBitBtn;
+    BitBtn5: TBitBtn;
+    btnVenda: TBitBtn;
+    btnFaturam: TBitBtn;
+    Label1: TLabel;
+    Label2: TLabel;
     procedure SAIR1Click(Sender: TObject);
     procedure CLIENTESClick(Sender: TObject);
     procedure PRODUTOClick(Sender: TObject);
@@ -52,6 +61,12 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Panel2Click(Sender: TObject);
+    procedure btnProdClick(Sender: TObject);
+    procedure btnUsuarioClick(Sender: TObject);
+    procedure btnFuncioClick(Sender: TObject);
+    procedure BitBtn5Click(Sender: TObject);
+    procedure btnVendaClick(Sender: TObject);
+    procedure btnClienteClick(Sender: TObject);
 
 
 
@@ -71,6 +86,36 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfrmTelaPrincipal.BitBtn5Click(Sender: TObject);
+begin
+  FORMAPAGAMENTO1.Click;
+end;
+
+procedure TfrmTelaPrincipal.btnClienteClick(Sender: TObject);
+begin
+  CLIENTES.Click;
+end;
+
+procedure TfrmTelaPrincipal.btnFuncioClick(Sender: TObject);
+begin
+  FUNCIONARIO1.Click;
+end;
+
+procedure TfrmTelaPrincipal.btnProdClick(Sender: TObject);
+begin
+  PRODUTO.Click;
+end;
+
+procedure TfrmTelaPrincipal.btnUsuarioClick(Sender: TObject);
+begin
+  USUARIO1.Click;
+end;
+
+procedure TfrmTelaPrincipal.btnVendaClick(Sender: TObject);
+begin
+  VENDA1.Click;
+end;
 
 procedure TfrmTelaPrincipal.CLIENTESClick(Sender: TObject);
 var
@@ -131,18 +176,19 @@ begin
 
   if not Assigned(Usuario) then Exit;
 
-  CLIENTES.Visible     := Usuario.TemPermissao('CAD_CLIENTE');
+  CLIENTES.Visible    := Usuario.TemPermissao('CAD_CLIENTE');
   PRODUTO.Visible      := Usuario.TemPermissao('CAD_PRODUTO');
   FUNCIONARIO1.Visible := Usuario.TemPermissao('CAD_FUNCIONARIO');
   USUARIO1.Visible     := Usuario.TemPermissao('CAD_USUARIO');
   VENDA1.Visible       := Usuario.TemPermissao('CAD_VENDA');
 
-  //pnlProd.Enabled := Usuario.TemPermissao('CAD_PRODUTO');
-  //pnlUser.Enabled:= Usuario.TemPermissao('CAD_USUARIO');
-  //pnlFun.Enabled := Usuario.TemPermissao('CAD_FUNCIONARIO');
-  //pnlForP.Enabled := Usuario.TemPermissao('CAD_USUARIO');
-  //pnlVen.Enabled :=  Usuario.TemPermissao('CAD_USUARIO');
-  //pnlFat.Enabled := false;
+  btnCliente.Enabled  := Usuario.TemPermissao('CAD_CLIENTE');
+  btnProd.Enabled   := Usuario.TemPermissao('CAD_PRODUTO');
+  btnUsuario.Enabled :=  Usuario.TemPermissao('CAD_USUARIO');
+  btnVenda.Enabled :=  Usuario.TemPermissao('CAD_VENDA');
+
+  btnFaturam.Enabled := FALSE;
+
   if Usuario.Id = 0 then
   begin
     USUARIO1.Visible     := True;

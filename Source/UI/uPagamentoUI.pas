@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons,uPagamentoVendaModel,
-  uAppServiceConexao, ZConnection, ZDataset;
+  uAppServiceConexao, ZConnection, ZDataset, Vcl.Mask, RxToolEdit, RxCurrEdit;
 
 type
   TfrmPagamento = class(TForm)
@@ -13,10 +13,10 @@ type
     lbTotal: TLabel;
     cbFormaPagamento: TComboBox;
     Label2: TLabel;
-    edtValor: TEdit;
     btnConfirmar: TBitBtn;
     btnCancelar: TBitBtn;
     Label3: TLabel;
+    edtValor: TCurrencyEdit;
     procedure btnConfirmarClick(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);

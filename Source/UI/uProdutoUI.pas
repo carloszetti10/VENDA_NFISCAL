@@ -6,7 +6,8 @@ uses
   Winapi.Windows, iProdutoService, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaBaseCadastroUI, Data.DB, Vcl.Grids,
   Vcl.DBGrids, uEditUtils, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls, uException, uProdutoModel, uValidarCampo,
-  ZAbstractRODataset, ZAbstractDataset, ZDataset, uAppServiceConexao;
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, uAppServiceConexao,
+  RxToolEdit, RxCurrEdit;
 
 type
   TfrmCadastroProduto = class(TfrmTelaBaseCadastro)
@@ -17,9 +18,8 @@ type
     mskCodBarra: TMaskEdit;
     Label3: TLabel;
     Label4: TLabel;
-    btnIniciarEstoque: TBitBtn;
-    mskValorUnitario: TEdit;
-    mskQuantidade: TEdit;
+    mskValorUnitario: TCurrencyEdit;
+    mskQuantidade: TCurrencyEdit;
   private
     FService: IProdutoServiceInterface;
     procedure Inserir; override;
@@ -42,8 +42,6 @@ constructor TfrmCadastroProduto.Create(AOwner: TComponent; AService: IProdutoSer
 begin
   inherited Create(AOwner);
   FService:= AService;
-  TFormatacao.AplicarNumero(mskValorUnitario);
-  TFormatacao.AplicarNumero(mskQuantidade);
 end;
 
 {$REGION 'METODOS VIRTUAIS'}
@@ -84,7 +82,7 @@ begin
   mskCodBarra.Enabled := Habilitar;
   mskValorUnitario.Enabled := Habilitar;
   mskQuantidade.Enabled := Habilitar;
-  btnIniciarEstoque.Enabled := Habilitar;
+
 end;
 procedure TfrmCadastroProduto.Pesquisa;
 begin

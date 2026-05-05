@@ -1,0 +1,95 @@
+unit uProdutoUI;
+
+interface
+
+uses
+  Winapi.Windows, iProdutoService, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaBaseCadastroUI, Data.DB, Vcl.Grids,
+  Vcl.DBGrids, uEditUtils, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls, uException, uProdutoModel, uValidarCampo,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, uAppServiceConexao,
+  RxToolEdit, RxCurrEdit;
+
+type
+  TfrmCadastroProduto = class(TfrmTelaBaseCadastro)
+    gpCadastro: TGroupBox;
+    mskNome: TMaskEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    mskCodBarra: TMaskEdit;
+    Label3: TLabel;
+    Label4: TLabel;
+    mskValorUnitario: TCurrencyEdit;
+    mskQuantidade: TCurrencyEdit;
+  private
+    FService: IProdutoServiceInterface;
+    procedure Inserir; override;
+    procedure Alterar; override;
+    procedure Pesquisa; override;
+    procedure LimparCampos; override;
+    procedure HabilitarCampos(Habilitar: Boolean); override;
+  public
+    constructor Create(AOwner: TComponent; AService: IProdutoServiceInterface);
+  end;
+
+var
+  frmCadastroProduto: TfrmCadastroProduto;
+
+implementation
+
+{$R *.dfm}
+
+constructor TfrmCadastroProduto.Create(AOwner: TComponent; AService: IProdutoServiceInterface);
+begin
+  inherited Create(AOwner);
+  FService:= AService;
+  TFormatacao.AplicarNumero(mskValorUnitario);
+  TFormatacao.AplicarNumero(mskQuantidade);
+end;
+
+{$REGION 'METODOS VIRTUAIS'}
+procedure TfrmCadastroProduto.Alterar;
+begin
+  inherited;
+end;
+procedure TfrmCadastroProduto.Inserir;
+var
+  Prod: TProdutoModel;
+begin
+    TValidarCampos.ValidarCampoVazio(mskNome, 'Nome');
+
+   prod := TProdutoModel.Create;
+   try
+     Prod.Nome := mskNome.Text;
+     Prod.CodBarra:= mskCodBarra.Text;
+     Prod.Estoque:= StrToCurr(mskQuantidade.Text);
+     Prod.ValorUnitario:= StrToCurr(mskValorUnitario.Text);
+     FService.Inserir(Prod);
+     ShowMessage('Cadastro realizado!');
+  finally
+     Prod.Free;
+  end
+end;
+procedure TfrmCadastroProduto.LimparCampos;
+begin
+  inherited;
+  mskNome.Clear;
+  mskCodBarra.Clear;
+  mskValorUnitario.Text := '0,00';
+  mskQuantidade.Text := '0,00';
+end;
+ procedure TfrmCadastroProduto.HabilitarCampos(Habilitar: Boolean);
+begin
+  inherited;
+  mskNome.Enabled := Habilitar;
+  mskCodBarra.Enabled := Habilitar;
+  mskValorUnitario.Enabled := Habilitar;
+  mskQuantidade.Enabled := Habilitar;
+  btnIniciarEstoque.Enabled := Habilitar;
+end;
+procedure TfrmCadastroProduto.Pesquisa;
+begin
+  inherited;
+  FService.ListarPorNomeTela(Qry, mskPesquisar.Text);
+end;
+{$ENDREGION}
+end.
