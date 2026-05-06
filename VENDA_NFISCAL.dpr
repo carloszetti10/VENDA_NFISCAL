@@ -61,7 +61,10 @@ uses
   iPagamentoVendaService in 'Source\Interface\IService\iPagamentoVendaService.pas',
   uPagamentoVendaService in 'Source\Service\uPagamentoVendaService.pas',
   uPagamentoUI in 'Source\UI\uPagamentoUI.pas' {frmPagamento},
-  Enter in 'Source\Utils\Enter.pas';
+  Enter in 'Source\Utils\Enter.pas',
+  uRelCadCliente in 'Source\UI\Relatorios\uRelCadCliente.pas' {frmRelCadCategorias},
+  uRelCadClientes in 'Source\UI\Relatorios\uRelCadClientes.pas' {frmRelCadClientes},
+  uControlUtils in 'Source\Utils\uControlUtils.pas';
 
 {$R *.res}
 
@@ -76,7 +79,7 @@ begin
 
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TftmLogin, ftmLogin);
-  Application.CreateForm(TfrmPagamento, frmPagamento);
+  //Application.CreateForm(TfrmRelCadCliente, frmRelCadCliente);
   //Application.CreateForm(TfrmTelaPrincipal, frmTelaPrincipal);
   Application.Run;
 end.

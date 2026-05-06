@@ -20,8 +20,7 @@ type
     procedure Alterar;override;
     procedure Novo;override;
     procedure Pesquisa; override;
-    procedure LimparCampos; override;
-    procedure HabilitarCampos(Habilitar: Boolean); override;
+
     function GetFuncionario: TFuncionarioModel;
     constructor Create(AOwner: TComponent; AService: IFuncionarioServiceInterface);
   end;
@@ -48,11 +47,7 @@ begin
   FService:= AService;
 end;
 
-procedure TfrmCadastroFuncionario.HabilitarCampos(Habilitar: Boolean);
-begin
-  inherited;
-  mskNome.Enabled := Habilitar;
-end;
+
 
 procedure TfrmCadastroFuncionario.Inserir;
 var
@@ -79,12 +74,6 @@ begin
       raise Exception.Create('Erro: ' + E.Message);
   end;
 
-
-end;
-
-procedure TfrmCadastroFuncionario.LimparCampos;
-begin
-  inherited;
 
 end;
 

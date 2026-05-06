@@ -9,7 +9,6 @@ inherited frmCadastroPagamento: TfrmCadastroPagamento
   inherited PageControlHerenca: TPageControl
     Width = 418
     Height = 172
-    ActivePage = TabCadastro
     ExplicitWidth = 418
     ExplicitHeight = 172
     inherited TabConsulta: TTabSheet

@@ -127,8 +127,39 @@ begin
 end;
 
 procedure TClienteDao.Update(Cliente: TClienteModel);
+var
+  Q: TZQuery;
 begin
+  Q := TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
 
+      Q.SQL.Text :=
+        'UPDATE CLIENTE SET ' +
+        'NOME = :NOME, ' +
+        'CPF_CNPJ = :CPF_CNPJ, ' +
+        'TIPO_PESSOA = :TIPO, ' +
+        'TELEFONE = :TELEFONE, ' +
+        'RAZAO_SOCIAL = :RAZAO_SOCIAL ' +
+        'WHERE ID_CLIENTE = :ID';
+
+      Q.ParamByName('ID').AsInteger := Cliente.Id;
+      Q.ParamByName('NOME').AsString := Cliente.Nome;
+      Q.ParamByName('CPF_CNPJ').AsString := Cliente.CpfCnpj;
+      Q.ParamByName('TIPO').AsString := Cliente.GetTipoChar;
+      Q.ParamByName('TELEFONE').AsString := Cliente.Telefone;
+      Q.ParamByName('RAZAO_SOCIAL').AsString := Cliente.RazaoSocial;
+
+      Q.ExecSQL;
+
+    except
+      on E: EDatabaseError do
+        raise EInfraException.Create('Erro ao atualizar cliente: ' + E.Message);
+    end;
+  finally
+    Q.Free;
+  end;
 end;
 
 end.

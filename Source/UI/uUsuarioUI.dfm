@@ -6,7 +6,6 @@ inherited TfrmCadastroUsuario: TTfrmCadastroUsuario
   TextHeight = 15
   inherited PageControlHerenca: TPageControl
     Width = 513
-    ActivePage = TabCadastro
     ExplicitWidth = 513
     inherited TabConsulta: TTabSheet
       ExplicitWidth = 505

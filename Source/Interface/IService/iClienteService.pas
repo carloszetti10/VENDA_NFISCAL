@@ -7,7 +7,7 @@ uses
 type
     IClienteServiceInterface = interface
     procedure Inserir(Cliente: TClienteModel);
-    procedure Alterar(ID: Integer);
+    procedure Alterar(Cliente: TClienteModel);
     function BuscarPorId(ID: Integer): TClienteModel;
     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
    end;

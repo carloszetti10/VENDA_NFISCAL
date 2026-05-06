@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaBaseCadastroUI, Data.DB, Vcl.Grids,
   Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls, uException,uValidarCampo,iClienteService, uClienteModel,
-  ZAbstractRODataset, ZAbstractDataset, ZDataset;
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, RxPlacemnt;
 
 type
   TfrmCadastroCliente = class(TfrmTelaBaseCadastro)
@@ -19,23 +19,24 @@ type
     mskRazao: TMaskEdit;
     lbRazao: TLabel;
     tipoCliente: TRadioGroup;
+    edtID: TLabeledEdit;
     procedure tipoClienteClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure dtsDadosDataChange(Sender: TObject; Field: TField);
-    procedure dbGridHerencaDblClick(Sender: TObject);
   private
     FService: IClienteServiceInterface;
     FTipoPessoa: TTipoPessoa;
-    FIDSelecionado: Integer;
+  public
+    {$REGION 'METODOS VIRTUAIS'}
     procedure Inserir; override;
     procedure Alterar;override;
     procedure Novo;override;
     procedure Pesquisa; override;
-    procedure LimparCampos; override;
-    procedure HabilitarCampos(Habilitar: Boolean); override;
-  public
-    constructor Create(AOwner: TComponent; AService: IClienteServiceInterface);
+    procedure PreencherCampos(id: Integer); override;
+
+    {$ENDREGION}
     function GetCliente: TClienteModel;
+    function CriarClienteTela: TClienteModel;
+    constructor Create(AOwner: TComponent; AService: IClienteServiceInterface);
   end;
 
 var
@@ -46,6 +47,28 @@ implementation
 {$R *.dfm}
 
 
+constructor TfrmCadastroCliente.Create(AOwner: TComponent; AService: IClienteServiceInterface);
+begin
+  inherited Create(AOwner);
+  FService := AService;
+end;
+
+
+function TfrmCadastroCliente.CriarClienteTela: TClienteModel;
+var
+  Cliente: TClienteModel;
+begin
+  Cliente := TClienteModel.Create;
+
+  Cliente.Id := StrToInt(edtID.Text);
+  Cliente.Nome := mskNome.Text;
+  Cliente.RazaoSocial := mskRazao.Text;
+  Cliente.Telefone := mskTelefone.Text;
+  Cliente.CpfCnpj := mskCpfCnpj.Text;
+  Cliente.TipoPessoa := FTipoPessoa;
+
+  Result:= Cliente;
+end;
 
 procedure TfrmCadastroCliente.FormShow(Sender: TObject);
 begin
@@ -56,35 +79,9 @@ end;
 function TfrmCadastroCliente.GetCliente: TClienteModel;
 begin
   Result := TClienteModel.Create;
-
   Result.Id := Qry.FieldByName('ID_CLIENTE').AsInteger;
   Result.Nome := Qry.FieldByName('NOME').AsString;
 end;
-
-constructor TfrmCadastroCliente.Create(AOwner: TComponent; AService: IClienteServiceInterface);
-begin
-  inherited Create(AOwner);
-  FService := AService;
-end;
-
-
-procedure TfrmCadastroCliente.dbGridHerencaDblClick(Sender: TObject);
-begin
-  if FIDSelecionado = 0 then
-    exit;
-  inherited;
-end;
-
-//sempre pegar o id do cliente que ta selecionado
-procedure TfrmCadastroCliente.dtsDadosDataChange(Sender: TObject; Field: TField);
-begin
-  inherited;
-  if (dtsDados.DataSet <> nil) and (not dtsDados.DataSet.IsEmpty) then
-  begin
-    FIDSelecionado := GetCliente.Id;
-  end;
-end;
-
 procedure TfrmCadastroCliente.tipoClienteClick(Sender: TObject);
 begin
   inherited;
@@ -117,19 +114,13 @@ procedure TfrmCadastroCliente.Inserir;
 var
   Cliente: TClienteModel;
 begin
-
   try
     TValidarCampos.ValidarCampoVazio(mskNome, 'Nome');
     if tipoCliente.ItemIndex = 1 then  // se o tipo for juridico
       TValidarCampos.ValidarCampoVazio(mskRazao, 'Razão social');
 
-    Cliente := TClienteModel.Create;
+    Cliente := CriarClienteTela;
     try
-      Cliente.Nome := mskNome.Text;
-      Cliente.RazaoSocial := mskRazao.Text;
-      Cliente.Telefone := mskTelefone.Text;
-      Cliente.CpfCnpj := mskCpfCnpj.Text;
-      Cliente.TipoPessoa := FTipoPessoa;
       FService.Inserir(Cliente);
       ShowMessage('Cadastro realizado!');
       ControlarBotoes(true);
@@ -148,28 +139,9 @@ begin
 end;
 
 
-procedure TfrmCadastroCliente.LimparCampos;
-begin
-  inherited;
-  mskNome.Clear;
-  mskTelefone.Clear;
-  mskCpfCnpj.Clear;
-  mskRazao.Clear;
-end;
-procedure TfrmCadastroCliente.HabilitarCampos(Habilitar: Boolean);
-begin
-  inherited;
-  mskNome.Enabled := Habilitar;
-  mskTelefone.Enabled := Habilitar;
-  mskCpfCnpj.Enabled := Habilitar;
-  mskRazao.Enabled := Habilitar;
-  tipoCliente.Enabled := Habilitar;
-end;
 procedure TfrmCadastroCliente.Novo;
 begin
   inherited;
-  //iniciar formulario
-  mskCpfCnpj.Enabled := true;
 end;
 
 procedure TfrmCadastroCliente.Pesquisa;
@@ -178,16 +150,16 @@ begin
   FService.ListarPorNomeTela(Qry, mskPesquisar.Text);
 end;
 
-procedure TfrmCadastroCliente.Alterar;
+procedure TfrmCadastroCliente.PreencherCampos(id :Integer);
 var
-  CliBanco : TClienteModel;
+  CliBanco: TClienteModel;
 begin
+  inherited;
   try
-    if FIDSelecionado = 0  then
-      raise EAppException.Create('Nenhum Cliente selecionado');
-
-    CliBanco:= FService.BuscarPorId(FIDSelecionado);
+    CliBanco:= FService.BuscarPorId(id);
     try
+      edtID.Text := CliBanco.Id.ToString;
+      tipoCliente.Enabled := false;
       mskNome.Text := CliBanco.Nome;
       mskTelefone.Text := CliBanco.Telefone;
       mskCpfCnpj.Text := CliBanco.CpfCnpj;
@@ -198,10 +170,10 @@ begin
         tipoCliente.ItemIndex := 0;
       end
       else
+      begin
         tipoCliente.ItemIndex := 1;
-        ControlarBotoes(false);
-        EstadoCadastro := ecAlterar;
-
+      end;
+      ControlarBotoes(false);
     finally
        CliBanco.Free;
     end;
@@ -211,8 +183,14 @@ begin
     on E: Exception do
       raise Exception.Create('Erro ao alterar cliente: ' + E.Message);
   end;
+end;
 
+procedure TfrmCadastroCliente.Alterar;
+begin
+  FService.Alterar(CriarClienteTela);
 end;
 {$ENDREGION}
+
+
 
 end.

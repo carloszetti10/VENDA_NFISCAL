@@ -9,9 +9,10 @@ type
      FClienteDAO : IClienteDAOO;
    public
       procedure Inserir(Cliente: TClienteModel);
-      procedure Alterar(ID: Integer);
+      procedure Alterar(Cliente: TClienteModel);
       function BuscarPorId(ID: Integer): TClienteModel;
       constructor Create(AClienteDao: IClienteDAOO);
+      function DocumentoValido(ACliente: TClienteModel): Boolean;
       procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
    end;
 
@@ -19,34 +20,16 @@ implementation
 
 { TClienteService }
 
-procedure TClienteService.Alterar(ID: Integer);
-var
-  Cliente: TClienteModel;
-  Dados: TClienteModel;
-
+procedure TClienteService.Alterar(Cliente: TClienteModel);
 begin
-  Dados := FClienteDAO.FindByID(ID);
   try
-    if Dados = nil then
+    if Cliente.Id = 0 then
       raise EAppException.Create('Cliente não encontrado');
-
-    Cliente := TClienteModel.Create;
-    try
-      Cliente.Id := Dados.Id;
-      Cliente.Nome := Dados.Nome;
-      Cliente.CpfCnpj := Dados.CpfCnpj;
-      Cliente.TipoPessoa := Dados.TipoPessoa;
-      Cliente.Ativo := Dados.Ativo;
-
-      //FClienteDAO.Update(Cliente);
-
-    finally
-      Cliente.Free;
-    end;
-  finally
-    Dados.Free;
+    FClienteDAO.Update(Cliente);
+  Except
+    on E: EAppException do
+      raise;
   end;
-
 end;
 
 function TClienteService.BuscarPorId(ID: Integer): TClienteModel;
@@ -60,28 +43,30 @@ begin
   FClienteDAO := AClienteDao;
 end;
 
+function TClienteService.DocumentoValido(ACliente: TClienteModel): Boolean;
+begin
+  case ACliente.TipoPessoa of
+    //TTipoPessoa.F:
+      //Result := TValidadorDocumento.ValidarCPF(ACliente.CpfCnpj);
+
+    TTipoPessoa.J:
+      Result := TValidadorDocumento.ValidarCNPJ(ACliente.CpfCnpj);
+  else
+    Result := False;
+  end;
+end;
+
 //Cadastrar Clientes
 procedure TClienteService.Inserir(Cliente: TClienteModel);
-var
-  isCpfValido: Boolean;
-  isCnpjValido: Boolean;
 begin
-  isCpfValido := False;
-  isCnpjValido := False;
   Try
-     if Cliente.TipoPessoa = TTipoPessoa.F then
-       //validar cfp
-       isCpfVAlido := TValidadorDocumento.ValidarCPF(Cliente.CpfCnpj);
-     if Cliente.TipoPessoa = TTipoPessoa.J then
-       //validar cnpj
-        isCnpjValido := TValidadorDocumento.ValidarCNPJ(Cliente.CpfCnpj);
-     if (isCpfValido) and (isCnpjValido) then
-       raise EAppException.Create('Documento invalido!');
+    if not DocumentoValido(Cliente) then
+      raise EAppException.Create('Documento inválido!');
      //verificar se ja existe
-     if (FClienteDAO.FindByDocumento(Cliente.CpfCnpj) <> nil) then
-       raise EAppException.Create('Documento já registrado no sistema.');
-     //salvar no banco
-     FClienteDAO.Insert(Cliente);
+    if (FClienteDAO.FindByDocumento(Cliente.CpfCnpj) <> nil) then
+      raise EAppException.Create('Documento já registrado no sistema.');
+    //salvar no banco
+    FClienteDAO.Insert(Cliente);
   except
     on EApp: EAppException do
       raise;

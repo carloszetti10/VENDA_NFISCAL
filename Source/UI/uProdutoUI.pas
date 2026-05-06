@@ -25,8 +25,7 @@ type
     procedure Inserir; override;
     procedure Alterar; override;
     procedure Pesquisa; override;
-    procedure LimparCampos; override;
-    procedure HabilitarCampos(Habilitar: Boolean); override;
+
   public
     constructor Create(AOwner: TComponent; AService: IProdutoServiceInterface);
   end;
@@ -67,23 +66,8 @@ begin
      Prod.Free;
   end
 end;
-procedure TfrmCadastroProduto.LimparCampos;
-begin
-  inherited;
-  mskNome.Clear;
-  mskCodBarra.Clear;
-  mskValorUnitario.Text := '0,00';
-  mskQuantidade.Text := '0,00';
-end;
- procedure TfrmCadastroProduto.HabilitarCampos(Habilitar: Boolean);
-begin
-  inherited;
-  mskNome.Enabled := Habilitar;
-  mskCodBarra.Enabled := Habilitar;
-  mskValorUnitario.Enabled := Habilitar;
-  mskQuantidade.Enabled := Habilitar;
 
-end;
+
 procedure TfrmCadastroProduto.Pesquisa;
 begin
   inherited;

@@ -35,8 +35,7 @@ type
     procedure Inserir; override;
     procedure Alterar; override;
     procedure Pesquisa; override;
-    procedure LimparCampos; override;
-    procedure HabilitarCampos(Habilitar: Boolean); override;
+
 
   end;
 
@@ -98,11 +97,7 @@ begin
   end;
 end;
 
-procedure TTfrmCadastroUsuario.HabilitarCampos(Habilitar: Boolean);
-begin
-  inherited;
 
-end;
 
 procedure TTfrmCadastroUsuario.Inserir;
   var
@@ -127,11 +122,6 @@ begin
      Usuario.Free;
      Lista.Free;
   end
-end;
-procedure TTfrmCadastroUsuario.LimparCampos;
-begin
-  inherited;
-
 end;
 
 procedure TTfrmCadastroUsuario.MarcarPermissoes(Lista: TList<Integer>);

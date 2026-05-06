@@ -20,8 +20,7 @@ type
     procedure Alterar;override;
     procedure Novo;override;
     procedure Pesquisa; override;
-    procedure LimparCampos; override;
-    procedure HabilitarCampos(Habilitar: Boolean); override;
+
   end;
 
 var
@@ -39,19 +38,9 @@ begin
 
 end;
 
-procedure TfrmCadastroPagamento.HabilitarCampos(Habilitar: Boolean);
-begin
-  inherited;
 
-end;
 
 procedure TfrmCadastroPagamento.Inserir;
-begin
-  inherited;
-
-end;
-
-procedure TfrmCadastroPagamento.LimparCampos;
 begin
   inherited;
 
