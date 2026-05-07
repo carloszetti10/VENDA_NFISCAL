@@ -1,0 +1,129 @@
+inherited frmCadastroCliente: TfrmCadastroCliente
+  Caption = 'CLIENTES'
+  StyleElements = [seFont, seClient, seBorder]
+  TextHeight = 15
+  inherited PageControlHerenca: TPageControl
+    inherited TabConsulta: TTabSheet
+      inherited Panel1: TPanel
+        StyleElements = [seFont, seClient, seBorder]
+        inherited mskPesquisar: TMaskEdit
+          StyleElements = [seFont, seClient, seBorder]
+        end
+      end
+      inherited dbGridHerenca: TDBGrid
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'ID_CLIENTE'
+            Title.Caption = 'CODIGO'
+            Width = 61
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'NOME'
+            Title.Caption = 'NOME DO CLIENTE'
+            Width = 197
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'CPF_CNPJ'
+            Title.Caption = 'DOCUMENTO'
+            Width = 166
+            Visible = True
+          end>
+      end
+      inherited Panel2: TPanel
+        StyleElements = [seFont, seClient, seBorder]
+      end
+    end
+    inherited TabCadastro: TTabSheet
+      object GroupBox1: TGroupBox
+        Left = 16
+        Top = 32
+        Width = 569
+        Height = 281
+        Caption = 'CADASTRO DE CLIENTES'
+        TabOrder = 0
+        object Label1: TLabel
+          Left = 24
+          Top = 106
+          Width = 38
+          Height = 15
+          Caption = 'NOME:'
+        end
+        object Label2: TLabel
+          Left = 24
+          Top = 170
+          Width = 57
+          Height = 15
+          Caption = 'TELEFONE:'
+        end
+        object lbRazao: TLabel
+          Left = 288
+          Top = 170
+          Width = 85
+          Height = 15
+          Caption = 'RAZ'#195'O SOCIAL:'
+        end
+        object mskNome: TMaskEdit
+          Left = 24
+          Top = 127
+          Width = 205
+          Height = 23
+          TabOrder = 0
+          Text = ''
+        end
+        object mskTelefone: TMaskEdit
+          Left = 24
+          Top = 191
+          Width = 205
+          Height = 23
+          TabOrder = 1
+          Text = ''
+        end
+        object mskCpfCnpj: TMaskEdit
+          Left = 288
+          Top = 127
+          Width = 205
+          Height = 23
+          TabOrder = 2
+          Text = ''
+        end
+        object mskRazao: TMaskEdit
+          Left = 288
+          Top = 191
+          Width = 205
+          Height = 23
+          TabOrder = 3
+          Text = ''
+        end
+        object edtID: TEdit
+          Left = 24
+          Top = 72
+          Width = 121
+          Height = 23
+          NumbersOnly = True
+          TabOrder = 4
+        end
+      end
+      object tipoCliente: TRadioGroup
+        Left = 304
+        Top = 104
+        Width = 137
+        Height = 41
+        Caption = 'TIPO'
+        Columns = 2
+        Items.Strings = (
+          'FISICO'
+          'JURIDICO')
+        TabOrder = 1
+        OnClick = tipoClienteClick
+      end
+    end
+  end
+  inherited pnlInferior: TPanel
+    StyleElements = [seFont, seClient, seBorder]
+  end
+end

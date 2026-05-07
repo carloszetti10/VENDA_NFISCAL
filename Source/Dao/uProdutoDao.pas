@@ -8,19 +8,18 @@ type
   TProdutoDao = class(TInterfacedObject, IProdutoDAOO)
     private
       FConexao : TZConnection;
-    public
-     procedure Update(Produto: TProdutoModel);
-     function FindByID(ID: Integer): TProdutoModel;
-     function  FindByCodBarra(cod: string): TProdutoModel;
-     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
-     Constructor Create(Conn:TZConnection);
-     procedure BaixarEstoque(IdProduto: Integer; Quantidade: Currency);
-
-
-    function Inserir(Produto: TProdutoModel): Boolean;
-    function Atualizar(Produto: TProdutoModel): Boolean;
-    function Apagar(Id: Integer): Boolean;
     function Selecionar(Id: Integer): TProdutoModel;
+    public
+      procedure Update(Produto: TProdutoModel);
+      function FindByID(ID: Integer): TProdutoModel;
+      function  FindByCodBarra(cod: string): TProdutoModel;
+      procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
+      Constructor Create(Conn:TZConnection);
+      procedure BaixarEstoque(IdProduto: Integer; Quantidade: Currency);
+
+      function Inserir(Produto: TProdutoModel): Boolean;
+      function Atualizar(Produto: TProdutoModel): Boolean;
+      function Apagar(Id: Integer): Boolean;
 
 
   end;

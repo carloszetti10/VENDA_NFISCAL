@@ -3,7 +3,7 @@ unit uControlUtils;
 interface
 
 uses
-  Vcl.StdCtrls, Vcl.Mask, Vcl.ComCtrls, Vcl.Controls,Vcl.ExtCtrls;
+  Vcl.StdCtrls, Vcl.Mask, Vcl.ComCtrls, Vcl.Controls,Vcl.ExtCtrls,RxCurrEdit;
 type
 TControlUtils = class
 
@@ -46,21 +46,23 @@ begin
     if Parent.Controls[i] is TEdit then
       TEdit(Parent.Controls[i]).Enabled := Habilitar;
 
-    if Parent.Controls[i] is TMaskEdit then
+    if Parent.Controls[i] is TMaskEdit and (Parent.Controls[i].Tag <> 1) then
       TMaskEdit(Parent.Controls[i]).Enabled := Habilitar;
 
     if Parent.Controls[i] is TComboBox then
       TComboBox(Parent.Controls[i]).Enabled := Habilitar;
 
-    if Parent.Controls[i] is TLabeledEdit then
+    if (Parent.Controls[i] is TLabeledEdit) and (Parent.Controls[i].Tag <> 1) then
       TComboBox(Parent.Controls[i]).Enabled := Habilitar;
 
-    if Parent.Controls[i] is TRadioGroup then
+    if Parent.Controls[i] is TRadioGroup and (Parent.Controls[i].Tag <> 1) then
       TEdit(Parent.Controls[i]).Enabled := Habilitar;
 
     if Parent.Controls[i] is TWinControl then
       HabilitarControles(TWinControl(Parent.Controls[i]), Habilitar);
 
+    if Parent.Controls[i] is TCurrencyEdit then
+      HabilitarControles(TWinControl(Parent.Controls[i]), Habilitar);
 
   end;
 end;

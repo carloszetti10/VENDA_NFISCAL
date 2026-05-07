@@ -46,8 +46,8 @@ end;
 function TClienteService.DocumentoValido(ACliente: TClienteModel): Boolean;
 begin
   case ACliente.TipoPessoa of
-    //TTipoPessoa.F:
-      //Result := TValidadorDocumento.ValidarCPF(ACliente.CpfCnpj);
+    TTipoPessoa.F:
+      Result := TValidadorDocumento.ValidarCPF(ACliente.CpfCnpj);
 
     TTipoPessoa.J:
       Result := TValidadorDocumento.ValidarCNPJ(ACliente.CpfCnpj);

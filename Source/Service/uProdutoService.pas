@@ -10,6 +10,7 @@ type
    public
      procedure Inserir(Produto: TProdutoModel);
      function Atualizar(Produto: TProdutoModel): Boolean;
+     function BuscarPorId(ID: Integer): TProdutoModel;
      constructor Create(AProdDao: IProdutoDAOO);
      procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
      procedure BaixarEstoque(id: integer; quant :Currency);
@@ -23,6 +24,11 @@ procedure TProdutoService.BaixarEstoque(id: integer; quant: Currency);
 begin
   FProdutoDAO.BaixarEstoque(id,quant);
 end;
+function TProdutoService.BuscarPorId(ID: Integer): TProdutoModel;
+begin
+   Result:= FProdutoDAO.FIndByID(ID);
+end;
+
 constructor TProdutoService.Create(AProdDao: IProdutoDAOO);
 begin
   inherited Create;

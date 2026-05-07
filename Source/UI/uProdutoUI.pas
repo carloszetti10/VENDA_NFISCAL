@@ -14,17 +14,19 @@ type
     gpCadastro: TGroupBox;
     mskNome: TMaskEdit;
     Label1: TLabel;
-    Label2: TLabel;
-    mskCodBarra: TMaskEdit;
     Label3: TLabel;
     Label4: TLabel;
     mskValorUnitario: TCurrencyEdit;
     mskQuantidade: TCurrencyEdit;
+    edtID: TLabeledEdit;
+    mskCodBarra: TLabeledEdit;
   private
     FService: IProdutoServiceInterface;
     procedure Inserir; override;
     procedure Alterar; override;
     procedure Pesquisa; override;
+    procedure Novo; virtual;
+    procedure PreencherCampos(id: Integer); override;
 
   public
     constructor Create(AOwner: TComponent; AService: IProdutoServiceInterface);
@@ -41,6 +43,7 @@ constructor TfrmCadastroProduto.Create(AOwner: TComponent; AService: IProdutoSer
 begin
   inherited Create(AOwner);
   FService:= AService;
+  edtID.Enabled := true;
 end;
 
 {$REGION 'METODOS VIRTUAIS'}
@@ -61,17 +64,38 @@ begin
      Prod.Estoque:= StrToCurr(mskQuantidade.Text);
      Prod.ValorUnitario:= StrToCurr(mskValorUnitario.Text);
      FService.Inserir(Prod);
-     ShowMessage('Cadastro realizado!');
   finally
      Prod.Free;
   end
 end;
 
+procedure TfrmCadastroProduto.Novo;
+begin
+
+end;
 
 procedure TfrmCadastroProduto.Pesquisa;
 begin
   inherited;
   FService.ListarPorNomeTela(Qry, mskPesquisar.Text);
 end;
+
+procedure TfrmCadastroProduto.PreencherCampos(id: Integer);
+var
+  ProdBanco: TProdutoModel;
+begin
+   ProdBanco := FService.BuscarPorId(id);
+   try
+
+     edtID.Text := ProdBanco.IdProduto.ToString;
+     mskNome.Text := ProdBanco.Nome;
+     mskCodBarra.Text  := ProdBanco.CodBarra;
+     mskQuantidade.Text := ProdBanco.Estoque.ToString;
+     mskValorUnitario.Text := ProdBanco.ValorUnitario.ToString;
+  finally
+     ProdBanco.Free;
+  end
+end;
+
 {$ENDREGION}
 end.

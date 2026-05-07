@@ -8,13 +8,12 @@ type
     function  FindByCodBarra(cod: string): TProdutoModel;
     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
     procedure BaixarEstoque(id: integer; quant :Currency);
-
+    function  FIndByID(Id: Integer): TProdutoModel;
 
 
     function Inserir(Produto: TProdutoModel): Boolean;
     function Atualizar(Produto: TProdutoModel): Boolean;
     function Apagar(Id: Integer): Boolean;
-    function Selecionar(Id: Integer): TProdutoModel;
    end;
 
 implementation

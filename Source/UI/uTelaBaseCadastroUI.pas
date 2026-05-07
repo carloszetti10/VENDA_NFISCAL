@@ -81,7 +81,7 @@ begin
         Inserir;  //metodo de inserir
      if EstadoCadastro = ecAlterar then
         Alterar; //metodo alterar
-
+     TDialogo.Sucesso('Operação finalizada com sucesso!');
      FEstadoCadastro := ecNenhum;
      ControlarBotoes(True);
      Iniciar;

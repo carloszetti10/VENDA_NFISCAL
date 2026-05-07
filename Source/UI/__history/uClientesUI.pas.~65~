@@ -1,0 +1,208 @@
+﻿unit uClientesUI;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaBaseCadastroUI, Data.DB, Vcl.Grids,
+  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls, uException,uValidarCampo,iClienteService, uClienteModel,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, RxPlacemnt, Vcl.JumpList,
+  RxGrids;
+
+type
+  TfrmCadastroCliente = class(TfrmTelaBaseCadastro)
+    GroupBox1: TGroupBox;
+    mskNome: TMaskEdit;
+    Label1: TLabel;
+    mskTelefone: TMaskEdit;
+    Label2: TLabel;
+    mskCpfCnpj: TMaskEdit;
+    mskRazao: TMaskEdit;
+    lbRazao: TLabel;
+    tipoCliente: TRadioGroup;
+    edtID: TLabeledEdit;
+    procedure tipoClienteClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+
+  private
+    FService: IClienteServiceInterface;
+    FTipoPessoa: TTipoPessoa;
+  public
+    {$REGION 'METODOS VIRTUAIS'}
+    procedure Inserir; override;
+    procedure Alterar;override;
+    procedure Novo;override;
+    procedure Pesquisa; override;
+    procedure PreencherCampos(id: Integer); override;
+
+    {$ENDREGION}
+    function GetCliente: TClienteModel;
+    function CriarClienteTela: TClienteModel;
+    constructor Create(AOwner: TComponent; AService: IClienteServiceInterface);
+  end;
+
+var
+  frmCadastroCliente: TfrmCadastroCliente;
+
+implementation
+
+{$R *.dfm}
+
+
+constructor TfrmCadastroCliente.Create(AOwner: TComponent; AService: IClienteServiceInterface);
+begin
+  inherited Create(AOwner);
+  FService := AService;
+  edtID.Enabled:= false;
+  mskCpfCnpj.Tag := 0;
+  tipoCliente.Tag := 0;
+end;
+
+
+function TfrmCadastroCliente.CriarClienteTela: TClienteModel;
+var
+  Cliente: TClienteModel;
+begin
+  Cliente := TClienteModel.Create;
+  Cliente.Id := 0;
+  if EstadoCadastro = ecAlterar then
+    Cliente.Id := StrToInt(edtID.Text);
+  Cliente.Nome := mskNome.Text;
+  Cliente.RazaoSocial := mskRazao.Text;
+  Cliente.Telefone := mskTelefone.Text;
+  Cliente.CpfCnpj := mskCpfCnpj.Text;
+  Cliente.TipoPessoa := FTipoPessoa;
+
+  Result:= Cliente;
+end;
+
+procedure TfrmCadastroCliente.FormShow(Sender: TObject);
+begin
+  inherited;
+  tipoCliente.ItemIndex := 0;
+end;
+function TfrmCadastroCliente.GetCliente: TClienteModel;
+begin
+  Result := TClienteModel.Create;
+  Result.Id := Qry.FieldByName('ID_CLIENTE').AsInteger;
+  Result.Nome := Qry.FieldByName('NOME').AsString;
+end;
+procedure TfrmCadastroCliente.tipoClienteClick(Sender: TObject);
+begin
+  inherited;
+  case tipoCliente.ItemIndex of
+    0: // CPF
+    begin
+       mskCpfCnpj.EditMask := '000.000.000-00;0;_';
+       mskRazao.Visible := false;
+       lbRazao.Visible := false;
+       FTipoPessoa := TTipoPessoa.F;
+    end;
+
+
+    1: // CNPJ
+    begin
+       mskCpfCnpj.EditMask := '00.000.000/0000-00;0;_';
+       mskRazao.Visible := true;
+       lbRazao.Visible := true;
+       FTipoPessoa := TTipoPessoa.J;
+    end;
+
+  end;
+  mskCpfCnpj.Clear;
+end;
+
+{$REGION 'METODOS VIRTUAIS'}
+
+procedure TfrmCadastroCliente.Inserir;
+var
+  Cliente: TClienteModel;
+begin
+  try
+    TValidarCampos.ValidarCampoVazio(mskNome, 'Nome');
+    if tipoCliente.ItemIndex = 1 then  // se o tipo for juridico
+      TValidarCampos.ValidarCampoVazio(mskRazao, 'Razão social');
+
+    Cliente := CriarClienteTela;
+    try
+      FService.Inserir(Cliente);
+      ControlarBotoes(true);
+      EstadoCadastro := ecNenhum;
+  finally
+     Cliente.Free;
+  end
+  except
+    on E: EAppException do
+      raise;
+    on E: EInfraException do
+      raise;
+    on E: Exception do
+      raise Exception.Create('Erro: ' + E.Message);
+  end;
+end;
+
+
+
+procedure TfrmCadastroCliente.Novo;
+begin
+  mskCpfCnpj.Tag := 0;
+  tipoCliente.Tag := 0;
+  inherited;
+end;
+
+procedure TfrmCadastroCliente.Pesquisa;
+begin
+  inherited;
+  FService.ListarPorNomeTela(Qry, mskPesquisar.Text);
+end;
+
+procedure TfrmCadastroCliente.PreencherCampos(id :Integer);
+var
+  CliBanco: TClienteModel;
+begin
+  inherited;
+  try
+    CliBanco:= FService.BuscarPorId(id);
+    try
+      edtID.Text := CliBanco.Id.ToString;
+      mskCpfCnpj.Enabled:= False;
+      tipoCliente.Enabled := false;
+      mskCpfCnpj.Tag := 1;    //receber a tag 1 para não ser habilitado
+      tipoCliente.Tag := 1;
+
+
+      tipoCliente.Enabled := false;
+      mskNome.Text := CliBanco.Nome;
+      mskTelefone.Text := CliBanco.Telefone;
+      mskCpfCnpj.Text := CliBanco.CpfCnpj;
+      mskCpfCnpj.Enabled := false;
+      mskRazao.Text := CliBanco.RazaoSocial;
+      if CliBanco.TipoPessoa = TTipoPessoa.F then
+      begin
+        tipoCliente.ItemIndex := 0;
+      end
+      else
+      begin
+        tipoCliente.ItemIndex := 1;
+      end;
+      ControlarBotoes(false);
+    finally
+       CliBanco.Free;
+    end;
+  except
+     on E: EAppException do
+      raise;
+    on E: Exception do
+      raise Exception.Create('Erro ao alterar cliente: ' + E.Message);
+  end;
+end;
+
+procedure TfrmCadastroCliente.Alterar;
+begin
+  FService.Alterar(CriarClienteTela);
+end;
+{$ENDREGION}
+
+
+
+end.

@@ -1,0 +1,87 @@
+unit uClienteService;
+
+interface
+uses
+  iClienteService,SysUtils,uClienteModel,uException, uValidadorDocumento, IClienteDAO,ZDataset, Vcl.Forms, Vcl.Dialogs;
+type
+   TClienteService = class(TInterfacedObject, IClienteServiceInterface)
+   private
+     FClienteDAO : IClienteDAOO;
+   public
+      procedure Inserir(Cliente: TClienteModel);
+      procedure Alterar(Cliente: TClienteModel);
+      function BuscarPorId(ID: Integer): TClienteModel;
+      constructor Create(AClienteDao: IClienteDAOO);
+      function DocumentoValido(ACliente: TClienteModel): Boolean;
+      procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
+   end;
+
+implementation
+
+{ TClienteService }
+
+procedure TClienteService.Alterar(Cliente: TClienteModel);
+begin
+  try
+    if Cliente.Id = 0 then
+      raise EAppException.Create('Cliente não encontrado');
+    FClienteDAO.Update(Cliente);
+  Except
+    on E: EAppException do
+      raise;
+  end;
+end;
+
+function TClienteService.BuscarPorId(ID: Integer): TClienteModel;
+begin
+  result := FClienteDAO.FindByID(ID);
+end;
+
+constructor TClienteService.Create(AClienteDao: IClienteDAOO);
+begin
+  inherited Create;
+  FClienteDAO := AClienteDao;
+end;
+
+function TClienteService.DocumentoValido(ACliente: TClienteModel): Boolean;
+begin
+  case ACliente.TipoPessoa of
+    //TTipoPessoa.F:
+      //Result := TValidadorDocumento.ValidarCPF(ACliente.CpfCnpj);
+
+    TTipoPessoa.J:
+      Result := TValidadorDocumento.ValidarCNPJ(ACliente.CpfCnpj);
+  else
+    Result := False;
+  end;
+end;
+
+//Cadastrar Clientes
+procedure TClienteService.Inserir(Cliente: TClienteModel);
+begin
+  Try
+    if not DocumentoValido(Cliente) then
+      raise EAppException.Create('Documento inválido!');
+     //verificar se ja existe
+    if (FClienteDAO.FindByDocumento(Cliente.CpfCnpj) <> nil) then
+      raise EAppException.Create('Documento já registrado no sistema.');
+    //salvar no banco
+    FClienteDAO.Insert(Cliente);
+  except
+    on EApp: EAppException do
+      raise;
+    on EInf: EInfraException do
+      raise;
+    on EG: Exception do
+      raise Exception.Create('Erro ao salvar Cliente '+EG.Message);
+  end;
+
+end;
+
+//Pesquisar cliente por nome
+procedure TClienteService.ListarPorNomeTela(Q: TZQuery; Nome: string);
+begin
+  FClienteDAO.ListarPorNomeTela(Q,Nome);
+end;
+
+end.

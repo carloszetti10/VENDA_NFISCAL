@@ -79,6 +79,10 @@ begin
       Result.CpfCnpj := Q.FieldByName('CPF_CNPJ').AsString;
       Result.Telefone := Q.FieldByName('TELEFONE').AsString;
       Result.RazaoSocial := Q.FieldByName('RAZAO_SOCIAL').AsString;
+      if Q.FieldByName('TIPO').AsString = 'F' then
+        Result.TipoPessoa := F
+      else
+        Result.TipoPessoa := J;
     end
     else
       result := nil;

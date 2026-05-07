@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaBaseCadastroUI, Data.DB, Vcl.Grids,
   Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls, uException,uValidarCampo,iClienteService, uClienteModel,
-  ZAbstractRODataset, ZAbstractDataset, ZDataset, RxPlacemnt;
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, RxPlacemnt, Vcl.JumpList,
+  RxGrids;
 
 type
   TfrmCadastroCliente = class(TfrmTelaBaseCadastro)
@@ -22,6 +23,7 @@ type
     edtID: TLabeledEdit;
     procedure tipoClienteClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+
   private
     FService: IClienteServiceInterface;
     FTipoPessoa: TTipoPessoa;
@@ -51,6 +53,9 @@ constructor TfrmCadastroCliente.Create(AOwner: TComponent; AService: IClienteSer
 begin
   inherited Create(AOwner);
   FService := AService;
+  edtID.Enabled:= false;
+  mskCpfCnpj.Tag := 0;
+  tipoCliente.Tag := 0;
 end;
 
 
@@ -59,8 +64,9 @@ var
   Cliente: TClienteModel;
 begin
   Cliente := TClienteModel.Create;
-
-  Cliente.Id := StrToInt(edtID.Text);
+  Cliente.Id := 0;
+  if EstadoCadastro = ecAlterar then
+    Cliente.Id := StrToInt(edtID.Text);
   Cliente.Nome := mskNome.Text;
   Cliente.RazaoSocial := mskRazao.Text;
   Cliente.Telefone := mskTelefone.Text;
@@ -75,7 +81,6 @@ begin
   inherited;
   tipoCliente.ItemIndex := 0;
 end;
-
 function TfrmCadastroCliente.GetCliente: TClienteModel;
 begin
   Result := TClienteModel.Create;
@@ -88,7 +93,7 @@ begin
   case tipoCliente.ItemIndex of
     0: // CPF
     begin
-       mskCpfCnpj.EditMask := '000.000.000-00;1;_';
+       mskCpfCnpj.EditMask := '000.000.000-00;0;_';
        mskRazao.Visible := false;
        lbRazao.Visible := false;
        FTipoPessoa := TTipoPessoa.F;
@@ -97,14 +102,13 @@ begin
 
     1: // CNPJ
     begin
-       mskCpfCnpj.EditMask := '00.000.000/0000-00;1;_';
+       mskCpfCnpj.EditMask := '00.000.000/0000-00;0;_';
        mskRazao.Visible := true;
        lbRazao.Visible := true;
        FTipoPessoa := TTipoPessoa.J;
     end;
 
   end;
-
   mskCpfCnpj.Clear;
 end;
 
@@ -122,7 +126,6 @@ begin
     Cliente := CriarClienteTela;
     try
       FService.Inserir(Cliente);
-      ShowMessage('Cadastro realizado!');
       ControlarBotoes(true);
       EstadoCadastro := ecNenhum;
   finally
@@ -138,9 +141,10 @@ begin
   end;
 end;
 
-
 procedure TfrmCadastroCliente.Novo;
 begin
+  mskCpfCnpj.Tag := 0;
+  tipoCliente.Tag := 0;
   inherited;
 end;
 
@@ -159,6 +163,12 @@ begin
     CliBanco:= FService.BuscarPorId(id);
     try
       edtID.Text := CliBanco.Id.ToString;
+      mskCpfCnpj.Enabled:= False;
+      tipoCliente.Enabled := false;
+      mskCpfCnpj.Tag := 1;    //receber a tag 1 para não ser habilitado
+      tipoCliente.Tag := 1;
+
+
       tipoCliente.Enabled := false;
       mskNome.Text := CliBanco.Nome;
       mskTelefone.Text := CliBanco.Telefone;
@@ -187,6 +197,10 @@ end;
 
 procedure TfrmCadastroCliente.Alterar;
 begin
+
+  TValidarCampos.ValidarCampoVazio(mskNome, 'Nome');
+  if tipoCliente.ItemIndex = 1 then  // se o tipo for juridico
+    TValidarCampos.ValidarCampoVazio(mskRazao, 'Razão social');
   FService.Alterar(CriarClienteTela);
 end;
 {$ENDREGION}
