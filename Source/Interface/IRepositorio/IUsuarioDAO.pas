@@ -15,6 +15,7 @@ type
     function  Login(ALogin, ASenha: string): TUsuarioModel;
     function  FindByLogin(const Login: string): TUsuarioModel;
     procedure ListarPermissoes(Q: TZQuery);
+    procedure CarregarPermissoes(AUsuario: TUsuarioModel);
    end;
 
 implementation

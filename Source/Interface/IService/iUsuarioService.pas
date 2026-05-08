@@ -11,6 +11,7 @@ type
     function Login(ALogin, ASenha: string): TUsuarioModel;
     procedure PreecherAppContext(UsuarioLogado: TUsuarioModel; Loja: TLojaModel);
     procedure ListarPermissoes(Q: TZQuery);
+    function BuscarPorId(ID: Integer): TUsuarioModel;
    end;
 
 implementation

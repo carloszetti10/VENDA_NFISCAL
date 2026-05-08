@@ -12,7 +12,7 @@ type
       FLogin: string;
       FSenha: string;
       FAtivo: Boolean;
-      FPermissao: TList<TPermissaoModel>;
+      FPermissao: TObjectList<TPermissaoModel>;
     public
       property Id: Integer read FId write FId;
       property IdFuncionario: Integer read FIdFuncionario write FIdFuncionario;
@@ -20,7 +20,7 @@ type
       property Login: string read FLogin write FLogin;
       property Senha: string read FSenha write FSenha;
       property Ativo: Boolean read FAtivo write FAtivo;
-      property Permissao: TList<TPermissaoModel> read FPermissao write FPermissao;
+      property Permissao: TObjectList<TPermissaoModel> read FPermissao write FPermissao;
       constructor Create; overload;
       destructor Destroy;
       function TemPermissao(const ACodigo: string): Boolean;
@@ -33,7 +33,7 @@ implementation
 constructor TUsuarioModel.Create;
 begin
 inherited Create;
-FPermissao := TList<TPermissaoModel>.Create;
+FPermissao := TObjectList<TPermissaoModel>.Create;
 end;
 
 destructor TUsuarioModel.Destroy;

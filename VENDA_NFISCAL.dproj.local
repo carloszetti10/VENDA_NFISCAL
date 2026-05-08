@@ -63,8 +63,8 @@
     <Transaction>2026/04/27 23:01:20.000.502,D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Service\uProdutoService.pas</Transaction>
     <Transaction>2026/04/28 11:40:06.000.144,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
     <Transaction>2026/04/28 11:43:07.000.027,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
-    <Transaction>2026/04/28 11:45:37.000.419,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uFuncionarioUI.dfm=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.dfm</Transaction>
     <Transaction>2026/04/28 11:45:37.000.419,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uFuncionarioUI.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
+    <Transaction>2026/04/28 11:45:37.000.419,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uFuncionarioUI.dfm=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.dfm</Transaction>
     <Transaction>2026/04/28 11:50:52.000.149,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
     <Transaction>2026/04/28 11:55:11.000.678,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uFormaPagamentoUI.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
     <Transaction>2026/04/28 11:55:11.000.678,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uFormaPagamentoUI.dfm=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.dfm</Transaction>
@@ -96,8 +96,8 @@
     <Transaction>2026/04/29 01:59:41.000.762,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
     <Transaction>2026/04/29 02:00:32.000.403,D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Utils\uEditUtils.pas</Transaction>
     <Transaction>2026/04/29 11:29:24.000.673,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
-    <Transaction>2026/04/29 12:08:05.000.346,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uVendaDavUI.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
     <Transaction>2026/04/29 12:08:05.000.346,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uVendaDavUI.dfm=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.dfm</Transaction>
+    <Transaction>2026/04/29 12:08:05.000.346,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uVendaDavUI.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
     <Transaction>2026/04/29 23:28:25.000.887,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
     <Transaction>2026/04/29 23:28:44.000.194,D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Model\uVendaModel.pas</Transaction>
     <Transaction>2026/04/29 23:29:52.000.054,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
@@ -123,8 +123,8 @@
     <Transaction>2026/05/02 16:43:51.000.633,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
     <Transaction>2026/05/02 17:18:56.000.826,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
     <Transaction>2026/05/02 17:19:16.000.762,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
-    <Transaction>2026/05/02 17:26:22.000.265,D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.dfm=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uLoginUI.dfm</Transaction>
     <Transaction>2026/05/02 17:26:22.000.265,D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uLoginUI.pas</Transaction>
+    <Transaction>2026/05/02 17:26:22.000.265,D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.dfm=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uLoginUI.dfm</Transaction>
     <Transaction>2026/05/02 21:36:45.000.736,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
     <Transaction>2026/05/02 21:40:45.000.945,D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Core\AppContext\uAppContext.pas</Transaction>
     <Transaction>2026/05/02 22:02:04.000.101,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
@@ -157,8 +157,8 @@
     <Transaction>2026/05/04 00:10:08.000.465,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
     <Transaction>2026/05/04 00:10:47.000.559,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Service\uPagamentoVendaService.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
     <Transaction>2026/05/04 00:14:56.000.308,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
-    <Transaction>2026/05/04 00:15:18.000.419,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uPagamentoUI.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
     <Transaction>2026/05/04 00:15:18.000.419,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uPagamentoUI.dfm=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.dfm</Transaction>
+    <Transaction>2026/05/04 00:15:18.000.419,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\uPagamentoUI.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
     <Transaction>2026/05/04 23:15:53.000.537,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Utils\Enter.pas</Transaction>
     <Transaction>2026/05/04 23:32:43.000.537,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\relatorios\uRelProVenda.pas</Transaction>
     <Transaction>2026/05/04 23:44:39.000.684,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\relatorios\uRelProVenda.pas=</Transaction>
@@ -166,8 +166,16 @@
     <Transaction>2026/05/05 11:47:47.000.907,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\Relatorios\uRelCadCliente.dfm=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\Relatorios\uRelCadCategorias.dfm</Transaction>
     <Transaction>2026/05/05 11:47:47.000.907,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\Relatorios\uRelCadCliente.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\Relatorios\uRelCadCategorias.pas</Transaction>
     <Transaction>2026/05/05 12:13:19.000.103,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\UI\Relatorios\uRelCadClientes.pas</Transaction>
-    <Transaction>2026/05/05 23:02:36.377,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
-    <Transaction>2026/05/05 23:02:54.878,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Utils\uControlUtils.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
+    <Transaction>2026/05/05 23:02:36.000.377,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
+    <Transaction>2026/05/05 23:02:54.000.878,D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Utils\uControlUtils.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
+    <Transaction>2026/05/07 21:35:27.000.077,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
+    <Transaction>2026/05/07 21:46:31.000.772,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit2.pas</Transaction>
+    <Transaction>2026/05/07 21:47:16.000.107,D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit2.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Interface\IRepositorio\iFormaPagDAO.pas</Transaction>
+    <Transaction>2026/05/07 21:47:46.000.295,D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Dao\uFormaPagDao.pas</Transaction>
+    <Transaction>2026/05/07 21:51:11.000.576,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas</Transaction>
+    <Transaction>2026/05/07 21:52:28.000.998,=D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit2.pas</Transaction>
+    <Transaction>2026/05/07 21:54:45.000.631,D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit2.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Interface\IService\iFormaPagService.pas</Transaction>
+    <Transaction>2026/05/07 21:55:09.000.896,D:\DELPHI\DELPHI\VENDA_NFISCAL\Unit1.pas=D:\DELPHI\DELPHI\VENDA_NFISCAL\Source\Service\uFormaPagService.pas</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="Source"/>
@@ -187,6 +195,7 @@
     <File Path="Source\Dao\uProdutoDao.pas"/>
     <File Path="Source\Dao\uUsuarioDao.pas"/>
     <File Path="Source\Dao\uVendaDao.pas"/>
+    <File Path="Source\Dao\uFormaPagDao.pas"/>
     <File Path="Source\Interface"/>
     <File Path="Source\Interface\IRepositorio"/>
     <File Path="Source\Interface\IRepositorio\IClienteDAO.pas"/>
@@ -197,6 +206,7 @@
     <File Path="Source\Interface\IRepositorio\IProdutoDAO.pas"/>
     <File Path="Source\Interface\IRepositorio\IUsuarioDAO.pas"/>
     <File Path="Source\Interface\IRepositorio\iVendaDAO.pas"/>
+    <File Path="Source\Interface\IRepositorio\iFormaPagDAO.pas"/>
     <File Path="Source\Interface\IService"/>
     <File Path="Source\Interface\IService\iClienteService.pas"/>
     <File Path="Source\Interface\IService\iFuncionarioService.pas"/>
@@ -205,6 +215,7 @@
     <File Path="Source\Interface\IService\IProdutoService.pas"/>
     <File Path="Source\Interface\IService\iUsuarioService.pas"/>
     <File Path="Source\Interface\IService\iVendaService.pas"/>
+    <File Path="Source\Interface\IService\iFormaPagService.pas"/>
     <File Path="Source\Model"/>
     <File Path="Source\Model\uClienteModel.pas"/>
     <File Path="Source\Model\uFormaPagModel.pas"/>
@@ -224,10 +235,9 @@
     <File Path="Source\Service\uProdutoService.pas"/>
     <File Path="Source\Service\uUsuarioService.pas"/>
     <File Path="Source\Service\uVendaService.pas"/>
+    <File Path="Source\Service\uFormaPagService.pas"/>
     <File Path="Source\UI"/>
     <File Path="Source\UI\Relatorios"/>
-    <File Path="Source\UI\Relatorios\uRelCadCliente.pas"/>
-    <File Path="Source\UI\Relatorios\uRelCadCliente.dfm"/>
     <File Path="Source\UI\Relatorios\uRelCadClientes.pas"/>
     <File Path="Source\UI\Relatorios\uRelCadClientes.dfm"/>
     <File Path="Source\UI\uClientesUI.pas"/>

@@ -237,7 +237,7 @@ end;
 //SAIR
 procedure TfrmTelaBaseCadastro.btnSairClick(Sender: TObject);
 begin
-
+  Close;
 end;
 //CANCELAR
 procedure TfrmTelaBaseCadastro.btnCancelarClick(Sender: TObject);

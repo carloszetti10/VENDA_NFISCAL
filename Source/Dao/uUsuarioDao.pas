@@ -85,6 +85,7 @@ begin
       if not Q.IsEmpty then
       begin
         Result := TUsuarioModel.Create;
+        CarregarPermissoes(Result);
         Result.Id := Q.FieldByName('ID_USUARIO').AsInteger;
         Result.IdFuncionario := Q.FieldByName('ID_FUNCIONARIO').AsInteger;
         Result.NomeFuncionario := Q.FieldByName('NOME').AsString;

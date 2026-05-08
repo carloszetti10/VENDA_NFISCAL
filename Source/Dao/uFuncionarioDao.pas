@@ -10,9 +10,9 @@ type
     public
       procedure Insert(Func: TFuncionarioModel);
       procedure Update(Func: TFuncionarioModel);
-      function  FindByID(cod: Integer): TFuncionarioModel;
       procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
       Constructor Create(Conn:TZConnection);
+      function FindbyId(ID: Integer): TFuncionarioModel;
   end;
 
 implementation
@@ -24,7 +24,7 @@ begin
   FConexao:= Conn;
 end;
 
-function TFuncionarioDao.FindByID(cod: Integer):  TFuncionarioModel;
+function TFuncionarioDao.FindByID(ID: Integer):  TFuncionarioModel;
 var
   Q: TZQuery;
 begin
@@ -34,7 +34,7 @@ begin
       Q.Connection:= FConexao;
       Q.SQL.Text :=
        'SELECT * FROM FUNCIONARIO WHERE ID_FUNCIONARIO = :ID';
-      Q.ParamByName('ID').AsInteger:= COD;
+      Q.ParamByName('ID').AsInteger:= ID;
       Q.Open;
 
       if not Q.IsEmpty then
@@ -91,8 +91,29 @@ begin
 end;
 
 procedure TFuncionarioDao.Update(Func: TFuncionarioModel);
+var
+  Q: TZQuery;
 begin
+  Q := TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
 
+      Q.SQL.Text :=
+        'UPDATE FUNCIONARIO SET ' +
+        'NOME = :NOME WHERE ID_FUNCIONARIO = :ID';
+
+      Q.ParamByName('ID').AsInteger := Func.Id;
+      Q.ParamByName('NOME').AsString := Func.Nome;
+      Q.ExecSQL;
+
+    except
+      on E: EDatabaseError do
+        raise EInfraException.Create('Erro ao atualizar funcionario.: ' + E.Message);
+    end;
+  finally
+    Q.Free;
+  end;
 end;
 
 end.

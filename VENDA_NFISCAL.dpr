@@ -62,9 +62,12 @@ uses
   uPagamentoVendaService in 'Source\Service\uPagamentoVendaService.pas',
   uPagamentoUI in 'Source\UI\uPagamentoUI.pas' {frmPagamento},
   Enter in 'Source\Utils\Enter.pas',
-  uRelCadCliente in 'Source\UI\Relatorios\uRelCadCliente.pas' {frmRelCadCategorias},
   uRelCadClientes in 'Source\UI\Relatorios\uRelCadClientes.pas' {frmRelCadClientes},
-  uControlUtils in 'Source\Utils\uControlUtils.pas';
+  uControlUtils in 'Source\Utils\uControlUtils.pas',
+  uFormaPagDao in 'Source\Dao\uFormaPagDao.pas',
+  iFormaPagDAO in 'Source\Interface\IRepositorio\iFormaPagDAO.pas',
+  uFormaPagService in 'Source\Service\uFormaPagService.pas',
+  iFormaPagService in 'Source\Interface\IService\iFormaPagService.pas';
 
 {$R *.res}
 

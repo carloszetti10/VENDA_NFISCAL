@@ -10,9 +10,10 @@ uses
   iClienteService, uClienteService, IClienteDAO, uClienteDao,
   IProdutoService, uProdutoService, IProdutoDAO, uProdutoDao,
   iVendaService, uVendaService, iVendaDAO, uVendaDao,
-   iFuncionarioService, uFuncionarioService, iFuncionarioDAO, uFuncionarioDao,
-   iItemVendaService, uItemVendaModel, uItemVendaDao, IItemVendaDAOO,uItemVendaService,
-  Vcl.StdCtrls,uAppContext,uSession, uUsuarioModel, Vcl.Buttons,uRelCadClientes;
+  iFuncionarioService, uFuncionarioService, iFuncionarioDAO, uFuncionarioDao,
+  iItemVendaService, uItemVendaModel, uItemVendaDao, IItemVendaDAOO,uItemVendaService,
+  Vcl.StdCtrls,uAppContext,uSession, uUsuarioModel, Vcl.Buttons,uRelCadClientes,
+  uFormaPagService, iFormaPagService,uFormaPagDao, iFormaPagDAO, uFormaPagModel;
 
 type
   TfrmTelaPrincipal = class(TForm)
@@ -79,6 +80,7 @@ type
     function CriarVendaService: IVendaServiceInterface;
     function CriarFuncionarioService: IFuncionarioServiceInterface;
     function CriarItemVendaService: IItemVendaServiceInterface;
+    function CriarFormaPAgamentoService: IFormaPagServiceInterface;
     procedure EsconderMenuPorPermissao;
   end;
 
@@ -146,6 +148,14 @@ begin
   end;
 end;
 
+function TfrmTelaPrincipal.CriarFormaPAgamentoService: IFormaPagServiceInterface;
+var
+  Dao: IFormaPagDAOO;
+begin
+  Dao := TFormaPagDao.Create(FConn);
+  Result := TFormaPagService.Create(Dao);
+end;
+
 function TfrmTelaPrincipal.CriarFuncionarioService: IFuncionarioServiceInterface;
 var
   Dao: IFuncionarioDAOO;
@@ -181,6 +191,7 @@ begin
   ItemVendaService := CriarItemVendaService;
   Result := TVendaService.Create(DaoVenda, ProdutoService,ItemVendaService);
 end;
+
 procedure TfrmTelaPrincipal.EsconderMenuPorPermissao;
 var
   Usuario: TUsuarioModel;
@@ -208,23 +219,8 @@ begin
     FUNCIONARIO1.Visible := True;
   end;
 end;
-procedure TfrmTelaPrincipal.FORMAPAGAMENTO1Click(Sender: TObject);
-var
-  frm : TfrmCadastroPagamento;
-  //Service: IClienteServiceInterface;
-  //Dao: IClienteDAOO;
-begin
-  //Dao := TClienteDao.Create(AppServiceConexao.getConexao);
-  //Service := TClienteService.Create(Dao);
-  frm := TfrmCadastroPagamento.Create(nil);
-  try
-    frm.ShowModal;
-  finally
-    frm.Free;
-  end;
-end;
-procedure TfrmTelaPrincipal.FormClose(Sender: TObject;
-  var Action: TCloseAction);
+
+procedure TfrmTelaPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    TSession.Logout;
    AppCtx.ClearAll;
@@ -317,6 +313,20 @@ begin
     frm.Free;
   end;
 
+end;
+
+procedure TfrmTelaPrincipal.FORMAPAGAMENTO1Click(Sender: TObject);
+var
+  frm : TfrmCadastroPagamento;
+  Service: IFormaPagServiceInterface;
+begin
+  Service := CriarFormaPAgamentoService;
+  frm := TfrmCadastroPagamento.Create(nil, Service);
+  try
+    frm.ShowModal;
+  finally
+    frm.Free;
+  end;
 end;
 
 end.

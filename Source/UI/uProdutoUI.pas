@@ -27,6 +27,7 @@ type
     procedure Pesquisa; override;
     procedure Novo; virtual;
     procedure PreencherCampos(id: Integer); override;
+    function CriarProdutoTela: TProdutoModel;
 
   public
     constructor Create(AOwner: TComponent; AService: IProdutoServiceInterface);
@@ -43,26 +44,48 @@ constructor TfrmCadastroProduto.Create(AOwner: TComponent; AService: IProdutoSer
 begin
   inherited Create(AOwner);
   FService:= AService;
-  edtID.Enabled := true;
+  edtID.Enabled := false;
+end;
+
+function TfrmCadastroProduto.CriarProdutoTela: TProdutoModel;
+var
+  Prod: TProdutoModel;
+begin
+
+  prod := TProdutoModel.Create;
+  prod.IdProduto := 0;
+  if EstadoCadastro = ecAlterar then
+    prod.IdProduto := strToInt(edtID.Text);
+  Prod.Nome := mskNome.Text;
+  Prod.CodBarra:= mskCodBarra.Text;
+  Prod.Estoque:= StrToCurr(mskQuantidade.Text);
+  Prod.ValorUnitario:= StrToCurr(mskValorUnitario.Text);
+
+  Result := Prod;
 end;
 
 {$REGION 'METODOS VIRTUAIS'}
 procedure TfrmCadastroProduto.Alterar;
+var
+  Prod: TProdutoModel;
 begin
-  inherited;
+   TValidarCampos.ValidarCampoVazio(mskNome, 'Nome');
+
+    Prod := CriarProdutoTela;
+    try
+       FService.Atualizar(Prod);
+    finally
+      Prod.Free;
+    end;
 end;
 procedure TfrmCadastroProduto.Inserir;
 var
   Prod: TProdutoModel;
 begin
-    TValidarCampos.ValidarCampoVazio(mskNome, 'Nome');
+   TValidarCampos.ValidarCampoVazio(mskNome, 'Nome');
 
-   prod := TProdutoModel.Create;
+   prod := CriarProdutoTela;
    try
-     Prod.Nome := mskNome.Text;
-     Prod.CodBarra:= mskCodBarra.Text;
-     Prod.Estoque:= StrToCurr(mskQuantidade.Text);
-     Prod.ValorUnitario:= StrToCurr(mskValorUnitario.Text);
      FService.Inserir(Prod);
   finally
      Prod.Free;
@@ -71,7 +94,6 @@ end;
 
 procedure TfrmCadastroProduto.Novo;
 begin
-
 end;
 
 procedure TfrmCadastroProduto.Pesquisa;
@@ -86,7 +108,6 @@ var
 begin
    ProdBanco := FService.BuscarPorId(id);
    try
-
      edtID.Text := ProdBanco.IdProduto.ToString;
      mskNome.Text := ProdBanco.Nome;
      mskCodBarra.Text  := ProdBanco.CodBarra;

@@ -17,6 +17,7 @@ type
     procedure ListarNaTela(Q: TZQuery; Nome: string; Todos: Boolean);
     function HashSenha(const Senha: string): string;
     function Login(ALogin, ASenha: string): TUsuarioModel;
+    function BuscarPorId(ID: Integer): TUsuarioModel;
     procedure PreecherAppContext(UsuarioLogado: TUsuarioModel; Loja: TLojaModel);
     procedure ListarPermissoes(Q: TZQuery);
   end;
@@ -24,6 +25,15 @@ type
 implementation
 
 { TUsuarioService }
+
+function TUsuarioService.BuscarPorId(ID: Integer): TUsuarioModel;
+var
+  U:TUsuarioModel;
+begin
+   U := FUsuarioDAO.FIndByID(ID);
+   FUsuarioDAO.CarregarPermissoes(U);
+   Result := U;
+end;
 
 constructor TUsuarioService.Create(AUsuarioDao: IUsuarioDAOO; AConexao: TZConnection);
 begin
@@ -41,15 +51,11 @@ begin
 
   FConexao.StartTransaction;
   try
-    //adicionar a função para verificar se tem logi cadastrado depois
+    //verificar se tem login cadastrado
      if FUsuarioDAO.FindByLogin(Usuario.Login) <> nil then
       raise EAppException.Create('Login já cadastrado');
-
-
     Usuario.Senha := HashSenha(Usuario.Senha);
     IdUsuario := FUsuarioDAO.Insert(Usuario);
-
-
     FUsuarioDAO.InsertPermissoes(IdUsuario, listaPermi);
 
     FConexao.Commit;

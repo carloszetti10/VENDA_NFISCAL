@@ -1,7 +1,6 @@
 inherited frmCadastroProduto: TfrmCadastroProduto
   Caption = 'Produtos'
   StyleElements = [seFont, seClient, seBorder]
-  ExplicitTop = -29
   TextHeight = 15
   inherited PageControlHerenca: TPageControl
     inherited TabConsulta: TTabSheet

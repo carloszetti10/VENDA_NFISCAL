@@ -215,15 +215,15 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Source\Utils\Enter.pas"/>
-        <DCCReference Include="Source\UI\Relatorios\uRelCadCliente.pas">
-            <Form>frmRelCadCategorias</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="Source\UI\Relatorios\uRelCadClientes.pas">
             <Form>frmRelCadClientes</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Source\Utils\uControlUtils.pas"/>
+        <DCCReference Include="Source\Dao\uFormaPagDao.pas"/>
+        <DCCReference Include="Source\Interface\IRepositorio\iFormaPagDAO.pas"/>
+        <DCCReference Include="Source\Service\uFormaPagService.pas"/>
+        <DCCReference Include="Source\Interface\IService\iFormaPagService.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

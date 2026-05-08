@@ -36,7 +36,9 @@ begin
 end;
 function TProdutoService.Atualizar(Produto: TProdutoModel): Boolean;
 begin
-  Result := FProdutoDAO.Atualizar(Produto);
+  if Produto.IdProduto = 0 then
+    raise EAppException.Create('Produto não encontrado.');
+     Result := FProdutoDAO.Atualizar(Produto);
 end;
 procedure TProdutoService.Inserir(Produto: TProdutoModel);
 var

@@ -1,0 +1,42 @@
+unit uFuncionarioService;
+
+interface
+uses
+  iFuncionarioService,uFuncionarioDao,uFuncionarioModel,SysUtils,uProdutoModel,iFuncionarioDAO,uException,ZDataset,Vcl.Forms,Vcl.Dialogs;
+type
+   TFuncionarioService = class(TInterfacedObject, IFuncionarioServiceInterface)
+   private
+   FFuncionarioDAO : IFuncionarioDAOO;
+   public
+     procedure IInserir(Fun: TFuncionarioModel);
+     procedure IAlterar(Fun: TFuncionarioModel);
+     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
+     constructor Create(AFuncDao: IFuncionarioDAOO);
+   end;
+
+implementation
+
+{ TProdutoService }
+
+constructor  TFuncionarioService.Create(AFuncDao: IFuncionarioDAOO);
+begin
+  inherited Create;
+  FFuncionarioDAO := AFuncDao;
+end;
+
+procedure TFuncionarioService.IAlterar(Fun: TFuncionarioModel);
+begin
+
+end;
+
+procedure  TFuncionarioService.IInserir(Fun: TFuncionarioModel);
+begin
+   FFuncionarioDAO.Insert(Fun);
+end;
+
+procedure  TFuncionarioService.ListarPorNomeTela(Q: TZQuery; Nome: string);
+begin
+  FFuncionarioDAO.ListarPorNomeTela(Q, Nome);
+end;
+
+end.

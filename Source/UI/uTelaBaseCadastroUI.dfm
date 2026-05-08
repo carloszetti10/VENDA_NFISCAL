@@ -275,6 +275,7 @@ object frmTelaBaseCadastro: TfrmTelaBaseCadastro
         D363C4D7244E6EFF00FFFF00FF244E6E244E6E244E6E244E6E244E6E244E6E24
         4E6E244E6E244E6E244E6E244E6E244E6E244E6E244E6EFF00FF}
       TabOrder = 2
+      OnClick = btnSairClick
     end
     object btnGravar: TBitBtn
       Left = 178

@@ -103,7 +103,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
         object edtID: TLabeledEdit
           Tag = 1
           Left = 24
-          Top = 72
+          Top = 77
           Width = 73
           Height = 23
           EditLabel.Width = 48

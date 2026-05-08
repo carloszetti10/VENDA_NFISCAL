@@ -1,0 +1,149 @@
+unit uFormaPagDao;
+
+interface
+
+uses
+  iFormaPagDAO,
+  uFormaPagModel,
+  System.SysUtils,
+  System.Classes,
+  Data.DB,
+  ZAbstractRODataset,
+  ZAbstractDataset,
+  ZDataset,
+  ZAbstractConnection,
+  ZConnection,
+  uException;
+
+type
+  TFormaPagDao = class(TInterfacedObject, IFormaPagDAOO)
+  private
+    FConexao: TZConnection;
+
+  public
+    procedure Insert(Forma: TFormaPagamentoModel);
+    procedure Update(Forma: TFormaPagamentoModel);
+    procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
+
+    constructor Create(Conn: TZConnection);
+
+    function FindByID(ID: Integer): TFormaPagamentoModel;
+  end;
+
+implementation
+
+{ TFormaPagDao }
+
+constructor TFormaPagDao.Create(Conn: TZConnection);
+begin
+  FConexao := Conn;
+end;
+
+function TFormaPagDao.FindByID(ID: Integer): TFormaPagamentoModel;
+var
+  Q: TZQuery;
+begin
+  try
+    Q := TZQuery.Create(nil);
+    try
+      Q.Connection := FConexao;
+
+      Q.SQL.Text :=
+        'SELECT * FROM FORMA_PAGAMENTO WHERE ID_PAGAMENTO = :ID';
+
+      Q.ParamByName('ID').AsInteger := ID;
+
+      Q.Open;
+
+      if not Q.IsEmpty then
+      begin
+        Result := TFormaPagamentoModel.Create;
+
+        Result.Id := Q.FieldByName('ID_PAGAMENTO').AsInteger;
+        Result.Nome := Q.FieldByName('NOME').AsString;
+      end
+      else
+        Result := nil;
+
+    finally
+      Q.Free;
+    end;
+
+  except
+    on E: EDatabaseError do
+      raise EInfraException.Create('Erro ao buscar forma de pagamento: ' + E.Message);
+  end;
+end;
+
+procedure TFormaPagDao.Insert(Forma: TFormaPagamentoModel);
+var
+  Q: TZQuery;
+begin
+  Q := TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
+
+      Q.SQL.Text :=
+        'INSERT INTO FORMA_PAGAMENTO (NOME) ' +
+        'VALUES (:NOME)';
+
+      Q.ParamByName('NOME').AsString := Forma.Nome;
+
+      Q.ExecSQL;
+
+    except
+      on E: EDatabaseError do
+        raise EInfraException.Create('Erro ao realizar o cadastro: ' + E.Message);
+    end;
+
+  finally
+    Q.Free;
+  end;
+end;
+
+procedure TFormaPagDao.ListarPorNomeTela(Q: TZQuery; Nome: string);
+begin
+  Q.Close;
+
+  Q.Connection := FConexao;
+
+  Q.SQL.Text :=
+    'SELECT * FROM FORMA_PAGAMENTO ' +
+    'WHERE UPPER(NOME) LIKE UPPER(:NOME)';
+
+  Q.ParamByName('NOME').AsString := '%' + Trim(Nome) + '%';
+
+  Q.Open;
+end;
+
+procedure TFormaPagDao.Update(Forma: TFormaPagamentoModel);
+var
+  Q: TZQuery;
+begin
+  Q := TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
+
+      Q.SQL.Text :=
+        'UPDATE FORMA_PAGAMENTO SET ' +
+        'NOME = :NOME ' +
+        'WHERE ID_PAGAMENTO = :ID';
+
+      Q.ParamByName('ID').AsInteger := Forma.Id;
+      Q.ParamByName('NOME').AsString := Forma.Nome;
+
+      Q.ExecSQL;
+
+    except
+      on E: EDatabaseError do
+        raise EInfraException.Create('Erro ao atualizar forma de pagamento: ' + E.Message);
+    end;
+
+  finally
+    Q.Free;
+  end;
+end;
+
+end.

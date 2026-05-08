@@ -12,9 +12,15 @@ type
      procedure IAlterar(Fun: TFuncionarioModel);
      procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
      constructor Create(AFuncDao: IFuncionarioDAOO);
+     function BuscarPorId(ID: Integer): TFuncionarioModel;
    end;
 
 implementation
+
+function TFuncionarioService.BuscarPorId(ID: Integer): TFuncionarioModel;
+begin
+  Result := FFuncionarioDAO.FindbyId(ID);
+end;
 
 { TProdutoService }
 
@@ -26,7 +32,10 @@ end;
 
 procedure TFuncionarioService.IAlterar(Fun: TFuncionarioModel);
 begin
+   if Fun.Id = 0 then
+    raise EAppException.Create('Funcionario não encontrado.');
 
+   FFuncionarioDAO.Update(Fun);
 end;
 
 procedure  TFuncionarioService.IInserir(Fun: TFuncionarioModel);
