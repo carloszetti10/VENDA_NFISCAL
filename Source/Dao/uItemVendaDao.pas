@@ -32,8 +32,32 @@ begin
 end;
 
 procedure TItemVendaDao.Deletar(IdVenda, IdProduto: Integer);
+var
+  Q: TZQuery;
 begin
+  Q := TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
 
+      Q.SQL.Text :=
+        'DELETE FROM ITEM_VENDA ' +
+        'WHERE ID_VENDA = :ID_VENDA ' +
+        'AND ID_PRODUTO = :ID_PRODUTO';
+
+      Q.ParamByName('ID_VENDA').AsInteger := IdVenda;
+      Q.ParamByName('ID_PRODUTO').AsInteger := IdProduto;
+
+      Q.ExecSQL;
+
+    except
+      on E: Exception do
+        raise EInfraException.Create('Erro ao deletar item: ' + E.Message);
+    end;
+
+  finally
+    Q.Free;
+  end;
 end;
 
 

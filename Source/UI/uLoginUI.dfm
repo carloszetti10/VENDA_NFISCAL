@@ -3,8 +3,8 @@ object ftmLogin: TftmLogin
   Top = 0
   BorderStyle = bsDialog
   Caption = 'LOGIN'
-  ClientHeight = 372
-  ClientWidth = 354
+  ClientHeight = 373
+  ClientWidth = 351
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

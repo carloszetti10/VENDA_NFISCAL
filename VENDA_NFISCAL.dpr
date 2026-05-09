@@ -34,7 +34,6 @@ uses
   uFuncionarioDao in 'Source\Dao\uFuncionarioDao.pas',
   iFuncionarioDAO in 'Source\Interface\IRepositorio\iFuncionarioDAO.pas',
   uUsuarioService in 'Source\Service\uUsuarioService.pas',
-  uEditUtils in 'Source\Utils\uEditUtils.pas',
   uVendaDavUI in 'Source\UI\uVendaDavUI.pas' {frmVendaDav},
   uVendaModel in 'Source\Model\uVendaModel.pas',
   uItemVendaModel in 'Source\Model\uItemVendaModel.pas',
@@ -67,7 +66,9 @@ uses
   uFormaPagDao in 'Source\Dao\uFormaPagDao.pas',
   iFormaPagDAO in 'Source\Interface\IRepositorio\iFormaPagDAO.pas',
   uFormaPagService in 'Source\Service\uFormaPagService.pas',
-  iFormaPagService in 'Source\Interface\IService\iFormaPagService.pas';
+  iFormaPagService in 'Source\Interface\IService\iFormaPagService.pas',
+  uRelProVenda in 'Source\UI\Relatorios\uRelProVenda.pas' {frmRelProVenda},
+  uDialogoValor in 'Source\UI\DialogosPersonalizados\uDialogoValor.pas' {frmDialogoValor};
 
 {$R *.res}
 
@@ -82,6 +83,8 @@ begin
 
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TftmLogin, ftmLogin);
+  Application.CreateForm(TfrmRelProVenda, frmRelProVenda);
+  Application.CreateForm(TfrmDialogoValor, frmDialogoValor);
   //Application.CreateForm(TfrmRelCadCliente, frmRelCadCliente);
   //Application.CreateForm(TfrmTelaPrincipal, frmTelaPrincipal);
   Application.Run;

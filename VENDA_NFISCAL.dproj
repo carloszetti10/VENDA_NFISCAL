@@ -178,7 +178,6 @@
         <DCCReference Include="Source\Dao\uFuncionarioDao.pas"/>
         <DCCReference Include="Source\Interface\IRepositorio\iFuncionarioDAO.pas"/>
         <DCCReference Include="Source\Service\uUsuarioService.pas"/>
-        <DCCReference Include="Source\Utils\uEditUtils.pas"/>
         <DCCReference Include="Source\UI\uVendaDavUI.pas">
             <Form>frmVendaDav</Form>
             <FormType>dfm</FormType>
@@ -224,6 +223,14 @@
         <DCCReference Include="Source\Interface\IRepositorio\iFormaPagDAO.pas"/>
         <DCCReference Include="Source\Service\uFormaPagService.pas"/>
         <DCCReference Include="Source\Interface\IService\iFormaPagService.pas"/>
+        <DCCReference Include="Source\UI\Relatorios\uRelProVenda.pas">
+            <Form>frmRelProVenda</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Source\UI\DialogosPersonalizados\uDialogoValor.pas">
+            <Form>frmDialogoValor</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, uUsuarioService,
   iUsuarioService, uUsuarioModel, uUsuarioDao, uUsuarioUI,IUsuarioDAO, uException, uAppServiceConexao,
-  uValidarCampo,ZConnection, uMenuPrincipalUI,uLojaModel, uAppContext, iLojaDAO,uLojaDao,uSession, Enter;
+  uValidarCampo,ZConnection, uMenuPrincipalUI,uLojaModel, uAppContext,uRelProVenda, iLojaDAO,uLojaDao,uSession, Enter;
 
 type
   TftmLogin = class(TForm)
@@ -20,7 +20,7 @@ type
     procedure btnEntrarClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
-     //FEnter : TMREnter;
+     FEnter : TMREnter;
      FUsuarioService: IUsuarioServiceInterface;
      FDaoLoja: ILojaDAOO; //criar o service depois
   public
@@ -67,6 +67,7 @@ procedure TftmLogin.FormCreate(Sender: TObject);
 var
   Dao: IUsuarioDAOO;
   Conexao: TZConnection;
+
 begin
   Conexao := AppServiceConexao.getConexao;
   FDaoLoja := TLojaDao.Create(Conexao);
@@ -75,9 +76,9 @@ begin
   FUsuarioService := TUsuarioService.Create(Dao, Conexao);
   VerificarLojaCadastrada; //não deve esta aqui mais de inicio vou implementar aqui.
 
-  //FEnter := TMREnter.Create(Self);
-  //FEnter.FocusEnabled:=true;
-  //FEnter.FocusColor:=clInfoBk;
+  FEnter := TMREnter.Create(Self);
+  FEnter.FocusEnabled:=true;
+  FEnter.FocusColor:=clInfoBk;
 end;
 
 procedure TftmLogin.LimparCampo;

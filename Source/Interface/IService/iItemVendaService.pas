@@ -7,6 +7,7 @@ type
     IItemVendaServiceInterface = interface
     procedure ListarProdutoVenda(Q: TZQuery; IdVenda: Integer);
     procedure InserirItem(AItem: TItemVendaModel);
+    procedure RemoverItemDaVenda(Quant: Currency; ItemVenda: TItemVendaModel);
    end;
 
 implementation

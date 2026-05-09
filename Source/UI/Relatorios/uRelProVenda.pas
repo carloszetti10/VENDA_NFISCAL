@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RLReport, RLFilters, RLPDFFilter,
   Data.DB, ZAbstractRODataset, ZAbstractDataset, ZDataset, RLXLSFilter,
-  RLXLSXFilter;
+  RLXLSXFilter,uAppServiceConexao, ZConnection;
+
 
 type
   TfrmRelProVenda = class(TForm)
@@ -33,21 +34,9 @@ type
     RegistrosDB: TRLBand;
     RLDBText2: TRLDBText;
     RLDBText3: TRLDBText;
-    QryVendasvendaId: TIntegerField;
-    QryVendasclienteId: TIntegerField;
-    QryVendasnome: TWideStringField;
-    QryVendasdataVenda: TDateTimeField;
-    QryVendastotalVenda: TFloatField;
     RLBand4: TRLBand;
     RLDBResult1: TRLDBResult;
     RLLabel6: TRLLabel;
-    dtsVendasItens: TDataSource;
-    QryVendaItens: TZQuery;
-    QryVendaItensvendaId: TIntegerField;
-    QryVendaItensprodutoId: TIntegerField;
-    QryVendaItensquantidade: TFloatField;
-    QryVendaItensvalorUnitario: TFloatField;
-    QryVendaItenstotalProduto: TFloatField;
     RLLabel5: TRLLabel;
     RLLabel7: TRLLabel;
     RLSubDetail1: TRLSubDetail;
@@ -55,8 +44,6 @@ type
     RLLabel4: TRLLabel;
     RLBand1: TRLBand;
     RLDBText1: TRLDBText;
-    RLDBText4: TRLDBText;
-    QryVendaItensNome: TWideStringField;
     RLLabel9: TRLLabel;
     RLDBText6: TRLDBText;
     RLDBText7: TRLDBText;
@@ -66,11 +53,15 @@ type
     RLLabel12: TRLLabel;
     RLDraw3: TRLDraw;
     RLDraw4: TRLDraw;
+     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+
+
   private
-    { Private declarations }
+    FConn: TZConnection;
+
   public
-    { Public declarations }
+    procedure PreencherRelatorio(IDVenda: Integer);
   end;
 
 var
@@ -80,12 +71,67 @@ implementation
 
 {$R *.dfm}
 
-uses uDtmPrincipal;
+procedure TfrmRelProVenda.FormCreate(Sender: TObject);
+begin
+  FConn := AppServiceConexao.getConexao;
+end;
 
 procedure TfrmRelProVenda.FormDestroy(Sender: TObject);
 begin
   QryVendas.Close;
-  QryVendaItens.Close;
 end;
 
-end.
+procedure TfrmRelProVenda.PreencherRelatorio(IDVenda: Integer);
+begin
+  QryVendas.Close;
+
+  QryVendas.Connection := AppServiceConexao.getConexao;
+
+  QryVendas.SQL.Text :=
+    'SELECT ' +
+    '    V.ID_VENDA, ' +
+    '    V.EMISAO, ' +
+    '    V.STATUS, ' +
+
+    '    C.ID_CLIENTE, ' +
+    '    C.NOME AS CLIENTE, ' +
+
+    '    F.ID_FUNCIONARIO, ' +
+    '    F.NOME AS VENDEDOR, ' +
+
+    '    IV.ID_PRODUTO, ' +
+    '    P.NOME AS PRODUTO, ' +
+
+    '    IV.QUANTIDADE, ' +
+    '    IV.VALOR_DESC, ' +
+    '    IV.VALOR_UNITARIO, ' +
+    '    IV.VALOR_TOTAL, ' +
+
+    '    V.VALOR_TOTAL AS TOTAL_VENDA, ' +
+    '    V.VALOR_LIQUIDO ' +
+
+    'FROM VENDA V ' +
+
+    'INNER JOIN CLIENTE C ' +
+    '    ON C.ID_CLIENTE = V.ID_CLIENTE ' +
+
+    'INNER JOIN FUNCIONARIO F ' +
+    '    ON F.ID_FUNCIONARIO = V.ID_VENDEDOR ' +
+
+    'INNER JOIN ITEM_VENDA IV ' +
+    '    ON IV.ID_VENDA = V.ID_VENDA ' +
+
+    'INNER JOIN PRODUTO P ' +
+    '    ON P.ID_PRODUTO = IV.ID_PRODUTO ' +
+
+    'WHERE V.ID_VENDA = :ID_VENDA ' +
+
+    'ORDER BY P.NOME';
+
+  QryVendas.ParamByName('ID_VENDA').AsInteger := IDVenda;
+
+  QryVendas.Open;
+end;
+
+
+End.

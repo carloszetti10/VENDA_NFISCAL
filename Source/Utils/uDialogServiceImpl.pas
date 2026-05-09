@@ -3,9 +3,7 @@ unit uDialogServiceImpl;
 interface
 
 uses
-  System.SysUtils,
-  Vcl.Forms,
-  Winapi.Windows;
+  System.SysUtils,Vcl.Forms,Winapi.Windows,uDialogoValor,System.UITypes;
 
 type
   TDialogo = class
@@ -15,6 +13,7 @@ type
     class procedure Atencao(const Msg: string; const Titulo: string = 'Atenção');
     class procedure Erro(const Msg: string; const Titulo: string = 'Erro');
     class function Confirmar(const Msg: string; const Titulo: string = 'Confirmação'): Boolean;
+    class function SolicitarValor(Titulo: string): Currency;
   end;
 
 implementation
@@ -49,4 +48,20 @@ begin
     ) = IDYES;
 end;
 
+
+class function TDialogo.SolicitarValor(Titulo: string): Currency;
+var
+  Frm: TfrmDialogoValor;
+begin
+  Result := 0;
+
+  Frm := TfrmDialogoValor.Create(nil);
+  try
+  Frm.lbText.Caption := Titulo;
+    if Frm.ShowModal = mrOk then
+      Result := Frm.edtValor.Value;
+  finally
+    Frm.Free;
+  end;
+end;
 end.

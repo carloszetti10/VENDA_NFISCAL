@@ -280,8 +280,8 @@ begin
   if Screen.ActiveControl <> nil then
   if ( Msg.message = WM_KeyDown ) and
      ( Msg.wParam = VK_Return )  then
-    begin
-      if CheckClassList( Screen.ActiveControl.ClassName ) then
+    begin                                                      //se a tag for 2 não vai funcionar
+      if CheckClassList( Screen.ActiveControl.ClassName ) and (Screen.ActiveControl.Tag <> 2) then
         Msg.wParam := VK_TAB;
     end;
   if Assigned( FOnMessageRescue ) then FOnMessageRescue( Msg, Handled );

@@ -12,6 +12,7 @@ type
      procedure ListarProdutoVenda(Q: TZQuery; IdVenda: Integer);
      procedure InserirItem(AItem: TItemVendaModel);
      constructor Create(AItemVendaDao: IItemVendaDAO);
+     procedure RemoverItemDaVenda(Quant: Currency; ItemVenda: TItemVendaModel);
    end;
 implementation
 
@@ -48,6 +49,25 @@ end;
 procedure TItemVendaService.ListarProdutoVenda(Q: TZQuery; IdVenda: Integer);
 begin
   FItemVendaDao.ListarPorVenda(Q, IdVenda);
+end;
+
+procedure TItemVendaService.RemoverItemDaVenda(Quant: Currency;
+  ItemVenda: TItemVendaModel);
+begin
+  if Quant = ItemVenda.Quantidade  then
+  begin
+    //delete
+    FItemVendaDao.Deletar(ItemVenda.IdVenda, ItemVenda.IdProduto);
+  end
+  else if Quant < ItemVenda.Quantidade then
+  begin
+    //update
+    ItemVenda.Quantidade:= ItemVenda.Quantidade - Quant;
+    ItemVenda.ValorTotal := ItemVenda.ValorUnitario * ItemVenda.Quantidade;
+    FItemVendaDao.Update(ItemVenda);
+  end
+  else
+    raise EAppException.Create('Quantidade selecionada maior do que o a quantidade do produto da venda.');
 end;
 
 end.

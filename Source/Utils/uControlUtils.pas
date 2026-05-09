@@ -50,7 +50,7 @@ var
 begin
   for i := 0 to Parent.ControlCount - 1 do
   begin
-    if Parent.Controls[i] is TEdit then
+    if Parent.Controls[i] is TEdit and (Parent.Controls[i].Tag <> 1) then
       TEdit(Parent.Controls[i]).Enabled := Habilitar;
 
     if Parent.Controls[i] is TMaskEdit and (Parent.Controls[i].Tag <> 1) then
@@ -65,7 +65,7 @@ begin
     if Parent.Controls[i] is TRadioGroup and (Parent.Controls[i].Tag <> 1) then
       TEdit(Parent.Controls[i]).Enabled := Habilitar;
 
-    if Parent.Controls[i] is TCurrencyEdit then
+    if Parent.Controls[i] is TCurrencyEdit and (Parent.Controls[i].Tag <> 1) then
       TCurrencyEdit(Parent.Controls[i]).Enabled := Habilitar;
 
     if Parent.Controls[i] is TCheckListBox then

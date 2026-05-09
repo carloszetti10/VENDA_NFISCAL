@@ -270,11 +270,6 @@ object frmRelCadClientes: TfrmRelCadClientes
   end
   object QryClientes: TZQuery
     SQL.Strings = (
-      '   SELECT clientes.clienteId,'
-      '          clientes.Nome,'
-      #9#9'  Clientes.email,'
-      #9#9'  clientes.telefone'
-      #9' FROM clientes'
       #9
       '')
     Params = <>

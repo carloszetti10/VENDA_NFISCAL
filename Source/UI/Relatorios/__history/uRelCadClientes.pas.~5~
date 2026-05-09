@@ -1,0 +1,77 @@
+unit uRelCadClientes;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RLReport, RLFilters, RLPDFFilter,
+  Data.DB, ZAbstractRODataset, ZAbstractDataset, ZDataset, RLXLSFilter,uAppServiceConexao,
+  RLXLSXFilter, ZConnection;
+
+type
+  TfrmRelCadClientes = class(TForm)
+    Relatorio: TRLReport;
+    Cabecalho: TRLBand;
+    RLLabel1: TRLLabel;
+    RLDraw1: TRLDraw;
+    RLPDFFilter1: TRLPDFFilter;
+    RegistrosDB: TRLBand;
+    QryClientes: TZQuery;
+    dtsClientes: TDataSource;
+    RLDBText1: TRLDBText;
+    RLDBText2: TRLDBText;
+    CabecalhoLabel: TRLBand;
+    RLPanel1: TRLPanel;
+    RLLabel4: TRLLabel;
+    RLLabel5: TRLLabel;
+    Rodape: TRLBand;
+    RLSystemInfo3: TRLSystemInfo;
+    RLLabel3: TRLLabel;
+    RLSystemInfo2: TRLSystemInfo;
+    RLLabel2: TRLLabel;
+    RLSystemInfo1: TRLSystemInfo;
+    RLDraw2: TRLDraw;
+    RLLabel6: TRLLabel;
+    RLLabel7: TRLLabel;
+    RLDBText3: TRLDBText;
+    RLDBText4: TRLDBText;
+    RLDBText5: TRLDBText;
+    RLLabel8: TRLLabel;
+    procedure FormCreate(Sender: TObject);
+
+  private
+    FConn : TZConnection;
+  public
+    procedure PreencherRelatorio;
+  end;
+
+var
+  frmRelCadClientes: TfrmRelCadClientes;
+
+implementation
+
+{$R *.dfm}
+
+
+
+procedure TfrmRelCadClientes.FormCreate(Sender: TObject);
+begin
+  FConn := AppServiceConexao.getConexao;
+end;
+
+procedure TfrmRelCadClientes.PreencherRelatorio;
+begin
+
+  QryClientes.Close;
+  QryClientes.Connection := FConn;
+  QryClientes.SQL.Text :=
+    'SELECT ID_CLIENTE, NOME, CPF_CNPJ, TELEFONE, ' +
+    'CASE TIPO_PESSOA WHEN ''F'' THEN ''FÍSICA'' ELSE ''JURÍDICA'' END AS TIPO_PESSOA ' +
+    'FROM CLIENTE ' +
+    'ORDER BY NOME';
+
+  QryClientes.Open;
+end;
+
+
+end.

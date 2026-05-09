@@ -8,9 +8,9 @@ type
   TValidarCampos = class
   public
       class procedure ValidarCampoVazio(ACampo: TMaskEdit; const Nome: string);
-      class procedure LimparCampos(const Campos: array of TMaskEdit);
-      class procedure ConfigurarEditBloqueado(Edit: TEdit; Bloqueado: Boolean);
-      class procedure ConfigurarEditInativo(Edit: TEdit; Bloqueado: Boolean);
+      //class procedure LimparCampos(const Campos: array of TMaskEdit);
+      //class procedure ConfigurarEditBloqueado(Edit: TEdit; Bloqueado: Boolean);
+      //class procedure ConfigurarEditInativo(Edit: TEdit; Bloqueado: Boolean);
       class procedure ValidarEditVazio(ACampo: TEdit; const Nome: string);
   end;
 
@@ -18,7 +18,7 @@ implementation
 
 { TValidarCampos }
 
-class procedure TValidarCampos.ConfigurarEditBloqueado(Edit: TEdit; Bloqueado: Boolean);
+{class procedure TValidarCampos.ConfigurarEditBloqueado(Edit: TEdit; Bloqueado: Boolean);
 begin
   Edit.ReadOnly := Bloqueado;
   Edit.TabStop := not Bloqueado;
@@ -43,7 +43,7 @@ begin
   for Campo in Campos do
     Campo.Clear;
 end;
-end;
+end;   }
 
 class procedure TValidarCampos.ValidarCampoVazio(ACampo: TMaskEdit; const Nome: string);
 begin

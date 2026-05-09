@@ -5,7 +5,7 @@ object frmVendaDav: TfrmVendaDav
   BorderStyle = bsNone
   Caption = 'VENDA'
   ClientHeight = 480
-  ClientWidth = 793
+  ClientWidth = 766
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,43 +19,74 @@ object frmVendaDav: TfrmVendaDav
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 793
-    Height = 89
+    Width = 766
+    Height = 85
     Align = alTop
     TabOrder = 0
+    ExplicitTop = 8
+    ExplicitWidth = 774
     object Label1: TLabel
       Left = 16
       Top = 13
-      Width = 53
-      Height = 15
+      Width = 60
+      Height = 17
       Caption = 'NUMERO:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object Label2: TLabel
       Left = 120
       Top = 13
-      Width = 49
-      Height = 15
-      Caption = 'EMISS'#195'O'
+      Width = 60
+      Height = 17
+      Caption = 'EMISS'#195'O:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object Label3: TLabel
       Left = 240
       Top = 13
-      Width = 47
-      Height = 15
+      Width = 55
+      Height = 17
       Caption = 'CLIENTE:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object Label6: TLabel
       Left = 479
       Top = 13
-      Width = 63
-      Height = 15
+      Width = 75
+      Height = 17
       Caption = 'VENDEDOR:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object edtNumeroVenda: TEdit
+      Tag = 2
       Left = 16
-      Top = 34
+      Top = 36
       Width = 98
-      Height = 23
+      Height = 26
+      Ctl3D = False
+      NumbersOnly = True
+      ParentCtl3D = False
+      ReadOnly = True
       TabOrder = 0
       OnKeyPress = edtNumeroVendaKeyPress
     end
@@ -63,16 +94,25 @@ object frmVendaDav: TfrmVendaDav
       Left = 120
       Top = 34
       Width = 114
-      Height = 23
+      Height = 26
       Date = 46141.000000000000000000
       Time = 0.490384513890603600
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 1
     end
     object edtCliente: TEdit
       Left = 240
       Top = 34
       Width = 225
-      Height = 23
+      Height = 26
+      Ctl3D = False
+      ParentCtl3D = False
       ReadOnly = True
       TabOrder = 2
       OnClick = edtClienteClick
@@ -81,18 +121,25 @@ object frmVendaDav: TfrmVendaDav
       Left = 479
       Top = 34
       Width = 225
-      Height = 23
+      Height = 26
+      Ctl3D = False
+      ParentCtl3D = False
       ReadOnly = True
       TabOrder = 3
       OnClick = edtVendedorClick
     end
     object btnSair: TBitBtn
-      Left = 728
+      Left = 701
       Top = 1
       Width = 64
-      Height = 87
+      Height = 83
       Align = alRight
       Caption = '&SAIR'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000120B0000120B00000000000000000000FF00FF244E6E
@@ -120,68 +167,73 @@ object frmVendaDav: TfrmVendaDav
         2B8CB23192B53697B93C9CBC3FA0BF45A6C24AABC64FB0C954B5CD59BAD15FBF
         D363C4D7244E6EFF00FFFF00FF244E6E244E6E244E6E244E6E244E6E244E6E24
         4E6E244E6E244E6E244E6E244E6E244E6E244E6E244E6EFF00FF}
+      ParentFont = False
       TabOrder = 4
       OnClick = btnSairClick
+      ExplicitLeft = 728
+      ExplicitHeight = 87
     end
   end
   object Panel2: TPanel
     Left = 0
-    Top = 350
-    Width = 793
-    Height = 130
+    Top = 342
+    Width = 766
+    Height = 138
     Align = alBottom
     TabOrder = 1
+    ExplicitLeft = 32
+    ExplicitTop = 346
+    ExplicitWidth = 774
     object Label10: TLabel
-      Left = 16
-      Top = 6
-      Width = 39
+      Left = 17
+      Top = 8
+      Width = 44
       Height = 15
       Caption = 'BRUTO:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object Label11: TLabel
-      Left = 119
-      Top = 6
-      Width = 63
+      Left = 152
+      Top = 8
+      Width = 66
       Height = 15
       Caption = 'DESCONTO:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object Label12: TLabel
-      Left = 222
-      Top = 6
-      Width = 49
+      Left = 288
+      Top = 8
+      Width = 53
       Height = 15
       Caption = 'LIQUIDO:'
-    end
-    object edtBrutoVenda: TEdit
-      Left = 16
-      Top = 22
-      Width = 97
-      Height = 23
-      TabOrder = 0
-      Text = '0,00'
-    end
-    object edtDescontoVenda: TEdit
-      Left = 119
-      Top = 22
-      Width = 97
-      Height = 23
-      TabOrder = 1
-      Text = '0,00'
-    end
-    object edtLiquidoVenda: TEdit
-      Left = 222
-      Top = 22
-      Width = 97
-      Height = 23
-      TabOrder = 2
-      Text = '0,00'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object btnNovaVenda: TBitBtn
       Left = 16
-      Top = 62
-      Width = 75
-      Height = 25
+      Top = 64
+      Width = 100
+      Height = 39
       Caption = '&NOVO'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000120B0000120B00000000000000000000FF00FFFF00FF
@@ -209,15 +261,21 @@ object frmVendaDav: TfrmVendaDav
         CF871DCF871DCE861DCC831CCC821CCA801BC87D1BC67A1AC47719C37419C172
         17BF6F17FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
-      TabOrder = 3
+      ParentFont = False
+      TabOrder = 0
       OnClick = btnNovaVendaClick
     end
     object btnCancelar: TBitBtn
-      Left = 97
-      Top = 62
-      Width = 93
-      Height = 25
+      Left = 122
+      Top = 64
+      Width = 100
+      Height = 39
       Caption = '&CANCELAR'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000120B0000120B00000000000000000000FF00FFFF00FF
@@ -245,15 +303,21 @@ object frmVendaDav: TfrmVendaDav
         2D2BB4292AB42627B42125B41E22B41920B4171EB4141CB4111AB40E19B46B3B
         3B6B3B3BFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
-      TabOrder = 4
+      ParentFont = False
+      TabOrder = 1
       OnClick = btnCancelarClick
     end
     object btnGravar: TBitBtn
-      Left = 196
-      Top = 62
-      Width = 75
-      Height = 25
+      Left = 228
+      Top = 64
+      Width = 100
+      Height = 39
       Caption = '&GRAVAR'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000120B0000120B00000000000000000000FF00FFFF00FF
@@ -281,153 +345,274 @@ object frmVendaDav: TfrmVendaDav
         6B3B3B2D2BB4292AB42627B42125B41E22B41920B4171EB4141CB4111AB40E19
         B46B3B3B6B3B3BFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
-      TabOrder = 5
+      ParentFont = False
+      TabOrder = 2
       OnClick = btnGravarClick
     end
+    object edtBrutoVenda: TCurrencyEdit
+      Tag = 1
+      Left = 16
+      Top = 29
+      Width = 130
+      Height = 27
+      Ctl3D = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentCtl3D = False
+      ParentFont = False
+      TabOrder = 5
+    end
+    object edtDescontoVenda: TCurrencyEdit
+      Tag = 1
+      Left = 152
+      Top = 29
+      Width = 130
+      Height = 27
+      Ctl3D = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentCtl3D = False
+      ParentFont = False
+      TabOrder = 4
+    end
+    object edtLiquidoVenda: TCurrencyEdit
+      Tag = 1
+      Left = 288
+      Top = 29
+      Width = 130
+      Height = 27
+      Ctl3D = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentCtl3D = False
+      ParentFont = False
+      TabOrder = 3
+    end
     object btnDesconto: TBitBtn
-      Left = 340
-      Top = 16
-      Width = 77
-      Height = 34
+      Left = 438
+      Top = 25
+      Width = 140
+      Height = 33
       Caption = 'DESCONTO'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        18000000000000030000C20E0000C20E00000000000000000000FF00FFFF00FF
+        FF00FFFF00FFA9B3A9518C58237A2B0E69120D6611227128518357A9B1A9FF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFC3C5C352965A168F222EB5433DBD5150
+        C16156C26445BD5534B042106F13507F53C3C4C3FF00FFFF00FFFF00FFC3C5C3
+        38974325B13A3CBE534BBF5D87D28E8BD29172CA7B66C6706DC8745DC26726A0
+        32316E37C3C4C3FF00FFFF00FF55AD6227B63F38BE4F42BF58AFE2B5FCF9F6FC
+        F9F4FAF7F17BCE8268C6726FC8766CC77429A134508054FF00FFA9BFAC21B236
+        2FBE4F3CBF56BFE7C4FCFAF8FCFAF7FCF9F6FCF9F4CBE8C862C56D69C77271C9
+        7861C46B137717A9B1A957BA6A30BF5037BF56D1EFD7FCFBFAFCFBF9FCFAF8FC
+        FAF7FCF9F6FCF9F481D08763C66F6BC77472C97937B3464C825039BD5231C157
+        2CBE4FB3E5BFFCFCFCFCFBFBA3DFACBCE5C0FCFAF7FCF9F6D3ECD15EC46B64C6
+        706CC8754FC0601F782639C15431C2592EBF5332C053C4EBCD86D79839BF5458
+        C76CF7F9F5FCFAF7FCF9F688D3915FC56C66C7725DC46B157E1B40C75D33C45D
+        30C1572EBF532DBF4F2EBE4F34BF523BBF55ACE2B5FCFAF8FCFAF7DDEFDA5CC5
+        6B61C56E58C36816841E4ECC6D36C66132C35B30C1572FC0532DBF4F30BF5036
+        BF534EC565F4F8F2FCFAF8FCFAF78FD6995BC4694AC05F24902C73CF8B3CC963
+        34C55F32C35B31C2572FC0532DBF4F31BF5137BF549EDEABFCFBF9FCFAF8E5F3
+        E45AC56B37BB4D509E58B5CABB54D77637C86334C55F33C45B31C2572FC0532D
+        BF5033BF5342C25DEFF8F0FCFBF9CCEBCF5BC76E1CAB2BAABAABFF00FF84D69D
+        47D06E36C76234C55F33C45B31C2572FC0542EBF5134BF5377D28B71D08443C1
+        5B31BC4758B365FF00FFFF00FFC5C8C677DD9748D16E37C76335C65F33C45B31
+        C2572FC05430BF5235BF5539C05734BF4C41B653C3C6C4FF00FFFF00FFFF00FF
+        C5C8C68EDDA862DF863FCC6637C76134C55D33C35B32C35835C35737C24F65C1
+        75C3C7C4FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFBACEC089DBA268DB8959
+        D97851D46F55CE7371C986AFC6B3FF00FFFF00FFFF00FFFF00FF}
+      ParentFont = False
       TabOrder = 6
       OnClick = btnDescontoClick
-    end
-    object pnlDesconto: TPanel
-      Left = 423
-      Top = 6
-      Width = 202
-      Height = 75
-      TabOrder = 7
-      object TLabel
-        Left = 16
-        Top = 11
-        Width = 122
-        Height = 15
-        Caption = 'DESCONTO EM VALOR:'
-      end
-      object desc: TEdit
-        Left = 17
-        Top = 32
-        Width = 121
-        Height = 23
-        TabOrder = 0
-      end
-      object btnAddDes: TBitBtn
-        Left = 144
-        Top = 24
-        Width = 49
-        Height = 33
-        Caption = 'Add'
-        Glyph.Data = {
-          36030000424D3603000000000000360000002800000010000000100000000100
-          18000000000000030000C20E0000C20E00000000000000000000FF00FFFF00FF
-          FF00FFFF00FFA9B3A9518C58237A2B0E69120D6611227128518357A9B1A9FF00
-          FFFF00FFFF00FFFF00FFFF00FFFF00FFC3C5C352965A168F222EB5433DBD5150
-          C16156C26445BD5534B042106F13507F53C3C4C3FF00FFFF00FFFF00FFC3C5C3
-          38974325B13A3CBE534BBF5D87D28E8BD29172CA7B66C6706DC8745DC26726A0
-          32316E37C3C4C3FF00FFFF00FF55AD6227B63F38BE4F42BF58AFE2B5FCF9F6FC
-          F9F4FAF7F17BCE8268C6726FC8766CC77429A134508054FF00FFA9BFAC21B236
-          2FBE4F3CBF56BFE7C4FCFAF8FCFAF7FCF9F6FCF9F4CBE8C862C56D69C77271C9
-          7861C46B137717A9B1A957BA6A30BF5037BF56D1EFD7FCFBFAFCFBF9FCFAF8FC
-          FAF7FCF9F6FCF9F481D08763C66F6BC77472C97937B3464C825039BD5231C157
-          2CBE4FB3E5BFFCFCFCFCFBFBA3DFACBCE5C0FCFAF7FCF9F6D3ECD15EC46B64C6
-          706CC8754FC0601F782639C15431C2592EBF5332C053C4EBCD86D79839BF5458
-          C76CF7F9F5FCFAF7FCF9F688D3915FC56C66C7725DC46B157E1B40C75D33C45D
-          30C1572EBF532DBF4F2EBE4F34BF523BBF55ACE2B5FCFAF8FCFAF7DDEFDA5CC5
-          6B61C56E58C36816841E4ECC6D36C66132C35B30C1572FC0532DBF4F30BF5036
-          BF534EC565F4F8F2FCFAF8FCFAF78FD6995BC4694AC05F24902C73CF8B3CC963
-          34C55F32C35B31C2572FC0532DBF4F31BF5137BF549EDEABFCFBF9FCFAF8E5F3
-          E45AC56B37BB4D509E58B5CABB54D77637C86334C55F33C45B31C2572FC0532D
-          BF5033BF5342C25DEFF8F0FCFBF9CCEBCF5BC76E1CAB2BAABAABFF00FF84D69D
-          47D06E36C76234C55F33C45B31C2572FC0542EBF5134BF5377D28B71D08443C1
-          5B31BC4758B365FF00FFFF00FFC5C8C677DD9748D16E37C76335C65F33C45B31
-          C2572FC05430BF5235BF5539C05734BF4C41B653C3C6C4FF00FFFF00FFFF00FF
-          C5C8C68EDDA862DF863FCC6637C76134C55D33C35B32C35835C35737C24F65C1
-          75C3C7C4FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFBACEC089DBA268DB8959
-          D97851D46F55CE7371C986AFC6B3FF00FFFF00FFFF00FFFF00FF}
-        TabOrder = 1
-        OnClick = btnAddDesClick
-      end
     end
   end
   object Panel3: TPanel
     Left = 0
-    Top = 89
-    Width = 793
-    Height = 261
+    Top = 85
+    Width = 766
+    Height = 257
     Align = alClient
     TabOrder = 2
+    ExplicitTop = 89
+    ExplicitWidth = 793
+    ExplicitHeight = 261
     object Panel4: TPanel
       Left = 1
       Top = 1
-      Width = 791
-      Height = 259
+      Width = 764
+      Height = 255
       Align = alClient
       TabOrder = 0
+      ExplicitWidth = 791
+      ExplicitHeight = 259
       object Panel5: TPanel
         Left = 1
         Top = 1
-        Width = 789
+        Width = 762
         Height = 56
         Align = alTop
-        TabOrder = 0
+        TabOrder = 1
+        ExplicitLeft = 15
+        ExplicitTop = -5
+        ExplicitWidth = 789
         object Label9: TLabel
-          Left = 597
+          Left = 436
           Top = 4
-          Width = 39
-          Height = 15
+          Width = 55
+          Height = 21
           Caption = 'VALOR:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -16
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
         end
         object Label8: TLabel
-          Left = 486
+          Left = 355
           Top = 4
-          Width = 76
-          Height = 15
-          Caption = 'QUANTIDADE:'
+          Width = 61
+          Height = 21
+          Caption = 'QUANT:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -16
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
         end
         object Label7: TLabel
           Left = 15
           Top = 5
-          Width = 122
-          Height = 15
+          Width = 176
+          Height = 21
           Caption = 'PESQUISAR PRODUTOS'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -16
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
         end
-        object edtValorItemTotal: TEdit
-          Left = 597
-          Top = 25
-          Width = 105
-          Height = 23
+        object edtPesquisaProduto: TEdit
+          Tag = 2
+          Left = 14
+          Top = 26
+          Width = 325
+          Height = 21
+          Ctl3D = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentCtl3D = False
+          ParentFont = False
           TabOrder = 0
-          Text = '0,00'
+          OnChange = edtPesquisaProdutoChange
+          OnKeyPress = edtPesquisaProdutoKeyPress
         end
-        object edtQuantidadeProdutoSelecionado: TEdit
-          Left = 486
+        object edtQuantidadeProdutoSelecionado: TCurrencyEdit
+          Tag = 2
+          Left = 355
           Top = 27
-          Width = 105
-          Height = 23
-          TabOrder = 1
-          Text = '0'
+          Width = 66
+          Height = 21
+          Ctl3D = False
+          DisplayFormat = ',0.00;-,0.00'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentCtl3D = False
+          ParentFont = False
+          TabOrder = 2
           OnChange = edtQuantidadeProdutoSelecionadoChange
           OnKeyDown = edtQuantidadeProdutoSelecionadoKeyDown
         end
-        object edtPesquisaProduto: TEdit
-          Left = 14
-          Top = 26
-          Width = 448
-          Height = 23
-          TabOrder = 2
-          OnChange = edtPesquisaProdutoChange
-          OnKeyPress = edtPesquisaProdutoKeyPress
+        object edtValorItemTotal: TCurrencyEdit
+          Tag = 1
+          Left = 436
+          Top = 27
+          Width = 114
+          Height = 21
+          Ctl3D = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentCtl3D = False
+          ParentFont = False
+          TabOrder = 1
+        end
+        object btnRemoverItem: TBitBtn
+          Left = 564
+          Top = 17
+          Width = 114
+          Height = 33
+          Caption = 'REMOVER ITEM'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          Glyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            18000000000000030000C20E0000C20E00000000000000000000FF00FFFF00FF
+            FF00FFFF00FFA9B3A9518C58237A2B0E69120D6611227128518357A9B1A9FF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFC3C5C352965A168F222EB5433DBD5150
+            C16156C26445BD5534B042106F13507F53C3C4C3FF00FFFF00FFFF00FFC3C5C3
+            38974325B13A3CBE534BBF5D87D28E8BD29172CA7B66C6706DC8745DC26726A0
+            32316E37C3C4C3FF00FFFF00FF55AD6227B63F38BE4F42BF58AFE2B5FCF9F6FC
+            F9F4FAF7F17BCE8268C6726FC8766CC77429A134508054FF00FFA9BFAC21B236
+            2FBE4F3CBF56BFE7C4FCFAF8FCFAF7FCF9F6FCF9F4CBE8C862C56D69C77271C9
+            7861C46B137717A9B1A957BA6A30BF5037BF56D1EFD7FCFBFAFCFBF9FCFAF8FC
+            FAF7FCF9F6FCF9F481D08763C66F6BC77472C97937B3464C825039BD5231C157
+            2CBE4FB3E5BFFCFCFCFCFBFBA3DFACBCE5C0FCFAF7FCF9F6D3ECD15EC46B64C6
+            706CC8754FC0601F782639C15431C2592EBF5332C053C4EBCD86D79839BF5458
+            C76CF7F9F5FCFAF7FCF9F688D3915FC56C66C7725DC46B157E1B40C75D33C45D
+            30C1572EBF532DBF4F2EBE4F34BF523BBF55ACE2B5FCFAF8FCFAF7DDEFDA5CC5
+            6B61C56E58C36816841E4ECC6D36C66132C35B30C1572FC0532DBF4F30BF5036
+            BF534EC565F4F8F2FCFAF8FCFAF78FD6995BC4694AC05F24902C73CF8B3CC963
+            34C55F32C35B31C2572FC0532DBF4F31BF5137BF549EDEABFCFBF9FCFAF8E5F3
+            E45AC56B37BB4D509E58B5CABB54D77637C86334C55F33C45B31C2572FC0532D
+            BF5033BF5342C25DEFF8F0FCFBF9CCEBCF5BC76E1CAB2BAABAABFF00FF84D69D
+            47D06E36C76234C55F33C45B31C2572FC0542EBF5134BF5377D28B71D08443C1
+            5B31BC4758B365FF00FFFF00FFC5C8C677DD9748D16E37C76335C65F33C45B31
+            C2572FC05430BF5235BF5539C05734BF4C41B653C3C6C4FF00FFFF00FFFF00FF
+            C5C8C68EDDA862DF863FCC6637C76134C55D33C35B32C35835C35737C24F65C1
+            75C3C7C4FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFBACEC089DBA268DB8959
+            D97851D46F55CE7371C986AFC6B3FF00FFFF00FFFF00FFFF00FF}
+          ParentFont = False
+          TabOrder = 3
+          OnClick = btnRemoverItemClick
         end
       end
       object Panel6: TPanel
         Left = 1
         Top = 57
-        Width = 789
-        Height = 201
+        Width = 762
+        Height = 197
         Align = alClient
-        TabOrder = 1
+        TabOrder = 0
+        ExplicitWidth = 789
+        ExplicitHeight = 201
         object painelEstoque: TPanel
           Left = 14
           Top = 6
@@ -441,7 +626,13 @@ object frmVendaDav: TfrmVendaDav
             Height = 142
             Align = alClient
             DataSource = DTSProdEstoque
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
             Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+            ParentFont = False
             TabOrder = 0
             TitleFont.Charset = DEFAULT_CHARSET
             TitleFont.Color = clWindowText
@@ -453,6 +644,11 @@ object frmVendaDav: TfrmVendaDav
               item
                 Expanded = False
                 FieldName = 'ID_PRODUTO'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -13
+                Font.Name = 'Segoe UI'
+                Font.Style = [fsBold]
                 Title.Caption = 'CODIGO'
                 Width = 61
                 Visible = True
@@ -461,7 +657,7 @@ object frmVendaDav: TfrmVendaDav
                 Expanded = False
                 FieldName = 'NOME'
                 Title.Caption = 'DESCRI'#199#195'O'
-                Width = 161
+                Width = 138
                 Visible = True
               end
               item
@@ -490,6 +686,12 @@ object frmVendaDav: TfrmVendaDav
             Height = 16
             Align = alTop
             Caption = 'PRODUTOS DO ESTOQUE'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -15
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
             TabOrder = 1
           end
         end
@@ -506,7 +708,13 @@ object frmVendaDav: TfrmVendaDav
             Height = 140
             Align = alClient
             DataSource = DTSProdVenda
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
             Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+            ParentFont = False
             TabOrder = 0
             TitleFont.Charset = DEFAULT_CHARSET
             TitleFont.Color = clWindowText
@@ -524,6 +732,7 @@ object frmVendaDav: TfrmVendaDav
                 Expanded = False
                 FieldName = 'NOME'
                 Title.Caption = 'DESCRI'#199#195'O'
+                Width = 79
                 Visible = True
               end
               item
@@ -557,6 +766,12 @@ object frmVendaDav: TfrmVendaDav
             Height = 18
             Align = alTop
             Caption = 'PRODUTOS DA VENDA'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -15
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
             TabOrder = 1
           end
         end

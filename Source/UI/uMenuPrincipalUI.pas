@@ -13,7 +13,7 @@ uses
   iFuncionarioService, uFuncionarioService, iFuncionarioDAO, uFuncionarioDao,
   iItemVendaService, uItemVendaModel, uItemVendaDao, IItemVendaDAOO,uItemVendaService,
   Vcl.StdCtrls,uAppContext,uSession, uUsuarioModel, Vcl.Buttons,uRelCadClientes,
-  uFormaPagService, iFormaPagService,uFormaPagDao, iFormaPagDAO, uFormaPagModel;
+  uFormaPagService, iFormaPagService,uFormaPagDao, iFormaPagDAO, uFormaPagModel, uRelProVenda;
 
 type
   TfrmTelaPrincipal = class(TForm)
@@ -124,10 +124,15 @@ end;
 procedure TfrmTelaPrincipal.CLIENTES1Click(Sender: TObject);
 begin
   frmRelCadClientes := TfrmRelCadClientes.Create(nil);
+  frmRelProVenda := TfrmRelProVenda.Create(nil);
   try
+    frmRelProVenda.PreencherRelatorio(115);
+    frmRelProVenda.Relatorio.Preview;
+
     frmRelCadClientes.PreencherRelatorio;
     frmRelCadClientes.Relatorio.Preview;
   finally
+    frmRelProVenda.Free;
     frmRelCadClientes.Free;
   end;
 end;

@@ -10,12 +10,14 @@ uses
   uProdutoUI,uClienteModel, uUsuarioUI, uUsuarioService,uUsuarioDao,IUsuarioDAO,
   iUsuarioService,uTelaBaseCadastroUI, iVendaService, IProdutoService, uProdutoService, uValidarCampo,
   uException,uFuncionarioModel,iFuncionarioService,uFuncionarioService, iFuncionarioDAO, uFuncionarioDao,
-  uEditUtils, uItemVendaModel, uProdutoModel, uAppContext, uDialogServiceImpl,
+   uItemVendaModel, uProdutoModel, uAppContext, uDialogServiceImpl,
    uPagamentoUI, uPagamentoVendaModel,
   iPagamentoVendaDAO, uPagamentoVendaDao,
-  iPagamentoVendaService, uPagamentoVendaService;
+  iPagamentoVendaService, uPagamentoVendaService, Vcl.Mask, RxToolEdit,
+  RxCurrEdit, uControlUtils;
 type
-  TModoTela = (svIniciada, svCancelada);
+  TModoTela = (svIniciada, svNaoIniciada);
+  TGridProdShow =(sgProdVenda, sgProdEstoque);
   TfrmVendaDav = class(TForm)
     Panel1: TPanel;
     Panel2: TPanel;
@@ -30,13 +32,8 @@ type
     Panel4: TPanel;
     Label7: TLabel;
     edtPesquisaProduto: TEdit;
-    edtQuantidadeProdutoSelecionado: TEdit;
     Label8: TLabel;
     Label9: TLabel;
-    edtValorItemTotal: TEdit;
-    edtBrutoVenda: TEdit;
-    edtDescontoVenda: TEdit;
-    edtLiquidoVenda: TEdit;
     Label10: TLabel;
     Label11: TLabel;
     Label12: TLabel;
@@ -56,11 +53,14 @@ type
     QRYProdEstoque: TZQuery;
     DTSProdVenda: TDataSource;
     QRYProdVenda: TZQuery;
-    btnDesconto: TBitBtn;
-    pnlDesconto: TPanel;
-    desc: TEdit;
-    btnAddDes: TBitBtn;
     btnSair: TBitBtn;
+    edtQuantidadeProdutoSelecionado: TCurrencyEdit;
+    edtValorItemTotal: TCurrencyEdit;
+    edtBrutoVenda: TCurrencyEdit;
+    edtDescontoVenda: TCurrencyEdit;
+    edtLiquidoVenda: TCurrencyEdit;
+    btnDesconto: TBitBtn;
+    btnRemoverItem: TBitBtn;
     procedure FormShow(Sender: TObject);
     procedure edtVendedorClick(Sender: TObject);
     procedure edtClienteClick(Sender: TObject);
@@ -76,34 +76,39 @@ type
     procedure edtQuantidadeProdutoSelecionadoChange(Sender: TObject);
     procedure btnNovaVendaClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
-    procedure btnDescontoClick(Sender: TObject);
-    procedure descEnter(Sender: TObject);
-    procedure btnAddDesClick(Sender: TObject);
     procedure edtNumeroVendaKeyPress(Sender: TObject; var Key: Char);
+    procedure btnRemoverItemClick(Sender: TObject);
+    procedure btnDescontoClick(Sender: TObject);
   private
     FModoTela: TModoTela;
     FIdVenda: Integer;
     FCliente: TClienteModel;
     FVendedor: TFuncionarioModel;
+    FGridProd: TGridProdShow;
 
     FService: IVendaServiceInterface;
     FProdutoService: IProdutoServiceInterface;
   public
-    procedure AlternaPainel(PainelVisivel: TPanel; PainelOculto: TPanel);
-    procedure PreencherGrildProdutosEstoque(NomeProd: string);
-    procedure AdicionarProdutoSelecionado;
+    procedure   AlternaPainel(PainelVisivel: TPanel; PainelOculto: TPanel);
+    procedure   PreencherGrildProdutosEstoque(NomeProd: string);
+    procedure   AdicionarProdutoSelecionado;
     constructor Create(AOwner: TComponent; AService: IVendaServiceInterface);
-    procedure IniciarTela;
-    procedure IniciarVenda;
-    procedure CancelarVenda;
-    procedure GravaVenda;
-    procedure ConfigurarEditInativoTela(Ativo: Boolean);
-    procedure ControlarButon(Ativo: Boolean);
-    procedure IrParaOEdtQuantidade(Key: Char);
-    procedure PegarOValorTotalItem;
-    function GetProdutoSelecionado: TProdutoModel;
-    procedure AtualizarTotaisVenda;
-    procedure LimparTelaVenda;
+    procedure   IniciarTela;
+    procedure   IniciarVenda;
+    procedure   CancelarVenda;
+    procedure   GravaVenda;
+    procedure   ConfigurarEditInativoTela(Ativo: Boolean);
+    procedure   ControlarButon(Ativo: Boolean);
+    procedure   IrParaOEdtQuantidade(Key: Char);
+    procedure   PegarOValorTotalItem;
+    function    GetProdutoSelecionadoGridEstoque: TProdutoModel;
+    function    GetItemVendaSelecionadoGridVenda: TItemVendaModel;
+    procedure   AtualizarTotaisVenda;
+    procedure   LimparTelaVenda;
+    procedure   HabilitarCampos(Habilitar: Boolean);
+    procedure   InativarEditValorAltomatico;
+     procedure  GridShow(Painel: TPanel);
+    procedure   RemoverItemVenda;
 
   end;
 
@@ -115,17 +120,13 @@ uses
 
 {$R *.dfm}
 
+
+
 { ================== CONSTRUTOR ================== }
 constructor TfrmVendaDav.Create(AOwner: TComponent; AService: IVendaServiceInterface);
 begin
   inherited Create(AOwner);
   FService:= AService;
-  TFormatacao.AplicarSoNumero(edtQuantidadeProdutoSelecionado);
-  TFormatacao.AplicarNumero(edtValorItemTotal);
-  TFormatacao.AplicarNumero(edtBrutoVenda);
-  TFormatacao.AplicarNumero(edtDescontoVenda);
-  TFormatacao.AplicarNumero(edtLiquidoVenda);
-  TFormatacao.AplicarNumero(desc);
 end;
 
 
@@ -134,31 +135,41 @@ end;
 procedure TfrmVendaDav.FormShow(Sender: TObject);
 begin
   IniciarTela;
-  AlternaPainel(painelEstoque, painelVenda);
+  edtEmisao.Date := Date;
+  InativarEditValorAltomatico;
+
+  GridShow(painelEstoque);
+
+end;
+
+procedure TfrmVendaDav.InativarEditValorAltomatico;
+begin
+  edtValorItemTotal.Enabled := false;
+  edtDescontoVenda.Enabled := false;
+  edtBrutoVenda.Enabled := false;
+  edtLiquidoVenda.Enabled := false;
 end;
 
 procedure TfrmVendaDav.IniciarTela;
 begin
 
   LimparTelaVenda;
-  TValidarCampos.ConfigurarEditBloqueado(edtNumeroVenda, True);
-  TValidarCampos.ConfigurarEditInativo(edtBrutoVenda, false);
-  TValidarCampos.ConfigurarEditInativo(edtDescontoVenda, false);
-  TValidarCampos.ConfigurarEditInativo(edtLiquidoVenda, false);
-  TValidarCampos.ConfigurarEditInativo(edtValorItemTotal, false);
+  GridShow(painelEstoque);
+
   ConfigurarEditInativoTela(false);
-  FModoTela:= svCancelada;
+  edtNumeroVenda.Enabled := true;
+  FModoTela:= svNaoIniciada;
   ControlarButon(True);
-  pnlDesconto.Visible := false;
   btnDesconto.Visible := false;
 end;
 procedure TfrmVendaDav.ConfigurarEditInativoTela(Ativo: Boolean);
 begin
+  HabilitarCampos(Ativo);
+end;
 
-  TValidarCampos.ConfigurarEditInativo(edtQuantidadeProdutoSelecionado, Ativo);
-  TValidarCampos.ConfigurarEditInativo(edtPesquisaProduto, Ativo);
-  TValidarCampos.ConfigurarEditInativo(edtCliente, Ativo);
-  TValidarCampos.ConfigurarEditInativo(edtVendedor, Ativo);
+procedure TfrmVendaDav.HabilitarCampos(Habilitar: Boolean);
+begin
+  TControlUtils.HabilitarControles(Self, Habilitar);
 end;
 
 { ================== CONTROLE DOS BTN ================== }
@@ -175,53 +186,63 @@ procedure TfrmVendaDav.edtPesquisaProdutoChange(Sender: TObject);
 begin
   if Trim(edtPesquisaProduto.Text).IsEmpty then
   begin
-    AlternaPainel(painelVenda, painelEstoque);
+    GridShow(painelVenda);
     QRYProdEstoque.Close;
     Exit;
   end;
-  AlternaPainel(painelEstoque,painelVenda);
+  GridShow(painelEstoque);
   PreencherGrildProdutosEstoque(edtPesquisaProduto.Text);
 end;
-
-
 procedure TfrmVendaDav.edtPesquisaProdutoKeyPress(Sender: TObject; var Key: Char);
 begin
   IrParaOEdtQuantidade(key);
 end;
 procedure TfrmVendaDav.edtQuantidadeProdutoSelecionadoKeyDown(Sender: TObject;var Key: Word; Shift: TShiftState);
 begin
-  if Key = VK_RETURN then
-  begin
-    Key := 0;
-    AdicionarProdutoSelecionado;
+  try
+    if Key = VK_RETURN then
+    begin
+      Key := 0;
+      if Trim(edtQuantidadeProdutoSelecionado.Text) = '' then
+        exit;
+      AdicionarProdutoSelecionado;
+    end;
+  except
+  on EApp: EAppException do
+    TDialogo.Atencao(EApp.Message);
+  on EInf: EInfraException do
+    TDialogo.Erro(EInf.Message);
+  on EG: Exception do
+    TDialogo.Erro('Falha na operação, tente novamente!'+EG.Message);
   end;
 end;
 procedure TfrmVendaDav.edtQuantidadeProdutoSelecionadoChange(Sender: TObject);
 begin
+  if Trim(edtQuantidadeProdutoSelecionado.Text) = '' then
+    exit;
   PegarOValorTotalItem;
 end;
 procedure TfrmVendaDav.dbProdEsqtqueKeyPress(Sender: TObject; var Key: Char);
 begin
   IrParaOEdtQuantidade(key);
 end;
-procedure TfrmVendaDav.descEnter(Sender: TObject);
-begin
-  edtDescontoVenda.Text := desc.Text;
-end;
 
-procedure TfrmVendaDav.btnAddDesClick(Sender: TObject);
-begin
- edtDescontoVenda.Text := desc.Text;
- AtualizarTotaisVenda;
-end;
+
+
 
 procedure TfrmVendaDav.btnCancelarClick(Sender: TObject);
 begin
   CancelarVenda;
 end;
+
+
 procedure TfrmVendaDav.btnDescontoClick(Sender: TObject);
+var
+  Desc: Currency;
 begin
-  pnlDesconto.Visible:= true;
+   Desc:= TDialogo.SolicitarValor('Informe o valor do desconto R$:');
+   edtDescontoVenda.Text := Desc.ToString();
+   AtualizarTotaisVenda;
 end;
 
 procedure TfrmVendaDav.btnGravarClick(Sender: TObject);
@@ -254,11 +275,29 @@ procedure TfrmVendaDav.btnNovaVendaClick(Sender: TObject);
 begin
   IniciarVenda;
 end;
+procedure TfrmVendaDav.btnRemoverItemClick(Sender: TObject);
+begin
+  if QRYProdVenda.IsEmpty then Exit;
+  try
+     RemoverItemVenda;
+     TDialogo.Sucesso('Item removido com sucesso.');
+     FService.ListarNaTelaGridVenda(QRYProdVenda, FIdVenda);
+     AtualizarTotaisVenda;
+  except
+   on EApp: EAppException do
+       TDialogo.Atencao(EApp.Message);
+     on EInf: EInfraException do
+       TDialogo.Erro(EInf.Message);
+     on EG: Exception do
+       TDialogo.Erro('Falha na operação, tente novamente!'+EG.Message);
+  end;
+end;
+
 { ================== VENDA ================== }
 procedure TfrmVendaDav.IniciarVenda;
 begin
   try
-   if FModoTela = svCancelada then
+   if FModoTela = svNaoIniciada then
    begin
      //fazer o insert no banco e pegar o numero para mostrar na tela
      edtNumeroVenda.Clear;
@@ -407,12 +446,12 @@ begin
   end;
 
 end;
-
 procedure TfrmVendaDav.edtNumeroVendaKeyPress(Sender: TObject; var Key: Char);
 begin
  if Key = #13 then
   begin
     IniciarVenda;
+    edtCliente.SetFocus;
     Key := #0;
   end;
 end;
@@ -423,6 +462,22 @@ begin
   FService.ListarNaTelaGridEstoque(QRYProdEstoque, NomeProd);
 end;
 //---------Manipular tabela que aparece----------------------
+procedure TfrmVendaDav.GridShow(Painel: TPanel);
+begin
+  if Painel = painelVenda then
+  begin
+     AlternaPainel(painelVenda, painelEstoque);
+     //btnAdicionar.Enabled := false;
+     btnRemoverItem.Enabled := true;
+  end;
+  if Painel = painelEstoque then
+  begin
+     AlternaPainel(painelEstoque,painelVenda);
+     //btnAdicionar.Enabled := true;
+     btnRemoverItem.Enabled := false;
+  end;
+
+end;
 procedure TfrmVendaDav.AlternaPainel(PainelVisivel, PainelOculto: TPanel);
 begin
    PainelVisivel.Align:= alClient;
@@ -457,8 +512,10 @@ procedure TfrmVendaDav.IrParaOEdtQuantidade(Key: Char);
 begin
   if (Key <> #13) then Exit;
 
-  if QRYProdEstoque.IsEmpty then Exit;
-  if QRYProdEstoque.FieldByName('ID_PRODUTO').IsNull then Exit;
+  if QRYProdEstoque.IsEmpty then
+   Exit;
+  if QRYProdEstoque.FieldByName('ID_PRODUTO').IsNull then
+   Exit;
 
   Key := #0;
   edtQuantidadeProdutoSelecionado.SetFocus;
@@ -473,7 +530,7 @@ begin
   begin
     raise EAppException.Create('Informe a quantidade!');
   end;
-  ProdutoSelecionado := GetProdutoSelecionado;
+  ProdutoSelecionado := GetProdutoSelecionadoGridEstoque;
   if StrToInt(edtQuantidadeProdutoSelecionado.Text) > ProdutoSelecionado.Estoque then
     raise EAppException.Create('Quantidade insuficiente');
 
@@ -486,38 +543,59 @@ begin
     Item.ValorUnitario := ProdutoSelecionado.ValorUnitario;
     Item.ValorTotal := StrToCurr(edtValorItemTotal.Text);
 
-    try
-      if not QRYProdEstoque.IsEmpty then
-      begin
-        //chamar service de itemVenda
-        FService.AdicionarItemVenda(Item);
-        FService.ListarNaTelaGridVenda(QRYProdVenda, FIdVenda);
-        AtualizarTotaisVenda;
-        edtPesquisaProduto.Clear;
-        edtPesquisaProduto.SetFocus;
-        edtValorItemTotal.Text := '0,00';
-        edtQuantidadeProdutoSelecionado.Text := '0';
+    if not QRYProdEstoque.IsEmpty then
+    begin
+      //chamar service de itemVenda
+      FService.AdicionarItemVenda(Item);
+      FService.ListarNaTelaGridVenda(QRYProdVenda, FIdVenda);
+      AtualizarTotaisVenda;
+      edtPesquisaProduto.Clear;
+      edtPesquisaProduto.SetFocus;
+      edtValorItemTotal.Clear;
+      edtQuantidadeProdutoSelecionado.Clear;
       end;
-    except
-     on EApp: EAppException do
-       TDialogo.Atencao(EApp.Message);
-     on EInf: EInfraException do
-       TDialogo.Erro(EInf.Message);
-     on EG: Exception do
-       TDialogo.Erro('Falha na operação, tente novamente!'+EG.Message);
-    end;
   finally
     Item.Free;
     ProdutoSelecionado.Free;
   end;
 end;
+
+procedure TfrmVendaDav.RemoverItemVenda;
+var
+  ItemVenda: TItemVendaModel;
+  Quant: Currency;
+begin
+
+  ItemVenda := GetItemVendaSelecionadoGridVenda;
+  try
+    ItemVenda.IdVenda := FIdVenda;
+    if ItemVenda.Quantidade = 1 then
+    begin
+      FService.RemoverItemVenda(ItemVenda.Quantidade, ItemVenda);
+    end
+    else
+    begin
+      //se não, vai abrir o dialogo para colocar a quantidade
+      Quant := TDialogo.SolicitarValor('Informo a quantidade que deseja remover.');
+      if Quant = 0  then
+      begin
+        raise EAppException.Create('Nenhum item removido');
+      end;
+      FService.RemoverItemVenda(Quant, ItemVenda);
+    end;
+  finally
+    ItemVenda.Free;
+  end;
+
+end;
+
 procedure TfrmVendaDav.PegarOValorTotalItem;
 var
   ValorProdutoTot, ValorUnitario, Quant: Currency;
   ProdutoSelecionado: TProdutoModel;
 begin
 
-  ProdutoSelecionado := GetProdutoSelecionado;
+  ProdutoSelecionado := GetProdutoSelecionadoGridEstoque;
   if not Assigned(ProdutoSelecionado) then Exit;
   try
     ValorUnitario := ProdutoSelecionado.ValorUnitario;
@@ -528,7 +606,24 @@ begin
      ProdutoSelecionado.Free;
   end;
 end;
-function TfrmVendaDav.GetProdutoSelecionado: TProdutoModel;
+
+function TfrmVendaDav.GetItemVendaSelecionadoGridVenda: TItemVendaModel;
+begin
+  Result := nil;
+
+  if QRYProdVenda.IsEmpty then Exit;
+  if QRYProdVenda.FieldByName('ID_PRODUTO').IsNull then Exit;
+
+  Result := TItemVendaModel.Create;
+
+  Result.IdProduto := QRYProdVenda.FieldByName('ID_PRODUTO').AsInteger;
+  Result.NomeProduto := QRYProdVenda.FieldByName('NOME').AsString;
+  Result.Quantidade := QRYProdVenda.FieldByName('QUANTIDADE').AsCurrency;
+  Result.ValorUnitario := QRYProdVenda.FieldByName('VALOR_UNITARIO').AsCurrency;
+
+end;
+
+function TfrmVendaDav.GetProdutoSelecionadoGridEstoque: TProdutoModel;
 begin
   Result := nil;
 
@@ -558,17 +653,15 @@ begin
 
   // produto
   edtPesquisaProduto.Clear;
-  edtQuantidadeProdutoSelecionado.Text := '0';
-  edtValorItemTotal.Text := '0,00';
+  edtQuantidadeProdutoSelecionado.Clear;
+  edtValorItemTotal.Clear;
 
   // totais
-  edtBrutoVenda.Text := '0,00';
-  edtDescontoVenda.Text := '0,00';
-  edtLiquidoVenda.Text := '0,00';
+  edtBrutoVenda.Clear;
+  edtDescontoVenda.Clear;
+  edtLiquidoVenda.Clear;
 
-  // desconto painel
-  desc.Clear;
-  pnlDesconto.Visible := false;
+
 
   //fechar dataset
   QRYProdVenda.Close;
