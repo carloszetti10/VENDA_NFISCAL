@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, ZDataset, ZConnection,
-  uPagamentoVendaModel, iPagamentoVendaDAO;
+  uPagamentoVendaModel, iPagamentoVendaDAO,Data.DB, Data.FmtBcd;
 
 type
   TPagamentoVendaDao = class(TInterfacedObject, IPagamentoVendaDAOO)
@@ -13,15 +13,48 @@ type
   public
     constructor Create(AConexao: TZConnection);
     procedure Insert(AItem: TPagamentoVendaModel);
+    procedure FindByAllFormaPag(Q: TZQuery);
+    procedure FindByAllPagamentoVenda(Q: TZQuery; Id: Integer);
+    procedure DeleteByVenda(AIdVenda: Integer);
   end;
 
 implementation
 
 { TPagamentoVendaDao }
 
+
+
+
 constructor TPagamentoVendaDao.Create(AConexao: TZConnection);
 begin
   FConexao := AConexao;
+end;
+
+procedure TPagamentoVendaDao.FindByAllFormaPag(Q: TZQuery);
+begin
+  Q.Close;
+  Q.Connection := FConexao;
+
+  Q.SQL.Text := 'SELECT ID_PAGAMENTO, NOME FROM FORMA_PAGAMENTO';
+  Q.Open;
+end;
+
+
+procedure TPagamentoVendaDao.FindByAllPagamentoVenda(Q: TZQuery; Id: Integer);
+begin
+  Q.Close;
+  Q.Connection := FConexao;
+
+  Q.SQL.Text :=
+  'SELECT PV.PARCELA, PV.VALOR, FP.NOME AS FORMA_PAGAMENTO ' +
+  'FROM PAGAMENTO_VENDA PV INNER JOIN FORMA_PAGAMENTO FP ON FP.ID_PAGAMENTO = PV.ID_PAGAMENTO ' +
+  'WHERE PV.ID_VENDA = :ID ORDER BY PV.PARCELA';
+
+  Q.ParamByName('ID').AsInteger := Id;
+  Q.Open;
+
+
+   TFMTBCDField(Q.FieldByName('VALOR')).DisplayFormat := 'R$ ,0.00';
 end;
 
 procedure TPagamentoVendaDao.Insert(AItem: TPagamentoVendaModel);
@@ -48,4 +81,24 @@ begin
   end;
 end;
 
+procedure TPagamentoVendaDao.DeleteByVenda(AIdVenda: Integer);
+var
+  Q: TZQuery;
+begin
+  Q := TZQuery.Create(nil);
+  try
+    Q.Connection := FConexao;
+
+    Q.SQL.Text :=
+      'DELETE FROM PAGAMENTO_VENDA ' +
+      'WHERE ID_VENDA = :ID_VENDA';
+
+    Q.ParamByName('ID_VENDA').AsInteger := AIdVenda;
+
+    Q.ExecSQL;
+
+  finally
+    Q.Free;
+  end;
+end;
 end.

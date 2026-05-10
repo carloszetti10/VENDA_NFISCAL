@@ -1,0 +1,16 @@
+unit iPagamentoVendaService;
+
+interface
+
+uses
+  uPagamentoVendaModel,ZDataset;
+
+type
+  IPagamentoVendaIntefaceService = interface
+    procedure SalvarPagamento(AItem: TPagamentoVendaModel);
+    procedure CarregarFormaPag(QRY: TZQuery);
+  end;
+
+implementation
+
+end.

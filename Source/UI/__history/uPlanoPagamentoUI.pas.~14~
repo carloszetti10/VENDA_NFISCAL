@@ -1,0 +1,90 @@
+unit uPlanoPagamentoUI;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons,
+  Data.DB, ZAbstractRODataset, ZAbstractDataset, ZDataset, Vcl.Grids,
+  Vcl.DBGrids, Vcl.Mask, RxToolEdit, RxCurrEdit, uFormaPagModel,uPagamentoVendaModel,
+  iPagamentoVendaService, uPagamentoVendaService, uVendaModel;
+
+type
+  TfrmPlanoPagamento = class(TForm)
+    pnlBase: TPanel;
+    pnlInferior: TPanel;
+    btnConfirmar: TBitBtn;
+    btnSair: TBitBtn;
+    pnlPlano: TPanel;
+    pnlInferiorPlano: TPanel;
+    pnlAplicarPlano: TPanel;
+    DBplano: TDBGrid;
+    QRYPlano: TZQuery;
+    dtsPlano: TDataSource;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    Label1: TLabel;
+    edtNumeroVenda: TEdit;
+    DBGrid1: TDBGrid;
+    QRYpagamentoVenda: TZQuery;
+    dtsPagamentoVenda: TDataSource;
+    cbFormaPagamento: TComboEdit;
+    edtBrutoVenda: TCurrencyEdit;
+    Label10: TLabel;
+    edtDescontoVenda: TCurrencyEdit;
+    Label11: TLabel;
+    edtLiquidoVenda: TCurrencyEdit;
+    Label12: TLabel;
+    Label2: TLabel;
+    lbValorTotal: TLabel;
+    CurrencyEdit1: TCurrencyEdit;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    Edit1: TEdit;
+    Label3: TLabel;
+    procedure btnConfirmarClick(Sender: TObject);
+  private
+     FPagamento: TPagamentoVendaModel;
+     FService: IPagamentoVendaIntefaceService;
+     FVenda: TVendaModel;
+  public
+    procedure CarregarPlano; //para preencher a lista de forma de pagamento
+    procedure CarregarPagamentoVenda; //para preencher a lista de pagamento da venda
+    constructor Create(AOwner: TComponent; AService: IPagamentoVendaIntefaceService; AVenda: TVendaModel);
+  end;
+
+var
+  frmPlanoPagamento: TfrmPlanoPagamento;
+
+implementation
+
+{$R *.dfm}
+
+{ TfrmPlanoPagamento }
+
+procedure TfrmPlanoPagamento.btnConfirmarClick(Sender: TObject);
+begin
+  ModalResult := mrOk;
+end;
+
+procedure TfrmPlanoPagamento.CarregarPagamentoVenda;
+begin
+   FService.CarregarPagamentoVenda(QRYPlano, FVenda.IdVenda);
+end;
+
+procedure TfrmPlanoPagamento.CarregarPlano;
+begin
+  FService.CarregarFormaPag(QRYPlano);
+end;
+
+constructor TfrmPlanoPagamento.Create(AOwner: TComponent; AService: IPagamentoVendaIntefaceService; AVenda: TVendaModel );
+begin
+  inherited Create(AOwner);
+  FService:= AService;
+  FVenda:= AVenda;
+
+  CarregarPlano;
+end;
+
+end.

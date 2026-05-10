@@ -1,0 +1,112 @@
+unit uPlanoPagamentoUI;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons,
+  Data.DB, ZAbstractRODataset, ZAbstractDataset, ZDataset, Vcl.Grids,
+  Vcl.DBGrids, Vcl.Mask, RxToolEdit, RxCurrEdit, uFormaPagModel,uPagamentoVendaModel,
+  iPagamentoVendaService, uPagamentoVendaService, uVendaModel;
+
+type
+  TfrmPlanoPagamento = class(TForm)
+    pnlBase: TPanel;
+    pnlInferior: TPanel;
+    btnConfirmar: TBitBtn;
+    pnlPlano: TPanel;
+    pnlInferiorPlano: TPanel;
+    pnlAplicarPlano: TPanel;
+    DBplano: TDBGrid;
+    QRYPlano: TZQuery;
+    dtsPlano: TDataSource;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    Label1: TLabel;
+    DBGrid1: TDBGrid;
+    QRYpagamentoVenda: TZQuery;
+    dtsPagamentoVenda: TDataSource;
+    cbFormaPagamento: TComboEdit;
+    edtBrutoVenda: TCurrencyEdit;
+    Label10: TLabel;
+    edtDescontoVenda: TCurrencyEdit;
+    Label11: TLabel;
+    edtLiquidoVenda: TCurrencyEdit;
+    Label12: TLabel;
+    Label2: TLabel;
+    lbValorTotal: TLabel;
+    CurrencyEdit1: TCurrencyEdit;
+    edtCodPlano: TEdit;
+    Label3: TLabel;
+    btnAdiPagamento: TBitBtn;
+    edtNumeroVenda: TCurrencyEdit;
+    btnAlterar: TBitBtn;
+    procedure btnConfirmarClick(Sender: TObject);
+    procedure dtsPlanoDataChange(Sender: TObject; Field: TField);
+    procedure btnAdiPagamentoClick(Sender: TObject);
+  private
+     FPagamento: TPagamentoVendaModel;
+     FService: IPagamentoVendaIntefaceService;
+     FVenda: TVendaModel;
+     FIdPlanoSelecionado: Integer;
+  public
+    procedure CarregarPlano; //para preencher a lista de forma de pagamento
+    procedure CarregarPagamentoVenda; //para preencher a lista de pagamento da venda
+    constructor Create(AOwner: TComponent; AService: IPagamentoVendaIntefaceService; AVenda: TVendaModel);
+  end;
+
+var
+  frmPlanoPagamento: TfrmPlanoPagamento;
+
+implementation
+
+{$R *.dfm}
+
+{ TfrmPlanoPagamento }
+
+procedure TfrmPlanoPagamento.btnAdiPagamentoClick(Sender: TObject);
+begin
+  if (Trim(edtNumeroVenda.Text) = '') or (StrToInt(edtNumeroVenda.Text) = 0) then
+  begin
+    Exit;
+  end;
+  FService.GerarParcelas(FVenda.IdVenda,FIdPlanoSelecionado, StrToCurr(edtLiquidoVenda.Text), StrToInt(edtNumeroVenda.Text));
+  CarregarPagamentoVenda;
+end;
+
+procedure TfrmPlanoPagamento.btnConfirmarClick(Sender: TObject);
+begin
+  ModalResult := mrOk;
+end;
+
+procedure TfrmPlanoPagamento.CarregarPagamentoVenda;
+begin
+   FService.CarregarPagamentoVenda(QRYpagamentoVenda, FVenda.IdVenda);
+end;
+
+procedure TfrmPlanoPagamento.CarregarPlano;
+begin
+  FService.CarregarFormaPag(QRYPlano);
+end;
+
+constructor TfrmPlanoPagamento.Create(AOwner: TComponent; AService: IPagamentoVendaIntefaceService; AVenda: TVendaModel );
+begin
+  inherited Create(AOwner);
+  FService:= AService;
+  FVenda:= AVenda;
+
+  CarregarPlano;
+end;
+
+procedure TfrmPlanoPagamento.dtsPlanoDataChange(Sender: TObject; Field: TField);
+begin
+  inherited;
+  if (dtsPlano.DataSet <> nil) and (not dtsPlano.DataSet.IsEmpty) then
+  begin
+    FIdPlanoSelecionado := QRYPlano.Fields[0].AsInteger;
+    edtCodPlano.Text := FIdPlanoSelecionado.ToString;
+  end;
+end;
+
+end.

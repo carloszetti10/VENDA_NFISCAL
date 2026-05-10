@@ -16,6 +16,7 @@ type
       FStatus: TStatusVenda;
       FValorTotal: Currency;
       FValorDesc: Currency;
+      FValorLiquido: Currency;
       FEmissao: TDateTime;
     public
       constructor Create;
@@ -29,6 +30,7 @@ type
 
       property Status: TStatusVenda read FStatus write FStatus;
       property ValorTotal: Currency read FValorTotal write FValorTotal;
+      property ValorLiquido: Currency read FValorLiquido write FValorLiquido;
       property ValorDesconto: Currency read FValorDesc write FValorDesc;
       property Emissao: TDateTime read FEmissao write FEmissao;
   end;

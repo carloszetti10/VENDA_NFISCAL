@@ -23,7 +23,6 @@ type
     procedure IAlterar(Forma: TFormaPagamentoModel);
 
     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
-
     constructor Create(AFormaPagDAO: IFormaPagDAOO);
 
     function BuscarPorId(ID: Integer): TFormaPagamentoModel;

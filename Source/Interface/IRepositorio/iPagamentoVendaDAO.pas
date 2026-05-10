@@ -3,12 +3,15 @@ unit iPagamentoVendaDAO;
 interface
 
 uses
-  uPagamentoVendaModel;
+  uPagamentoVendaModel,ZDataset;
 
 type
   IPagamentoVendaDAOO = interface
 
     procedure Insert(AItem: TPagamentoVendaModel);
+    procedure FindByAllFormaPag(QRY: TZQuery);
+    procedure FindByAllPagamentoVenda(QRY: TZQuery; Id: Integer);
+    procedure DeleteByVenda(AIdVenda: Integer);
   end;
 
 implementation

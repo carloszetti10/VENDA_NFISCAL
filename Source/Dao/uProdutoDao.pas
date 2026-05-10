@@ -116,6 +116,8 @@ begin
 
   Q.ParamByName('NOME').AsString := Trim(Nome) +'%';
   Q.Open;
+
+   TFMTBCDField(Q.FieldByName('VALOR_UNITARIO')).DisplayFormat := 'R$ ,0.00';
 end;
 procedure TProdutoDao.BaixarEstoque(IdProduto: Integer; Quantidade: Currency);
 var

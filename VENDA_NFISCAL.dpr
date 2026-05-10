@@ -68,7 +68,8 @@ uses
   uFormaPagService in 'Source\Service\uFormaPagService.pas',
   iFormaPagService in 'Source\Interface\IService\iFormaPagService.pas',
   uRelProVenda in 'Source\UI\Relatorios\uRelProVenda.pas' {frmRelProVenda},
-  uDialogoValor in 'Source\UI\DialogosPersonalizados\uDialogoValor.pas' {frmDialogoValor};
+  uDialogoValor in 'Source\UI\DialogosPersonalizados\uDialogoValor.pas' {frmDialogoValor},
+  uPlanoPagamentoUI in 'Source\UI\uPlanoPagamentoUI.pas' {frmPlanoPagamento};
 
 {$R *.res}
 
@@ -83,8 +84,6 @@ begin
 
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TftmLogin, ftmLogin);
-  Application.CreateForm(TfrmRelProVenda, frmRelProVenda);
-  Application.CreateForm(TfrmDialogoValor, frmDialogoValor);
   //Application.CreateForm(TfrmRelCadCliente, frmRelCadCliente);
   //Application.CreateForm(TfrmTelaPrincipal, frmTelaPrincipal);
   Application.Run;

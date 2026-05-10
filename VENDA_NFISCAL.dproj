@@ -231,6 +231,10 @@
             <Form>frmDialogoValor</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Source\UI\uPlanoPagamentoUI.pas">
+            <Form>frmPlanoPagamento</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

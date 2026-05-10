@@ -8,10 +8,11 @@ type
     function  Insert(IdUsuario: Integer): Integer;
     function  FindByID(cod: Integer): TVendaModel;
     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
-    function UpdateCliente(IdCliente: Integer; IdVenda: Integer): Integer;
-    function UpdateFuncionario(IdFunc: Integer; IdVenda: Integer): Integer;
+    function  UpdateCliente(IdCliente: Integer; IdVenda: Integer): Integer;
+    function  UpdateFuncionario(IdFunc: Integer; IdVenda: Integer): Integer;
     procedure UpdateStatus(IdVenda: Integer; status: TStatusVenda);
-    function CalcularTotalVenda(IdVenda: Integer): Currency;
+    function  CalcularTotalVenda(IdVenda: Integer): Currency;
+    procedure UpdateValorVenda(Venda: TVendaModel);
    end;
 
 implementation

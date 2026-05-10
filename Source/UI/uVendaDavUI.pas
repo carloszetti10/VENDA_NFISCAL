@@ -14,7 +14,7 @@ uses
    uPagamentoUI, uPagamentoVendaModel,
   iPagamentoVendaDAO, uPagamentoVendaDao,
   iPagamentoVendaService, uPagamentoVendaService, Vcl.Mask, RxToolEdit,
-  RxCurrEdit, uControlUtils;
+  RxCurrEdit, uControlUtils, uPlanoPagamentoUI, uVendaModel, uSession;
 type
   TModoTela = (svIniciada, svNaoIniciada);
   TGridProdShow =(sgProdVenda, sgProdEstoque);
@@ -96,7 +96,7 @@ type
     procedure   IniciarTela;
     procedure   IniciarVenda;
     procedure   CancelarVenda;
-    procedure   GravaVenda;
+    procedure   GravaVenda(Venda: TVendaModel);
     procedure   ConfigurarEditInativoTela(Ativo: Boolean);
     procedure   ControlarButon(Ativo: Boolean);
     procedure   IrParaOEdtQuantidade(Key: Char);
@@ -107,7 +107,7 @@ type
     procedure   LimparTelaVenda;
     procedure   HabilitarCampos(Habilitar: Boolean);
     procedure   InativarEditValorAltomatico;
-     procedure  GridShow(Painel: TPanel);
+    procedure  GridShow(Painel: TPanel);
     procedure   RemoverItemVenda;
 
   end;
@@ -246,20 +246,37 @@ begin
 end;
 
 procedure TfrmVendaDav.btnGravarClick(Sender: TObject);
+var
+  Venda: TVendaModel;
 begin
   try
-    if not Assigned(FCliente) then
-      raise EAppException.Create('Selecione um cliente');
+    Venda:= FService.BuscarVendaPoId(FIdVenda);
+    Venda.ValorTotal := StrToCurrDef(Trim(edtBrutoVenda.Text), 0);
+    Venda.ValorLiquido := StrToCurrDef(Trim(edtLiquidoVenda.Text), 0);
+    Venda.ValorDesconto := StrToCurrDef(Trim(edtDescontoVenda.Text), 0);
+    try
+      if not Assigned(FCliente) then
+        raise EAppException.Create('Selecione um cliente');
 
-    if not Assigned(FVendedor) then
-      raise EAppException.Create('Selecione um vendedor');
+      if not Assigned(FVendedor) then
+        raise EAppException.Create('Selecione um vendedor');
 
-    if QRYProdVenda.IsEmpty then
-      raise EAppException.Create('Adicione ao menos um produto');
+      if QRYProdVenda.IsEmpty then
+        raise EAppException.Create('Adicione ao menos um produto');
 
-
-     GravaVenda;
-
+     FService.AtualizarValorVenda(Venda);
+     GravaVenda(Venda);
+     FService.AlterarStatusVenda(Venda.IdVenda, TStatusVenda.svDav);
+     if TSession.GetUsuario.TemPermissao('CAD_FATURAMENTO') then
+     begin
+       if TDialogo.Confirmar('Deseja Faturar a Venda?') then
+       begin
+          TDialogo.Sucesso('Fatutando......');
+       end;
+     end;
+    finally
+      Venda.Free;
+    end;
   except
   on EApp: EAppException do
      TDialogo.Atencao(EApp.Message);
@@ -340,58 +357,39 @@ begin
       TDialogo.Erro('Falha na operação, tente novamente!'+EG.Message);
   end;
 end;
-procedure TfrmVendaDav.GravaVenda;
+
+procedure TfrmVendaDav.GravaVenda(Venda: TVendaModel);
 var
-  FrmPagamento: TfrmPagamento;
-  Pagamento: TPagamentoVendaModel;
+  frmPlanoPag: TfrmPlanoPagamento;
   Dao: IPagamentoVendaDAOO;
   ServicePag: IPagamentoVendaIntefaceService;
-
-  vlrTot, vlrLiqui,vlrDesc : Currency;
 begin
   try
-    //abre tela de pagamento
-    FrmPagamento := TfrmPagamento.Create(nil);
+    Dao := TPagamentoVendaDao.Create(AppServiceConexao.getConexao);
+    ServicePag := TPagamentoVendaService.Create(Dao);
+
+    frmPlanoPag := TfrmPlanoPagamento.Create(nil, ServicePag, Venda);
+
     try
-      FrmPagamento.TotalVenda := StrToCurr(edtLiquidoVenda.Text);
+      frmPlanoPag.lbValorTotal.Caption := edtLiquidoVenda.Text;
+      frmPlanoPag.edtBrutoVenda.Text := edtBrutoVenda.Text;
+      frmPlanoPag.edtDescontoVenda.Text := edtDescontoVenda.Text;
+      frmPlanoPag.edtLiquidoVenda.Text := edtLiquidoVenda.Text;
 
-      if FrmPagamento.ShowModal = mrOk then
+      if frmPlanoPag.ShowModal = mrOk then
       begin
-        //pega o pagamento preenchido na tela
-        Pagamento := FrmPagamento.Pagamento;
-
-        //vincula com a venda atual
-        Pagamento.IdVenda := FIdVenda;
-
-        //cria DAO e Service
-        Dao := TPagamentoVendaDao.Create(AppServiceConexao.getConexao);
-        ServicePag := TPagamentoVendaService.Create(Dao);
-
-        //salva no banco
-        ServicePag.SalvarPagamento(Pagamento);
-
-         vlrTot := StrToCurr(edtBrutoVenda.Text);
-         vlrLiqui := StrToCurr(edtLiquidoVenda.Text);
-         vlrDesc := StrToCurr(edtDescontoVenda.Text);
-
-        FService.FaturarVenda(FIdVenda, vlrTot, vlrLiqui,vlrDesc);
-
-        TDialogo.Informacao('Venda finalizada!');
-
-        //limpa tela
         LimparTelaVenda;
         IniciarTela;
       end;
 
     finally
-      FrmPagamento.Free;
+      frmPlanoPag.Free;
     end;
 
   except
     on E: Exception do
       TDialogo.Erro(E.Message);
   end;
-
 end;
 
 { ================== VENDA/ENTIDADE ================== }
@@ -469,12 +467,23 @@ begin
      AlternaPainel(painelVenda, painelEstoque);
      //btnAdicionar.Enabled := false;
      btnRemoverItem.Enabled := true;
+     if not QRYProdVenda.IsEmpty then
+     begin
+       //TCurrencyField(QRYProdEstoque.FieldByName('VALOR_UNITARIO')).DisplayFormat := 'R$ ,0.00';
+       //TCurrencyField(QRYProdVenda.FieldByName('VALOR_UNITARIO')).DisplayFormat := 'R$ ,0.00';
+       //TCurrencyField(QRYProdVenda.FieldByName('VALOR_TOTAL')).DisplayFormat := 'R$ ,0.00';
+     end;
   end;
   if Painel = painelEstoque then
   begin
      AlternaPainel(painelEstoque,painelVenda);
      //btnAdicionar.Enabled := true;
      btnRemoverItem.Enabled := false;
+
+     if not QRYProdEstoque.IsEmpty then
+     begin
+       //TCurrencyField(QRYProdEstoque.FieldByName('VALOR_UNITARIO')).DisplayFormat := 'R$ ,0.00';
+     end;
   end;
 
 end;

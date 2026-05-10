@@ -2,8 +2,8 @@ object frmPagamento: TfrmPagamento
   Left = 0
   Top = 0
   Caption = 'PAGAMENTO'
-  ClientHeight = 294
-  ClientWidth = 263
+  ClientHeight = 306
+  ClientWidth = 266
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -72,7 +72,7 @@ object frmPagamento: TfrmPagamento
     Left = 48
     Top = 168
     Width = 137
-    Height = 21
+    Height = 23
     ReadOnly = True
     TabOrder = 3
   end

@@ -23,8 +23,6 @@ object frmVendaDav: TfrmVendaDav
     Height = 85
     Align = alTop
     TabOrder = 0
-    ExplicitTop = 8
-    ExplicitWidth = 774
     object Label1: TLabel
       Left = 16
       Top = 13
@@ -82,7 +80,7 @@ object frmVendaDav: TfrmVendaDav
       Left = 16
       Top = 36
       Width = 98
-      Height = 26
+      Height = 21
       Ctl3D = False
       NumbersOnly = True
       ParentCtl3D = False
@@ -110,7 +108,7 @@ object frmVendaDav: TfrmVendaDav
       Left = 240
       Top = 34
       Width = 225
-      Height = 26
+      Height = 21
       Ctl3D = False
       ParentCtl3D = False
       ReadOnly = True
@@ -121,7 +119,7 @@ object frmVendaDav: TfrmVendaDav
       Left = 479
       Top = 34
       Width = 225
-      Height = 26
+      Height = 21
       Ctl3D = False
       ParentCtl3D = False
       ReadOnly = True
@@ -170,8 +168,6 @@ object frmVendaDav: TfrmVendaDav
       ParentFont = False
       TabOrder = 4
       OnClick = btnSairClick
-      ExplicitLeft = 728
-      ExplicitHeight = 87
     end
   end
   object Panel2: TPanel
@@ -181,9 +177,6 @@ object frmVendaDav: TfrmVendaDav
     Height = 138
     Align = alBottom
     TabOrder = 1
-    ExplicitLeft = 32
-    ExplicitTop = 346
-    ExplicitWidth = 774
     object Label10: TLabel
       Left = 17
       Top = 8
@@ -309,7 +302,7 @@ object frmVendaDav: TfrmVendaDav
     end
     object btnGravar: TBitBtn
       Left = 228
-      Top = 64
+      Top = 62
       Width = 100
       Height = 39
       Caption = '&GRAVAR'
@@ -447,9 +440,6 @@ object frmVendaDav: TfrmVendaDav
     Height = 257
     Align = alClient
     TabOrder = 2
-    ExplicitTop = 89
-    ExplicitWidth = 793
-    ExplicitHeight = 261
     object Panel4: TPanel
       Left = 1
       Top = 1
@@ -457,8 +447,6 @@ object frmVendaDav: TfrmVendaDav
       Height = 255
       Align = alClient
       TabOrder = 0
-      ExplicitWidth = 791
-      ExplicitHeight = 259
       object Panel5: TPanel
         Left = 1
         Top = 1
@@ -466,9 +454,6 @@ object frmVendaDav: TfrmVendaDav
         Height = 56
         Align = alTop
         TabOrder = 1
-        ExplicitLeft = 15
-        ExplicitTop = -5
-        ExplicitWidth = 789
         object Label9: TLabel
           Left = 436
           Top = 4
@@ -611,19 +596,22 @@ object frmVendaDav: TfrmVendaDav
         Height = 197
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 789
-        ExplicitHeight = 201
         object painelEstoque: TPanel
-          Left = 14
-          Top = 6
-          Width = 243
-          Height = 160
+          Left = 1
+          Top = 1
+          Width = 760
+          Height = 195
+          Align = alClient
           TabOrder = 0
+          ExplicitLeft = 14
+          ExplicitTop = 6
+          ExplicitWidth = 243
+          ExplicitHeight = 160
           object dbProdEsqtque: TDBGrid
             Left = 1
             Top = 17
-            Width = 241
-            Height = 142
+            Width = 758
+            Height = 177
             Align = alClient
             DataSource = DTSProdEstoque
             Font.Charset = DEFAULT_CHARSET
@@ -644,45 +632,43 @@ object frmVendaDav: TfrmVendaDav
               item
                 Expanded = False
                 FieldName = 'ID_PRODUTO'
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clWindowText
-                Font.Height = -13
-                Font.Name = 'Segoe UI'
-                Font.Style = [fsBold]
                 Title.Caption = 'CODIGO'
-                Width = 61
+                Width = 51
                 Visible = True
               end
               item
                 Expanded = False
                 FieldName = 'NOME'
                 Title.Caption = 'DESCRI'#199#195'O'
-                Width = 138
+                Width = 156
                 Visible = True
               end
               item
                 Expanded = False
                 FieldName = 'COD_BARRA'
                 Title.Caption = 'COD BARRA'
+                Width = 115
                 Visible = True
               end
               item
                 Expanded = False
                 FieldName = 'ESTOQUE'
                 Title.Caption = 'QUANTIDADE'
+                Width = 78
                 Visible = True
               end
               item
                 Expanded = False
                 FieldName = 'VALOR_UNITARIO'
                 Title.Caption = 'VALOR UNITARIO'
+                Width = 146
                 Visible = True
               end>
           end
           object Panel7: TPanel
             Left = 1
             Top = 1
-            Width = 241
+            Width = 758
             Height = 16
             Align = alTop
             Caption = 'PRODUTOS DO ESTOQUE'
@@ -693,19 +679,20 @@ object frmVendaDav: TfrmVendaDav
             Font.Style = [fsBold]
             ParentFont = False
             TabOrder = 1
+            ExplicitWidth = 241
           end
         end
         object painelVenda: TPanel
-          Left = 320
-          Top = 6
-          Width = 256
-          Height = 160
+          Left = 436
+          Top = 56
+          Width = 229
+          Height = 137
           TabOrder = 1
           object dbProdVenda: TDBGrid
             Left = 1
             Top = 19
-            Width = 254
-            Height = 140
+            Width = 227
+            Height = 117
             Align = alClient
             DataSource = DTSProdVenda
             Font.Charset = DEFAULT_CHARSET
@@ -726,43 +713,48 @@ object frmVendaDav: TfrmVendaDav
                 Expanded = False
                 FieldName = 'ID_PRODUTO'
                 Title.Caption = 'CODIGO'
+                Width = 51
                 Visible = True
               end
               item
                 Expanded = False
                 FieldName = 'NOME'
                 Title.Caption = 'DESCRI'#199#195'O'
-                Width = 79
+                Width = 187
                 Visible = True
               end
               item
                 Expanded = False
                 FieldName = 'COD_BARRA'
                 Title.Caption = 'COD BARRA'
+                Width = 140
                 Visible = True
               end
               item
                 Expanded = False
                 FieldName = 'QUANTIDADE'
+                Width = 93
                 Visible = True
               end
               item
                 Expanded = False
                 FieldName = 'VALOR_UNITARIO'
                 Title.Caption = 'VALOR UNITARIO'
+                Width = 118
                 Visible = True
               end
               item
                 Expanded = False
                 FieldName = 'VALOR_TOTAL'
                 Title.Caption = 'VALOR TOTAL'
+                Width = 92
                 Visible = True
               end>
           end
           object Panel8: TPanel
             Left = 1
             Top = 1
-            Width = 254
+            Width = 227
             Height = 18
             Align = alTop
             Caption = 'PRODUTOS DA VENDA'
@@ -773,6 +765,9 @@ object frmVendaDav: TfrmVendaDav
             Font.Style = [fsBold]
             ParentFont = False
             TabOrder = 1
+            ExplicitLeft = 17
+            ExplicitTop = 9
+            ExplicitWidth = 254
           end
         end
       end

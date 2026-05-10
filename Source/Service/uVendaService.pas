@@ -13,10 +13,10 @@ type
    FItemVendaService: IItemVendaServiceInterface;
    public
      Function IIniciarVenda(IdUsuario: Integer):Integer;
-     procedure IAlterarVenda(Venda: TVendaModel);
      procedure ListarNaTelaGridEstoque(Q: TZQuery; Nome: string);
      procedure ListarNaTelaGridVenda(Q: TZQuery; IdVenda: Integer);
      constructor Create(AVendaDao: IVendaDAOO; AProdutoService: IProdutoServiceInterface; AItemVendaService: IItemVendaServiceInterface);
+     function  BuscarVendaPoId(IdVenda: Integer): TVendaModel;
 
      {===== ATUALIZAÇÃO VENDA ====}
      function UpdateCliente(IdCliente: Integer; IdVenda: Integer): Integer;
@@ -24,6 +24,8 @@ type
      procedure AdicionarItemVenda(Item: TItemVendaModel);
      procedure RemoverItemVenda(Quant: Currency; ItemVenda: TItemVendaModel);
      function CalcularTotalVenda(IdVenda: Integer): Currency;
+     procedure AtualizarValorVenda(Venda: TVendaModel);
+     procedure AlterarStatusVenda(Id: Integer; Status: TStatusVenda);
      {===== CANCELAR VENDA ====}
      procedure CancelarVenda(IdVenda: Integer);
 
@@ -43,10 +45,6 @@ begin
   FItemVendaService:= AItemVendaService;
 end;
 
-procedure TVendaService.IAlterarVenda(Venda: TVendaModel);
-begin
-
-end;
 
 { ================== INICIAR VENDA ================== }
 function TVendaService.IIniciarVenda(IdUsuario: Integer): Integer;
@@ -92,6 +90,21 @@ begin
   Result := FVendaDAO.UpdateFuncionario(IdFunc, IdVenda);
 end;
 
+
+procedure TVendaService.AlterarStatusVenda(Id: Integer; Status: TStatusVenda);
+begin
+  FVendaDAO.UpdateStatus(Id, Status);
+end;
+
+procedure TVendaService.AtualizarValorVenda(Venda: TVendaModel);
+begin
+  FVendaDAO.UpdateValorVenda(Venda);
+end;
+
+function TVendaService.BuscarVendaPoId(IdVenda: Integer): TVendaModel;
+begin
+   result := FVendaDAO.FindByID(IdVenda);
+end;
 
 function TVendaService.CalcularTotalVenda(IdVenda: Integer): Currency;
 begin

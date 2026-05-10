@@ -1,0 +1,67 @@
+unit uDialogServiceImpl;
+
+interface
+
+uses
+  System.SysUtils,Vcl.Forms,Winapi.Windows,uDialogoValor,System.UITypes;
+
+type
+  TDialogo = class
+  public
+    class procedure Informacao(const Msg: string; const Titulo: string = 'Informação');
+    class procedure Sucesso(const Msg: string; const Titulo: string = 'Sucesso');
+    class procedure Atencao(const Msg: string; const Titulo: string = 'Atenção');
+    class procedure Erro(const Msg: string; const Titulo: string = 'Erro');
+    class function Confirmar(const Msg: string; const Titulo: string = 'Confirmação'): Boolean;
+    class function SolicitarValor(Titulo: string): Currency;
+  end;
+
+implementation
+
+class procedure TDialogo.Informacao(const Msg, Titulo: string);
+begin
+  Application.MessageBox(PChar(Msg), PChar(Titulo), MB_OK or MB_ICONINFORMATION);
+end;
+
+class procedure TDialogo.Sucesso(const Msg, Titulo: string);
+begin
+  Application.MessageBox(PChar(Msg), PChar(Titulo), MB_OK or MB_ICONINFORMATION);
+end;
+
+class procedure TDialogo.Atencao(const Msg, Titulo: string);
+begin
+  Application.MessageBox(PChar(Msg), PChar(Titulo), MB_OK or MB_ICONWARNING);
+end;
+
+class procedure TDialogo.Erro(const Msg, Titulo: string);
+begin
+  Application.MessageBox(PChar(Msg), PChar(Titulo), MB_OK or MB_ICONERROR);
+end;
+
+class function TDialogo.Confirmar(const Msg, Titulo: string): Boolean;
+begin
+  Result :=
+    Application.MessageBox(
+      PChar(Msg),
+      PChar(Titulo),
+      MB_YESNO or MB_ICONQUESTION
+    ) = IDYES;
+end;
+
+
+class function TDialogo.SolicitarValor(Titulo: string): Currency;
+var
+  Frm: TfrmDialogoValor;
+begin
+  Result := 0;
+
+  Frm := TfrmDialogoValor.Create(nil);
+  try
+  Frm.lbText.Caption := Titulo;
+    if Frm.ShowModal = mrOk then
+      Result := Frm.edtValor.Value;
+  finally
+    Frm.Free;
+  end;
+end;
+end.

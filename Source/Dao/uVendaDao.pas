@@ -18,8 +18,9 @@ type
       function UpdateCliente(IdCliente: Integer; IdVenda: Integer): Integer;
       function UpdateFuncionario(IdFunc: Integer; IdVenda: Integer): Integer;
       function CalcularTotalVenda(IdVenda: Integer): Currency;
-      {===== CANCELAR VENDA ====}
+      {===== ALTERAR VENDA ====}
       procedure UpdateStatus(IdVenda: Integer; status: TStatusVenda);
+      procedure UpdateValorVenda(Venda: TVendaModel);
   end;
 
 
@@ -57,8 +58,38 @@ begin
 end;
 
 function TVendaDao.FindByID(cod: Integer): TVendaModel;
+var
+    Q: TZQuery;
 begin
+  try
+    Q:= TZQuery.Create(nil);
+    try
+      Q.Connection := FConexao;
 
+      Q.SQL.Text := 'SELECT * FROM VENDA WHERE ID_VENDA = :ID';
+      Q.ParamByName('ID').AsInteger := cod;
+      Q.Open;
+
+    if not Q.IsEmpty then
+    begin
+      Result := TVendaModel.Create;
+      Result.IdVenda     := Q.FieldByName('ID_VENDA').AsInteger;
+      Result.IdCliente   := Q.FieldByName('ID_CLIENTE').AsInteger;
+      Result.IdVendedor  := Q.FieldByName('ID_VENDEDOR').AsInteger;
+      Result.IdUsuario  := Q.FieldByName('ID_USUARIO').AsInteger;
+      //Result.Status  := Q.FieldByName('STATUS').;
+      Result.ValorDesconto  := Q.FieldByName('VALOR_DESC').AsInteger;
+      Result.ValorTotal     := Q.FieldByName('VALOR_TOTAL').AsCurrency;
+      Result.ValorLiquido   := Q.FieldByName('VALOR_LIQUIDO').AsCurrency;
+    end;
+
+  except
+    on E: Exception do
+      raise Exception.Create('Erro ao buscar venda: ' + E.Message);
+  end;
+    finally
+      Q.Free;
+    end;
 end;
 
 { ================== INICIAR VENDA ================== }
@@ -171,6 +202,31 @@ begin
   finally
     Q.Free;
   end;
+end;
+
+procedure TVendaDao.UpdateValorVenda(Venda: TVendaModel);
+var
+  Q: TZQuery;
+begin
+     Q := TZQuery.Create(nil);
+     try
+        Q.Connection := FConexao;
+
+        Q.SQL.Text :=
+         'UPDATE VENDA SET ' +
+         'VALOR_TOTAL = :TOTAL, ' +
+         'VALOR_LIQUIDO = :LIQUIDO, ' +
+         'VALOR_DESC = :DESCONTO ' +
+         'WHERE ID_VENDA = :ID';
+
+       Q.ParamByName('TOTAL').AsCurrency := Venda.ValorTotal;
+       Q.ParamByName('LIQUIDO').AsCurrency := Venda.ValorLiquido;
+       Q.ParamByName('DESCONTO').AsCurrency := Venda.ValorDesconto;
+       Q.ParamByName('ID').AsInteger := Venda.IdVenda;
+       Q.ExecSQL;
+     finally
+       Q.Free;
+     end;
 end;
 
 end.
