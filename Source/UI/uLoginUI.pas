@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, uUsuarioService,
   iUsuarioService, uUsuarioModel, uUsuarioDao, uUsuarioUI,IUsuarioDAO, uException, uAppServiceConexao,
-  uValidarCampo,ZConnection, uMenuPrincipalUI,uLojaModel, uAppContext,uRelProVenda, iLojaDAO,uLojaDao,uSession, Enter;
+  uValidarCampo,ZConnection, uMenuPrincipalUI,uLojaModel, uAppContext,uRelProVenda, iLojaDAO,uLojaDao,uSession, Enter,
+  Vcl.Imaging.pngimage, Vcl.ExtCtrls,uLojaUI;
 
 type
   TftmLogin = class(TForm)
@@ -16,6 +17,8 @@ type
     Label2: TLabel;
     btnEntrar: TBitBtn;
     Label3: TLabel;
+    Image11: TImage;
+    Image1: TImage;
     procedure FormCreate(Sender: TObject);
     procedure btnEntrarClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -74,11 +77,12 @@ begin
 
   Dao := TUsuarioDao.Create(Conexao);
   FUsuarioService := TUsuarioService.Create(Dao, Conexao);
-  VerificarLojaCadastrada; //não deve esta aqui mais de inicio vou implementar aqui.
+
 
   FEnter := TMREnter.Create(Self);
   FEnter.FocusEnabled:=true;
   FEnter.FocusColor:=clInfoBk;
+  VerificarLojaCadastrada; //não deve esta aqui mais de inicio vou implementar aqui.
 end;
 
 procedure TftmLogin.LimparCampo;
@@ -126,15 +130,19 @@ end;
 procedure TftmLogin.VerificarLojaCadastrada;
 var
   Loja: TLojaModel;
+  frm :  TfrmLoja;
 begin
   Loja := FDaoLoja.FindBy;
-
-
-  if not Assigned(Loja) then
-  begin
-    //AbrirTelaInicial(nil,nil);
-    Exit;
+  frm :=  TfrmLoja.Create(nil);
+  try
+    if not Assigned(Loja) then
+    begin
+      frm.ShowModal;
+    end;
+  finally
+    frm.Free;
   end;
+
 
 end;
 end.

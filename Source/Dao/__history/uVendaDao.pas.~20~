@@ -1,0 +1,261 @@
+unit uVendaDao;
+interface
+uses
+  IVendaDAO, uVendaModel, System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection, uException,
+  System.Generics.Collections, uUsuarioModel;
+type
+  TVendaDao = class(TInterfacedObject, IVendaDAOO)
+    private
+      FConexao : TZConnection;
+    public
+      function Insert(IdUsuario: Integer): Integer;
+      function  FindByID(cod: Integer): TVendaModel;
+      procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
+      Constructor Create(Conn:TZConnection);
+
+      {===== ATUALIZAÇÃO ====}
+      function UpdateCliente(IdCliente: Integer; IdVenda: Integer): Integer;
+      function UpdateFuncionario(IdFunc: Integer; IdVenda: Integer): Integer;
+      function CalcularTotalVenda(IdVenda: Integer): Currency;
+      {===== ALTERAR VENDA ====}
+      procedure UpdateStatus(IdVenda: Integer; status: TStatusVenda);
+      procedure UpdateValorVenda(Venda: TVendaModel);
+      procedure ListarPorPeriodoStatus(Q: TZQuery; DataInicial, DataFinal: TDate;Status: Integer);
+  end;
+
+
+implementation
+
+{ TVendaDao }
+
+
+function TVendaDao.CalcularTotalVenda(IdVenda: Integer): Currency;
+var
+  Qry: TZQuery;
+begin
+  Qry := TZQuery.Create(nil);
+  try
+    Qry.Connection := FConexao;
+    Qry.SQL.Text :=
+      'SELECT SUM(VALOR_TOTAL) AS TOTAL ' +
+      'FROM ITEM_VENDA ' +
+      'WHERE ID_VENDA = :ID';
+
+    Qry.ParamByName('ID').AsInteger := IdVenda;
+    Qry.Open;
+
+    Result := Qry.FieldByName('TOTAL').AsCurrency;
+  finally
+    Qry.Free;
+  end;
+end;
+
+{ ================== CONSTRUTOR ================== }
+constructor TVendaDao.Create(Conn: TZConnection);
+begin
+  inherited Create;
+  FConexao := Conn;
+end;
+
+function TVendaDao.FindByID(cod: Integer): TVendaModel;
+var
+    Q: TZQuery;
+begin
+  try
+    Q:= TZQuery.Create(nil);
+    try
+      Q.Connection := FConexao;
+
+      Q.SQL.Text := 'SELECT * FROM VENDA WHERE ID_VENDA = :ID';
+      Q.ParamByName('ID').AsInteger := cod;
+      Q.Open;
+
+    if not Q.IsEmpty then
+    begin
+      Result := TVendaModel.Create;
+      Result.IdVenda     := Q.FieldByName('ID_VENDA').AsInteger;
+      Result.IdCliente   := Q.FieldByName('ID_CLIENTE').AsInteger;
+      Result.IdVendedor  := Q.FieldByName('ID_VENDEDOR').AsInteger;
+      Result.IdUsuario  := Q.FieldByName('ID_USUARIO').AsInteger;
+      //Result.Status  := Q.FieldByName('STATUS').;
+      Result.ValorDesconto  := Q.FieldByName('VALOR_DESC').AsInteger;
+      Result.ValorTotal     := Q.FieldByName('VALOR_TOTAL').AsCurrency;
+      Result.ValorLiquido   := Q.FieldByName('VALOR_LIQUIDO').AsCurrency;
+    end;
+
+  except
+    on E: Exception do
+      raise Exception.Create('Erro ao buscar venda: ' + E.Message);
+  end;
+    finally
+      Q.Free;
+    end;
+end;
+
+{ ================== INICIAR VENDA ================== }
+function TVendaDao.Insert(IdUsuario: Integer): Integer;
+var
+  Q: TZQuery;
+begin
+  Q:= TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
+
+      Q.SQL.Text := 'INSERT INTO VENDA (ID_USUARIO) VALUES (:ID) RETURNING ID_VENDA';
+      Q.ParamByName('ID').AsInteger   := IdUsuario;
+      Q.Open;
+
+      Result := Q.FieldByName('ID_VENDA').AsInteger;
+    except
+      on E: EDatabaseError do
+        raise EInfraException.Create('Erro ao iniciar venda' + E.Message);
+    end;
+  finally
+    Q.Free;
+  end;
+
+end;
+
+
+{ ================== LISTAR PRODUTOS ================== }
+procedure TVendaDao.ListarPorNomeTela(Q: TZQuery; Nome: string);
+begin
+
+end;
+
+
+{ ================== ATUALIZAR VENDA CLIENTE/VENDEDOR ================== }
+function TVendaDao.UpdateCliente(IdCliente: Integer; IdVenda: Integer): Integer;
+var
+  Q: TZQuery;
+begin
+  Q:= TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
+
+      Q.SQL.Text := 'UPDATE VENDA SET ID_CLIENTE = :ID_CLI WHERE ID_VENDA = :ID_VENDA ' +
+        'RETURNING ID_CLIENTE';
+      Q.ParamByName('ID_CLI').AsInteger   := IdCliente;
+      Q.ParamByName('ID_VENDA').AsInteger   := IdVenda;
+      Q.Open;
+
+      Result := Q.FieldByName('ID_CLIENTE').AsInteger;
+    except
+      on E: EDatabaseError do
+        raise EInfraException.Create('Erro ao adicionar o cliente: ' + E.Message);
+    end;
+  finally
+    Q.Free;
+  end;
+end;
+function TVendaDao.UpdateFuncionario(IdFunc: Integer; IdVenda: Integer): Integer;
+var
+  Q: TZQuery;
+begin
+  Q:= TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
+
+      Q.SQL.Text := 'UPDATE VENDA SET ID_VENDEDOR = :ID_FUNC WHERE ID_VENDA = :ID_VENDA ' +
+        'RETURNING ID_VENDEDOR';
+      Q.ParamByName('ID_FUNC').AsInteger   := IdFunc;
+      Q.ParamByName('ID_VENDA').AsInteger := IdVenda;
+      Q.Open;
+    except
+      on E: EDatabaseError do
+        raise EInfraException.Create('Erro ao adicionar vendedor: ' + E.Message);
+    end;
+  finally
+    Q.Free;
+  end;
+
+end;
+
+{===== CANCELAR VENDA ====}
+procedure TVendaDao.UpdateStatus(IdVenda: Integer; status: TStatusVenda);
+var
+  Q: TZQuery;
+begin
+  Q := TZQuery.Create(nil);
+  try
+    try
+      Q.Connection := FConexao;
+
+      Q.SQL.Text :=
+        'UPDATE VENDA SET STATUS = :STATUS WHERE ID_VENDA = :ID_VENDA';
+
+      Q.ParamByName('STATUS').AsInteger := Ord(status);
+      Q.ParamByName('ID_VENDA').AsInteger := IdVenda;
+
+      Q.ExecSQL;
+
+      if Q.RowsAffected = 0 then
+        raise EInfraException.Create('Venda não encontrada para cancelar');
+
+    except
+      on E: EDatabaseError do
+        raise EInfraException.Create('Erro ao cancelar venda: ' + E.Message);
+    end;
+  finally
+    Q.Free;
+  end;
+end;
+
+procedure TVendaDao.UpdateValorVenda(Venda: TVendaModel);
+var
+  Q: TZQuery;
+begin
+     Q := TZQuery.Create(nil);
+     try
+        Q.Connection := FConexao;
+
+        Q.SQL.Text :=
+         'UPDATE VENDA SET ' +
+         'VALOR_TOTAL = :TOTAL, ' +
+         'VALOR_LIQUIDO = :LIQUIDO, ' +
+         'VALOR_DESC = :DESCONTO ' +
+         'WHERE ID_VENDA = :ID';
+
+       Q.ParamByName('TOTAL').AsCurrency := Venda.ValorTotal;
+       Q.ParamByName('LIQUIDO').AsCurrency := Venda.ValorLiquido;
+       Q.ParamByName('DESCONTO').AsCurrency := Venda.ValorDesconto;
+       Q.ParamByName('ID').AsInteger := Venda.IdVenda;
+       Q.ExecSQL;
+     finally
+       Q.Free;
+     end;
+end;
+
+
+procedure TVendaDao.ListarPorPeriodoStatus(Q: TZQuery; DataInicial, DataFinal: TDate;Status: Integer);
+begin
+  Q.Close;
+  Q.Connection := FConexao;
+
+  Q.SQL.Text :=
+  'SELECT V.ID_VENDA, C.NOME AS CLIENTE, F.NOME AS VENDEDOR, V.EMISAO, ' +
+  'V.VALOR_TOTAL, V.VALOR_DESC, V.VALOR_LIQUIDO, V.STATUS ' +
+  'FROM VENDA V INNER JOIN CLIENTE C ON C.ID_CLIENTE = V.ID_CLIENTE ' +
+  'LEFT JOIN FUNCIONARIO F ON F.ID_FUNCIONARIO = V.ID_VENDEDOR WHERE CAST(V.EMISAO AS DATE) BETWEEN :DATAINI AND :DATAFIM AND V.STATUS = :STATUS';
+
+
+  Q.SQL.Add('ORDER BY V.ID_VENDA DESC');
+
+  Q.ParamByName('DATAINI').AsDate := DataInicial;
+  Q.ParamByName('DATAFIM').AsDate := DataFinal;
+  Q.ParamByName('STATUS').AsInteger := Status;
+
+  Q.Open;
+
+  // Formatação
+  TDateTimeField(Q.FieldByName('EMISAO')).DisplayFormat := 'dd/mm/yyyy';
+
+  TFMTBCDField(Q.FieldByName('VALOR_TOTAL')).DisplayFormat := 'R$ #,##0.00';
+  TFMTBCDField(Q.FieldByName('VALOR_DESC')).DisplayFormat := 'R$ #,##0.00';
+  TFMTBCDField(Q.FieldByName('VALOR_LIQUIDO')).DisplayFormat := 'R$ #,##0.00';
+end;
+end.

@@ -6,8 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RLReport, RLFilters, RLPDFFilter,
   Data.DB, ZAbstractRODataset, ZAbstractDataset, ZDataset, RLXLSFilter,
-  RLXLSXFilter,uAppServiceConexao, ZConnection;
-
+  RLXLSXFilter;
 
 type
   TfrmRelProVenda = class(TForm)
@@ -25,25 +24,24 @@ type
     RLLabel2: TRLLabel;
     RLSystemInfo1: TRLSystemInfo;
     RLDraw2: TRLDraw;
-    RLXLSXFilter1: TRLXLSXFilter;
-    RLXLSFilter1: TRLXLSFilter;
     RLGroup1: TRLGroup;
     RLBand2: TRLBand;
     RLDBText5: TRLDBText;
     RLLabel8: TRLLabel;
     RegistrosDB: TRLBand;
     RLDBText2: TRLDBText;
-    RLDBText3: TRLDBText;
     RLBand4: TRLBand;
     RLDBResult1: TRLDBResult;
     RLLabel6: TRLLabel;
+    dtsVendasItens: TDataSource;
+    QryVendaItens: TZQuery;
     RLLabel5: TRLLabel;
-    RLLabel7: TRLLabel;
     RLSubDetail1: TRLSubDetail;
     RLBand3: TRLBand;
     RLLabel4: TRLLabel;
     RLBand1: TRLBand;
     RLDBText1: TRLDBText;
+    RLDBText4: TRLDBText;
     RLLabel9: TRLLabel;
     RLDBText6: TRLDBText;
     RLDBText7: TRLDBText;
@@ -53,15 +51,13 @@ type
     RLLabel12: TRLLabel;
     RLDraw3: TRLDraw;
     RLDraw4: TRLDraw;
-     procedure FormCreate(Sender: TObject);
+    RLLabel7: TRLLabel;
+    RLDBText3: TRLDBText;
     procedure FormDestroy(Sender: TObject);
-
-
   private
-    FConn: TZConnection;
-
+    { Private declarations }
   public
-    procedure PreencherRelatorio(IDVenda: Integer);
+    { Public declarations }
   end;
 
 var
@@ -71,67 +67,12 @@ implementation
 
 {$R *.dfm}
 
-procedure TfrmRelProVenda.FormCreate(Sender: TObject);
-begin
-  FConn := AppServiceConexao.getConexao;
-end;
+
 
 procedure TfrmRelProVenda.FormDestroy(Sender: TObject);
 begin
   QryVendas.Close;
+  QryVendaItens.Close;
 end;
 
-procedure TfrmRelProVenda.PreencherRelatorio(IDVenda: Integer);
-begin
-  QryVendas.Close;
-
-  QryVendas.Connection := AppServiceConexao.getConexao;
-
-  QryVendas.SQL.Text :=
-    'SELECT ' +
-    '    V.ID_VENDA, ' +
-    '    V.EMISAO, ' +
-    '    V.STATUS, ' +
-
-    '    C.ID_CLIENTE, ' +
-    '    C.NOME AS CLIENTE, ' +
-
-    '    F.ID_FUNCIONARIO, ' +
-    '    F.NOME AS VENDEDOR, ' +
-
-    '    IV.ID_PRODUTO, ' +
-    '    P.NOME AS PRODUTO, ' +
-
-    '    IV.QUANTIDADE, ' +
-    '    IV.VALOR_DESC, ' +
-    '    IV.VALOR_UNITARIO, ' +
-    '    IV.VALOR_TOTAL, ' +
-
-    '    V.VALOR_TOTAL AS TOTAL_VENDA, ' +
-    '    V.VALOR_LIQUIDO ' +
-
-    'FROM VENDA V ' +
-
-    'INNER JOIN CLIENTE C ' +
-    '    ON C.ID_CLIENTE = V.ID_CLIENTE ' +
-
-    'INNER JOIN FUNCIONARIO F ' +
-    '    ON F.ID_FUNCIONARIO = V.ID_VENDEDOR ' +
-
-    'INNER JOIN ITEM_VENDA IV ' +
-    '    ON IV.ID_VENDA = V.ID_VENDA ' +
-
-    'INNER JOIN PRODUTO P ' +
-    '    ON P.ID_PRODUTO = IV.ID_PRODUTO ' +
-
-    'WHERE V.ID_VENDA = :ID_VENDA ' +
-
-    'ORDER BY P.NOME';
-
-  QryVendas.ParamByName('ID_VENDA').AsInteger := IDVenda;
-
-  QryVendas.Open;
-end;
-
-
-End.
+end.

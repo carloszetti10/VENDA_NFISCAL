@@ -1,0 +1,41 @@
+unit uRelatorioShow;
+
+interface
+
+uses
+  System.SysUtils,uRelCadClientes,uRelProVenda;
+
+type
+  TRelatorioShow = class
+  public
+     class procedure VisualizarTelatorioCliente;
+     class procedure VisualizarTelatorioProduto;
+     class procedure VisualizarTelatorioVendaPorId(IdVenda: Integer);
+  end;
+
+implementation
+
+{ TRelatorioShow }
+
+class procedure TRelatorioShow.VisualizarTelatorioCliente;
+begin
+  frmRelCadClientes := TfrmRelCadClientes.Create(nil);
+  try
+    frmRelCadClientes.PreencherRelatorio;
+    frmRelCadClientes.Relatorio.Preview;
+  finally
+    frmRelCadClientes.Free;
+  end;
+end;
+
+class procedure TRelatorioShow.VisualizarTelatorioProduto;
+begin
+
+end;
+
+class procedure TRelatorioShow.VisualizarTelatorioVendaPorId(IdVenda: Integer);
+begin
+
+end;
+
+end.

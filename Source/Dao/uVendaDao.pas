@@ -21,6 +21,7 @@ type
       {===== ALTERAR VENDA ====}
       procedure UpdateStatus(IdVenda: Integer; status: TStatusVenda);
       procedure UpdateValorVenda(Venda: TVendaModel);
+      procedure ListarPorPeriodoStatus(Q: TZQuery; DataInicial, DataFinal: TDate;Status: Integer);
   end;
 
 
@@ -229,4 +230,32 @@ begin
      end;
 end;
 
+
+procedure TVendaDao.ListarPorPeriodoStatus(Q: TZQuery; DataInicial, DataFinal: TDate;Status: Integer);
+begin
+  Q.Close;
+  Q.Connection := FConexao;
+
+  Q.SQL.Text :=
+  'SELECT V.ID_VENDA, C.NOME AS CLIENTE, C.CPF_CNPJ AS DOC, F.NOME AS VENDEDOR, V.EMISAO, ' +
+  'V.VALOR_TOTAL, V.VALOR_DESC, V.VALOR_LIQUIDO, V.STATUS ' +
+  'FROM VENDA V INNER JOIN CLIENTE C ON C.ID_CLIENTE = V.ID_CLIENTE ' +
+  'LEFT JOIN FUNCIONARIO F ON F.ID_FUNCIONARIO = V.ID_VENDEDOR WHERE CAST(V.EMISAO AS DATE) BETWEEN :DATAINI AND :DATAFIM AND V.STATUS = :STATUS';
+
+
+  Q.SQL.Add('ORDER BY V.ID_VENDA DESC');
+
+  Q.ParamByName('DATAINI').AsDate := DataInicial;
+  Q.ParamByName('DATAFIM').AsDate := DataFinal;
+  Q.ParamByName('STATUS').AsInteger := Status;
+
+  Q.Open;
+
+  // Formatação
+  TDateTimeField(Q.FieldByName('EMISAO')).DisplayFormat := 'dd/mm/yyyy';
+
+  TFMTBCDField(Q.FieldByName('VALOR_TOTAL')).DisplayFormat := 'R$ #,##0.00';
+  TFMTBCDField(Q.FieldByName('VALOR_DESC')).DisplayFormat := 'R$ #,##0.00';
+  TFMTBCDField(Q.FieldByName('VALOR_LIQUIDO')).DisplayFormat := 'R$ #,##0.00';
+end;
 end.

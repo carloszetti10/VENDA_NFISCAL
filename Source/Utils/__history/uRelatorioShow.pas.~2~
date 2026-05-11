@@ -1,0 +1,59 @@
+unit uRelatorioShow;
+
+interface
+
+uses
+  System.SysUtils,uRelCadClientes,uRelProVenda;
+
+type
+  TRelatorioShow = class
+  public
+     class procedure VisualizarTelatorioCliente;
+     class procedure VisualizarTelatorioProduto;
+     class procedure VisualizarTelatorioVendaPorId(IdVenda: Integer);
+  end;
+
+implementation
+
+{ TRelatorioShow }
+
+class procedure TRelatorioShow.VisualizarTelatorioCliente;
+begin
+  frmRelCadClientes := TfrmRelCadClientes.Create(nil);
+  try
+    frmRelCadClientes.PreencherRelatorio;
+    frmRelCadClientes.Relatorio.Preview;
+  finally
+    frmRelCadClientes.Free;
+  end;
+end;
+
+class procedure TRelatorioShow.VisualizarTelatorioProduto;
+begin
+
+end;
+
+class procedure TRelatorioShow.VisualizarTelatorioVendaPorId(IdVenda: Integer);
+begin
+  var
+  frmRelVenda: TfrmRelProVenda;
+begin
+  frmRelVenda := TfrmRelProVenda.Create(nil);
+try
+  frmRelVenda.QryVendas.Connection := AppServiceConexao.getConexao;
+  frmRelVenda.QryVendaItens.Connection := AppServiceConexao.getConexao;
+  frmRelVenda.QryVendas.ParamByName('ID_VENDA').AsInteger := 168;
+  frmRelVenda.QryVendas.Open;
+
+  frmRelVenda.QryVendaItens.ParamByName('ID_VENDA').AsInteger := 168;
+  frmRelVenda.QryVendaItens.Open;
+
+  //frmRelVenda.RLReport1.PreviewModal;
+  frmRelVenda.Relatorio.Preview;
+finally
+  frmRelVenda.Free;
+end;
+
+end;
+
+end.

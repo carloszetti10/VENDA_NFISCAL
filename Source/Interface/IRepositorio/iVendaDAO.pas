@@ -13,6 +13,7 @@ type
     procedure UpdateStatus(IdVenda: Integer; status: TStatusVenda);
     function  CalcularTotalVenda(IdVenda: Integer): Currency;
     procedure UpdateValorVenda(Venda: TVendaModel);
+    procedure ListarPorPeriodoStatus(Q: TZQuery; DataInicial, DataFinal: TDate;Status: Integer);
    end;
 
 implementation

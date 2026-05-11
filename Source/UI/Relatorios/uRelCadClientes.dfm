@@ -2,7 +2,7 @@ object frmRelCadClientes: TfrmRelCadClientes
   Left = 0
   Top = 0
   Caption = 'Relat'#243'rio de Clientes'
-  ClientHeight = 781
+  ClientHeight = 749
   ClientWidth = 825
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,8 +13,8 @@ object frmRelCadClientes: TfrmRelCadClientes
   OnCreate = FormCreate
   TextHeight = 13
   object Relatorio: TRLReport
-    Left = 0
-    Top = 0
+    Left = -32
+    Top = -32
     Width = 794
     Height = 1123
     DataSource = dtsClientes
@@ -32,9 +32,9 @@ object frmRelCadClientes: TfrmRelCadClientes
       object RLLabel1: TRLLabel
         Left = 3
         Top = 14
-        Width = 217
+        Width = 87
         Height = 24
-        Caption = 'Listagem de Clientes'
+        Caption = 'Clientes'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -21
@@ -116,7 +116,7 @@ object frmRelCadClientes: TfrmRelCadClientes
         Width = 718
         Height = 22
         Align = faClient
-        Color = clInfoBk
+        Color = 14545112
         ParentColor = False
         Transparent = False
         object RLLabel4: TRLLabel

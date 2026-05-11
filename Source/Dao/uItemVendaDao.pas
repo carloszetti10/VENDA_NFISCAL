@@ -16,7 +16,7 @@ type
     procedure Deletar(IdVenda, IdProduto: Integer);
     procedure ListarPorVenda(Q: TZQuery; IdVenda: Integer);
     function  FindByItemVenda(AItem: TItemVendaModel): TItemVendaModel;
-    function ListarProdutosPorVenda(IdVenda: Integer): TObjectList<TProdutoModel>;
+    function ListarProdutosPorVenda(IdVenda: Integer): TObjectList<TItemVendaModel>;
   end;
 
 implementation
@@ -145,6 +145,10 @@ begin
 
   Q.ParamByName('ID').AsInteger := IdVenda;
   Q.Open;
+
+  TFMTBCDField(Q.FieldByName('VALOR_UNITARIO')).DisplayFormat := 'R$ #,##0.00';
+  TFMTBCDField(Q.FieldByName('VALOR_TOTAL')).DisplayFormat := 'R$ #,##0.00';
+  TFMTBCDField(Q.FieldByName('QUANTIDADE')).DisplayFormat := '0.00';
 end;
 
 procedure TItemVendaDao.Update(AItem: TItemVendaModel);
@@ -177,37 +181,48 @@ begin
 end;
 
 
-function TItemVendaDao.ListarProdutosPorVenda(IdVenda: Integer): TObjectList<TProdutoModel>;
+function TItemVendaDao.ListarProdutosPorVenda(
+  IdVenda: Integer
+): TObjectList<TItemVendaModel>;
 var
   Q: TZQuery;
-  Produto: TProdutoModel;
+  Item: TItemVendaModel;
 begin
-  Result := TObjectList<TProdutoModel>.Create;
+  Result := TObjectList<TItemVendaModel>.Create(True);
 
   Q := TZQuery.Create(nil);
+
   try
     Q.Connection := FConexao;
 
     Q.SQL.Text :=
-      'SELECT P.ID_PRODUTO, P.NOME, P.COD_BARRA, P.ESTOQUE, P.VALOR_UNITARIO ' +
+      'SELECT ' +
+      '  P.ID_PRODUTO, ' +
+      '  P.NOME, ' +
+      '  I.QUANTIDADE, ' +
+      '  I.VALOR_DESC, ' +
+      '  I.VALOR_TOTAL, ' +
+      '  I.VALOR_UNITARIO ' +
       'FROM ITEM_VENDA I ' +
       'JOIN PRODUTO P ON P.ID_PRODUTO = I.ID_PRODUTO ' +
       'WHERE I.ID_VENDA = :ID';
 
     Q.ParamByName('ID').AsInteger := IdVenda;
+
     Q.Open;
 
     while not Q.Eof do
     begin
-      Produto := TProdutoModel.Create;
+      Item := TItemVendaModel.Create;
 
-      Produto.IdProduto := Q.FieldByName('ID_PRODUTO').AsInteger;
-      Produto.Nome := Q.FieldByName('NOME').AsString;
-      Produto.CodBarra := Q.FieldByName('COD_BARRA').AsString;
-      Produto.Estoque := Q.FieldByName('ESTOQUE').AsCurrency;
-      Produto.ValorUnitario := Q.FieldByName('VALOR_UNITARIO').AsCurrency;
+      Item.IdProduto := Q.FieldByName('ID_PRODUTO').AsInteger;
+      Item.NomeProduto := Q.FieldByName('NOME').AsString;
+      Item.Quantidade := Q.FieldByName('QUANTIDADE').AsCurrency;
+      Item.ValorUnitario := Q.FieldByName('VALOR_UNITARIO').AsCurrency;
+      Item.ValorTotal := Q.FieldByName('VALOR_TOTAL').AsCurrency;
+      Item.ValorDesc := Q.FieldByName('VALOR_DESC').AsCurrency;
 
-      Result.Add(Produto);
+      Result.Add(Item);
 
       Q.Next;
     end;
@@ -216,5 +231,6 @@ begin
     Q.Free;
   end;
 end;
+
 
 end.

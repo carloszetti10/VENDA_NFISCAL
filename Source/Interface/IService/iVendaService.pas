@@ -13,11 +13,12 @@ type
     procedure AdicionarItemVenda(Item: TItemVendaModel);
     procedure ListarNaTelaGridVenda(Q: TZQuery; IdVenda: Integer);
     function  CalcularTotalVenda(IdVenda: Integer): Currency;
-    procedure FaturarVenda(IdVenda: Integer; vlrTot, vlrLiqui,vlrDesc : Currency);
     function  BuscarVendaPoId(IdVenda: Integer): TVendaModel;
     procedure RemoverItemVenda(Quant: Currency; ItemVenda: TItemVendaModel);
     procedure AtualizarValorVenda(Venda: TVendaModel);
     procedure AlterarStatusVenda(Id: Integer; Status: TStatusVenda);
+
+    procedure ListarNaTelaGridVendaFaturamento(Q: TZQuery; DataInicial, DataFinal: TDate; Status: TStatusVenda);
    end;
 
 implementation

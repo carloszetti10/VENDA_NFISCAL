@@ -13,7 +13,10 @@ uses
   iFuncionarioService, uFuncionarioService, iFuncionarioDAO, uFuncionarioDao,
   iItemVendaService, uItemVendaModel, uItemVendaDao, IItemVendaDAOO,uItemVendaService,
   Vcl.StdCtrls,uAppContext,uSession, uUsuarioModel, Vcl.Buttons,uRelCadClientes,
-  uFormaPagService, iFormaPagService,uFormaPagDao, iFormaPagDAO, uFormaPagModel, uRelProVenda;
+  uFormaPagService, iFormaPagService,uFormaPagDao, iFormaPagDAO, uFormaPagModel,
+  System.ImageList, Vcl.ImgList, Vcl.Imaging.pngimage,uRelProVenda,RLReport, uRelatorioShow,
+  uFaturamentoUI, uFaturamentoService, iFaturamentoService, iPagamentoVendaService, uPagamentoVendaService,
+  uPagamentoVendaDao, iPagamentoVendaDAO;
 
 type
   TfrmTelaPrincipal = class(TForm)
@@ -35,23 +38,42 @@ type
     nomeEmpresa: TLabel;
     lbUsuario: TLabel;
     Panel1: TPanel;
-    Panel2: TPanel;
-    pnlProd: TPanel;
-    pnlUser: TPanel;
-    pnlFun: TPanel;
-    pnlForP: TPanel;
-    pnlVen: TPanel;
-    pnlFat: TPanel;
-    btnCliente: TBitBtn;
-    btnProd: TBitBtn;
-    btnUsuario: TBitBtn;
-    btnFuncio: TBitBtn;
-    BitBtn5: TBitBtn;
-    btnVenda: TBitBtn;
-    btnFaturam: TBitBtn;
+    pnlCliente: TPanel;
     Label1: TLabel;
     Label2: TLabel;
-    CLIENTES1: TMenuItem;
+
+    Image1: TImage;
+    Label3: TLabel;
+    seta: TLabel;
+    pnlProduto: TPanel;
+    Image2: TImage;
+    Label4: TLabel;
+    Label5: TLabel;
+    pnlUsuario: TPanel;
+    Image3: TImage;
+    Label6: TLabel;
+    Label7: TLabel;
+    pnlVenda: TPanel;
+    Image4: TImage;
+    Label8: TLabel;
+    Label9: TLabel;
+    pnlFuncionario: TPanel;
+    Image5: TImage;
+    Label10: TLabel;
+    Label11: TLabel;
+    pnlFaturamento: TPanel;
+    Image7: TImage;
+    Label14: TLabel;
+    Label15: TLabel;
+    Image10: TImage;
+    Image11: TImage;
+    pnlFormapag: TPanel;
+    Image6: TImage;
+    Label12: TLabel;
+    Label13: TLabel;
+    FATURARVENDA1: TMenuItem;
+    FAZERORAMENTO1: TMenuItem;
+    PRODUTOS1: TMenuItem;
     procedure SAIR1Click(Sender: TObject);
     procedure CLIENTESClick(Sender: TObject);
     procedure PRODUTOClick(Sender: TObject);
@@ -59,7 +81,6 @@ type
     procedure FORMAPAGAMENTO1Click(Sender: TObject);
     procedure USUARIO1Click(Sender: TObject);
     procedure FormResize(Sender: TObject);
-    procedure VENDA1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Panel2Click(Sender: TObject);
@@ -69,8 +90,22 @@ type
     procedure BitBtn5Click(Sender: TObject);
     procedure btnVendaClick(Sender: TObject);
     procedure btnClienteClick(Sender: TObject);
-    procedure CLIENTES1Click(Sender: TObject);
+    procedure RELATCLIENTEClick(Sender: TObject);
+    procedure CardMouseEnter(Sender: TObject);
+    procedure CardMouseLeave(Sender: TObject);
+    procedure FAZERORAMENTO1Click(Sender: TObject);
+    procedure pnlClienteClick(Sender: TObject);
+    procedure pnlProdutoClick(Sender: TObject);
+    procedure pnlUsuarioClick(Sender: TObject);
+    procedure pnlVendaClick(Sender: TObject);
+    procedure pnlFuncionarioClick(Sender: TObject);
+    procedure pnlFormapagClick(Sender: TObject);
+    procedure pnlFaturamentoClick(Sender: TObject);
+    procedure FATURARVENDA1Click(Sender: TObject);
+    procedure PRODUTOS1Click(Sender: TObject);
 
+
+  
 
 
   private
@@ -81,7 +116,10 @@ type
     function CriarFuncionarioService: IFuncionarioServiceInterface;
     function CriarItemVendaService: IItemVendaServiceInterface;
     function CriarFormaPAgamentoService: IFormaPagServiceInterface;
+
+    function  CriarPlanoPagtoService: IPagamentoVendaIntefaceService;
     procedure EsconderMenuPorPermissao;
+    procedure FormatarCard(APanel: TPanel);
   end;
 
 var
@@ -121,21 +159,14 @@ begin
   VENDA1.Click;
 end;
 
-procedure TfrmTelaPrincipal.CLIENTES1Click(Sender: TObject);
-begin
-  frmRelCadClientes := TfrmRelCadClientes.Create(nil);
-  frmRelProVenda := TfrmRelProVenda.Create(nil);
-  try
-    frmRelProVenda.PreencherRelatorio(115);
-    frmRelProVenda.Relatorio.Preview;
 
-    frmRelCadClientes.PreencherRelatorio;
-    frmRelCadClientes.Relatorio.Preview;
-  finally
-    frmRelProVenda.Free;
-    frmRelCadClientes.Free;
-  end;
+
+procedure TfrmTelaPrincipal.RELATCLIENTEClick(Sender: TObject);
+begin
+  TRelatorioShow.VisualizarTelatorioCliente;
 end;
+
+
 
 procedure TfrmTelaPrincipal.CLIENTESClick(Sender: TObject);
 var
@@ -177,6 +208,14 @@ begin
   Result := TItemVendaService.Create(Dao);
 end;
 
+function TfrmTelaPrincipal.CriarPlanoPagtoService: IPagamentoVendaIntefaceService;
+var
+  Dao: IPagamentoVendaDAOO;
+begin
+  Dao := TPagamentoVendaDao.Create(FConn);
+  Result := TPagamentoVendaService.Create(Dao);
+end;
+
 function TfrmTelaPrincipal.CriarProdutoService: IProdutoServiceInterface;
 var
   Dao: IProdutoDAOO;
@@ -205,18 +244,23 @@ begin
 
   if not Assigned(Usuario) then Exit;
 
-  CLIENTES.Visible    := Usuario.TemPermissao('CAD_CLIENTE');
-  PRODUTO.Visible      := Usuario.TemPermissao('CAD_PRODUTO');
-  FUNCIONARIO1.Visible := Usuario.TemPermissao('CAD_FUNCIONARIO');
-  USUARIO1.Visible     := Usuario.TemPermissao('CAD_USUARIO');
-  VENDA1.Visible       := Usuario.TemPermissao('CAD_VENDA');
+  CLIENTES.Visible          := Usuario.TemPermissao('CAD_CLIENTE');
+  PRODUTO.Visible           := Usuario.TemPermissao('CAD_PRODUTO');
+  FUNCIONARIO1.Visible      := Usuario.TemPermissao('CAD_FUNCIONARIO');
+  USUARIO1.Visible          := Usuario.TemPermissao('CAD_USUARIO');
+  FAZERORAMENTO1.Visible    := Usuario.TemPermissao('CAD_VENDA');
+  FATURARVENDA1.Visible     := Usuario.TemPermissao('CAD_FATURAMENTO');
+  RELATORIOS1.Visible       := Usuario.TemPermissao('VIS_RELATORIO');
 
-  btnCliente.Enabled  := Usuario.TemPermissao('CAD_CLIENTE');
-  btnProd.Enabled   := Usuario.TemPermissao('CAD_PRODUTO');
-  btnUsuario.Enabled :=  Usuario.TemPermissao('CAD_USUARIO');
-  btnVenda.Enabled :=  Usuario.TemPermissao('CAD_VENDA');
 
-  btnFaturam.Enabled := FALSE;
+  pnlCliente.Enabled          := Usuario.TemPermissao('CAD_CLIENTE');
+  pnlProduto.Enabled          := Usuario.TemPermissao('CAD_PRODUTO');
+  pnlFuncionario.Enabled      := Usuario.TemPermissao('CAD_FUNCIONARIO');
+  pnlUsuario.Enabled          := Usuario.TemPermissao('CAD_USUARIO');
+  pnlFormapag.Enabled          := Usuario.TemPermissao('CAD_FORMAPAG');
+  pnlVenda.Enabled          := Usuario.TemPermissao('CAD_VENDA');
+
+  pnlFaturamento.Enabled      := Usuario.TemPermissao('CAD_FATURAMENTO');
 
   if Usuario.Id = 0 then
   begin
@@ -224,6 +268,7 @@ begin
     FUNCIONARIO1.Visible := True;
   end;
 end;
+
 
 procedure TfrmTelaPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -238,15 +283,24 @@ begin
 
   begin
   if Assigned(AppCtx.Store) then
-    nomeEmpresa.Caption := AppCtx.Store.Razao
+    nomeEmpresa.Caption := AppCtx.Store.Nome
   else
     nomeEmpresa.Caption := '';
   end;
 
   FConn := AppServiceConexao.getConexao;
-  nomeEmpresa.Caption := AppCtx.Store.Razao;
+  nomeEmpresa.Caption := AppCtx.Store.Nome;
   lbUsuario.Caption := AppCtx.User.Login;
   EsconderMenuPorPermissao;
+
+   // FORMATA CARDS
+  FormatarCard(pnlCliente);
+  FormatarCard(pnlProduto);
+  FormatarCard(pnlUsuario);
+  FormatarCard(pnlVenda);
+  FormatarCard(pnlFormapag);
+  FormatarCard(pnlFaturamento);
+  FormatarCard(pnlFuncionario);
 end;
 
 procedure TfrmTelaPrincipal.FormResize(Sender: TObject);
@@ -268,9 +322,48 @@ begin
     frm.Free;
   end;
 end;
+
+
+
+
 procedure TfrmTelaPrincipal.Panel2Click(Sender: TObject);
 begin
   CLIENTES.Click;
+end;
+
+procedure TfrmTelaPrincipal.pnlClienteClick(Sender: TObject);
+begin
+  CLIENTES.Click;
+end;
+
+procedure TfrmTelaPrincipal.pnlFaturamentoClick(Sender: TObject);
+begin
+  FATURARVENDA1.Click;
+end;
+
+procedure TfrmTelaPrincipal.pnlFormapagClick(Sender: TObject);
+begin
+  FORMAPAGAMENTO1.Click;
+end;
+
+procedure TfrmTelaPrincipal.pnlFuncionarioClick(Sender: TObject);
+begin
+  FUNCIONARIO1.Click;
+end;
+
+procedure TfrmTelaPrincipal.pnlProdutoClick(Sender: TObject);
+begin
+  PRODUTO.Click;
+end;
+
+procedure TfrmTelaPrincipal.pnlUsuarioClick(Sender: TObject);
+begin
+  USUARIO1.Click;
+end;
+
+procedure TfrmTelaPrincipal.pnlVendaClick(Sender: TObject);
+begin
+  FAZERORAMENTO1.Click;
 end;
 
 procedure TfrmTelaPrincipal.PRODUTOClick(Sender: TObject);
@@ -286,10 +379,17 @@ begin
     frm.Free;
   end;
 end;
+procedure TfrmTelaPrincipal.PRODUTOS1Click(Sender: TObject);
+begin
+  TRelatorioShow.VisualizarTelatorioProduto;
+end;
+
 procedure TfrmTelaPrincipal.SAIR1Click(Sender: TObject);
 begin
    Close;
 end;
+
+
 procedure TfrmTelaPrincipal.USUARIO1Click(Sender: TObject);
 var
   frm : TTfrmCadastroUsuario;
@@ -305,19 +405,37 @@ begin
     frm.Free;
   end;
 end;
-procedure TfrmTelaPrincipal.VENDA1Click(Sender: TObject);
+
+
+procedure TfrmTelaPrincipal.FATURARVENDA1Click(Sender: TObject);
 var
-  frm : TfrmVendaDav;
-  Service: IVendaServiceInterface;
+  frm : TfrmFaturamento;
+  ServiceFat: IFaturamentoServiceInterface;
 begin
-  Service := CriarVendaService;
-  frm := TfrmVendaDav.Create(nil,Service);
+  ServiceFat := TFaturamentoService.Create(CriarVendaService,CriarProdutoService, CriarItemVendaService, CriarPlanoPagtoService);
+  frm := TfrmFaturamento.Create(nil, ServiceFat);
   try
     frm.ShowModal;
   finally
     frm.Free;
   end;
 
+end;
+
+procedure TfrmTelaPrincipal.FAZERORAMENTO1Click(Sender: TObject);
+var
+  frm : TfrmVendaDav;
+  Service: IVendaServiceInterface;
+  ServiFaturamento: IFaturamentoServiceInterface;
+begin
+  ServiFaturamento := TFaturamentoService.Create(CriarVendaService,CriarProdutoService,CriarItemVendaService,CriarPlanoPagtoService);
+  Service := CriarVendaService;
+  frm := TfrmVendaDav.Create(nil,Service, ServiFaturamento);
+  try
+    frm.ShowModal;
+  finally
+    frm.Free;
+  end;
 end;
 
 procedure TfrmTelaPrincipal.FORMAPAGAMENTO1Click(Sender: TObject);
@@ -331,6 +449,43 @@ begin
     frm.ShowModal;
   finally
     frm.Free;
+  end;
+end;
+
+
+procedure TfrmTelaPrincipal.FormatarCard(APanel: TPanel);
+begin
+
+
+  APanel.ParentBackground := False;
+  APanel.Cursor := crHandPoint;
+  APanel.OnMouseEnter := CardMouseEnter;
+  APanel.OnMouseLeave := CardMouseLeave;
+end;
+
+procedure TfrmTelaPrincipal.CardMouseEnter(Sender: TObject);
+var
+  i: Integer;
+begin
+  TPanel(Sender).Color := $00DDF0D8;
+
+  for i := 0 to TPanel(Sender).ControlCount - 1 do
+  begin
+    if TPanel(Sender).Controls[i] is TLabel then
+      TLabel(TPanel(Sender).Controls[i]).Font.Color := $00307507;
+  end;
+end;
+
+procedure TfrmTelaPrincipal.CardMouseLeave(Sender: TObject);
+var
+  i: Integer;
+begin
+  TPanel(Sender).Color := clWhite;
+
+  for i := 0 to TPanel(Sender).ControlCount - 1 do
+  begin
+    if TPanel(Sender).Controls[i] is TLabel then
+      TLabel(TPanel(Sender).Controls[i]).Font.Color := clBlack;
   end;
 end;
 

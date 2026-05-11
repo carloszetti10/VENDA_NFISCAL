@@ -67,9 +67,15 @@ uses
   iFormaPagDAO in 'Source\Interface\IRepositorio\iFormaPagDAO.pas',
   uFormaPagService in 'Source\Service\uFormaPagService.pas',
   iFormaPagService in 'Source\Interface\IService\iFormaPagService.pas',
-  uRelProVenda in 'Source\UI\Relatorios\uRelProVenda.pas' {frmRelProVenda},
   uDialogoValor in 'Source\UI\DialogosPersonalizados\uDialogoValor.pas' {frmDialogoValor},
-  uPlanoPagamentoUI in 'Source\UI\uPlanoPagamentoUI.pas' {frmPlanoPagamento};
+  uPlanoPagamentoUI in 'Source\UI\uPlanoPagamentoUI.pas' {frmPlanoPagamento},
+  uRelProVenda in 'Source\UI\Relatorios\uRelProVenda.pas' {frmRelProVenda},
+  uRelatorioShow in 'Source\Utils\uRelatorioShow.pas',
+  uFaturamentoUI in 'Source\UI\uFaturamentoUI.pas' {frmFaturamento},
+  iFaturamentoService in 'Source\Interface\IService\iFaturamentoService.pas',
+  uFaturamentoService in 'Source\Service\uFaturamentoService.pas',
+  uLojaUI in 'Source\UI\uLojaUI.pas' {frmLoja},
+  uRelCadProdutos in 'Source\UI\Relatorios\uRelCadProdutos.pas' {frmRelCadProdutos};
 
 {$R *.res}
 

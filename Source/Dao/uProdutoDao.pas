@@ -17,9 +17,10 @@ type
       Constructor Create(Conn:TZConnection);
       procedure BaixarEstoque(IdProduto: Integer; Quantidade: Currency);
 
-      function Inserir(Produto: TProdutoModel): Boolean;
-      function Atualizar(Produto: TProdutoModel): Boolean;
-      function Apagar(Id: Integer): Boolean;
+      function  Inserir(Produto: TProdutoModel): Boolean;
+      function  Atualizar(Produto: TProdutoModel): Boolean;
+      function  Apagar(Id: Integer): Boolean;
+      procedure AdicionarEstoque(Id: Integer;Quant: Currency);
 
 
   end;
@@ -118,6 +119,7 @@ begin
   Q.Open;
 
    TFMTBCDField(Q.FieldByName('VALOR_UNITARIO')).DisplayFormat := 'R$ ,0.00';
+   TFMTBCDField(Q.FieldByName('ESTOQUE')).DisplayFormat := '0.00';
 end;
 procedure TProdutoDao.BaixarEstoque(IdProduto: Integer; Quantidade: Currency);
 var
@@ -278,4 +280,25 @@ begin
     Qry.Free;
   end;
 end;
+
+procedure TProdutoDAO.AdicionarEstoque(Id: Integer;Quant: Currency);
+var
+  Q: TZQuery;
+begin
+    Q := TZQuery.Create(nil);
+    try
+
+      Q.Connection := FConexao;
+      Q.SQL.Text := 'UPDATE PRODUTO SET ESTOQUE = :QTD WHERE ID_PRODUTO = :ID';
+
+      Q.ParamByName('QTD').AsCurrency := Quant;
+      Q.ParamByName('ID').AsInteger := Id;
+
+      Q.ExecSQL;
+
+    finally
+      Q.Free;
+    end;
+end;
+
 end.

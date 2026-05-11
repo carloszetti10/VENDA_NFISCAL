@@ -8,6 +8,7 @@ type
     procedure ListarProdutoVenda(Q: TZQuery; IdVenda: Integer);
     procedure InserirItem(AItem: TItemVendaModel);
     procedure RemoverItemDaVenda(Quant: Currency; ItemVenda: TItemVendaModel);
+    function  ListarProdutosPorVenda(IdVenda: Integer): TObjectList<TItemVendaModel>;
    end;
 
 implementation

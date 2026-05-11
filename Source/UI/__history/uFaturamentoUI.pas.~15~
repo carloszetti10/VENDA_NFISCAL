@@ -1,0 +1,138 @@
+unit uFaturamentoUI;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,
+  Vcl.StdCtrls, Vcl.Mask, RxToolEdit, Vcl.ComCtrls, Vcl.Buttons, Vcl.ExtCtrls,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, iFaturamentoService, uVendaModel,uException,uDialogServiceImpl,
+  RxCurrEdit;
+
+type
+  TfrmFaturamento = class(TForm)
+    pnlBase: TPanel;
+    Label2: TLabel;
+    BitBtn4: TBitBtn;
+    edtDataInicial: TDateTimePicker;
+    BitBtn5: TBitBtn;
+    pnlPesquisa: TPanel;
+    pnlSuperior: TPanel;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    pnlVendas: TPanel;
+    pnlGripag: TPanel;
+    Panel4: TPanel;
+    pnlGridVenda: TPanel;
+    Panel3: TPanel;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    QRYVenda: TZQuery;
+    DTSVenda: TDataSource;
+    DTSIntemVenda: TDataSource;
+    QRYIntemVenda: TZQuery;
+    QRYFormaPag: TZQuery;
+    DTSFormaPag: TDataSource;
+    edtDataFinal: TDateTimePicker;
+    dbProdVenda: TDBGrid;
+    Panel8: TPanel;
+    DBGpagto: TDBGrid;
+    Panel5: TPanel;
+    Panel6: TPanel;
+    DBGVenda: TDBGrid;
+    edtBrutoVenda: TCurrencyEdit;
+    Label10: TLabel;
+    Label11: TLabel;
+    edtDescontoVenda: TCurrencyEdit;
+    edtLiquidoVenda: TCurrencyEdit;
+    Label12: TLabel;
+    edtStatus: TComboBox;
+    procedure BitBtn4Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure DTSVendaDataChange(Sender: TObject; Field: TField);
+  private
+    FService: IFaturamentoServiceInterface;
+    FIDSelecionado : Integer;
+  public
+    constructor Create(AOwner: TComponent; AService: IFaturamentoServiceInterface);
+    procedure CarregarVenda;
+    procedure CarregarStatusVenda;
+    function PegarStatusSelecionado : TStatusVenda;
+    procedure CarregarItensEPagamento;
+  end;
+
+var
+  frmFaturamento: TfrmFaturamento;
+
+implementation
+
+{$R *.dfm}
+
+{ TForm1 }
+
+procedure TfrmFaturamento.FormShow(Sender: TObject);
+begin
+  CarregarStatusVenda;
+  CarregarVenda;
+end;
+
+function TfrmFaturamento.PegarStatusSelecionado: TStatusVenda;
+begin
+  Result := TStatusVenda(Integer(edtStatus.Items.Objects[edtStatus.ItemIndex]));
+end;
+
+
+procedure TfrmFaturamento.BitBtn4Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmFaturamento.CarregarVenda;
+begin
+  try
+    FService.ListarNaTelaGridVenda(QRYVenda,edtDataInicial.Date, edtDataFinal.Date, PegarStatusSelecionado);
+  except
+     on E: EAppException do
+       TDialogo.Atencao(E.Message);
+     on Ex: Exception do
+       TDialogo.Atencao(Ex.Message);
+  end;
+end;
+
+constructor TfrmFaturamento.Create(AOwner: TComponent; AService: IFaturamentoServiceInterface);
+begin
+  inherited Create(AOwner);
+  FService:= AService;
+end;
+
+procedure TfrmFaturamento.DTSVendaDataChange(Sender: TObject; Field: TField);
+begin
+  inherited;
+  if (DTSVenda.DataSet <> nil) and (not DTSVenda.DataSet.IsEmpty) then
+  begin
+    FIDSelecionado := QRYVenda.Fields[0].AsInteger;
+    CarregarItensEPagamento;
+  end;
+end;
+
+procedure TfrmFaturamento.CarregarItensEPagamento;
+begin
+  FService.ListarNaTelaGridItemVenda(QRYIntemVenda, FIDSelecionado);
+  FService.ListarGridPagto(Q);
+
+end;
+
+procedure TfrmFaturamento.CarregarStatusVenda;
+begin
+  edtStatus.Items.Clear;
+
+  edtStatus.Items.AddObject('Aberta', TObject(Ord(svAberta)));
+  edtStatus.Items.AddObject('DAV', TObject(Ord(svDav)));
+  edtStatus.Items.AddObject('Faturada', TObject(Ord(svFaturada)));
+  edtStatus.Items.AddObject('Cancelado', TObject(Ord(svCancelado)));
+
+  edtStatus.ItemIndex := 1;
+end;
+
+
+end.

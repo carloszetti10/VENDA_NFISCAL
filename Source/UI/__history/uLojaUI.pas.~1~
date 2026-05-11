@@ -1,0 +1,58 @@
+unit uLojaUI;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, uAppServiceConexao,
+  Vcl.ExtCtrls,  ZDataset;
+
+type
+  TForm1 = class(TForm)
+    edtNome: TLabeledEdit;
+    btngravar: TBitBtn;
+    procedure btngravarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.btngravarClick(Sender: TObject);
+begin
+  var
+  Q: TZQuery;
+begin
+  if Trim(edtNome.Text) = '' then
+    raise Exception.Create('Digite o nome da loja.');
+
+  Q := TZQuery.Create(nil);
+
+  try
+    Q.Connection := AppServiceConexao.getConexao;
+
+    Q.SQL.Text :=
+      'INSERT INTO LOJA (NOME) ' +
+      'VALUES (:NOME)';
+
+    Q.ParamByName('NOME').AsString := edtNome.Text;
+
+    Q.ExecSQL;
+
+    ShowMessage('Loja cadastrada com sucesso.');
+
+    edtNome.Clear;
+    ModalResult := mrOk;
+  finally
+    Q.Free;
+  end;
+end;
+
+end.

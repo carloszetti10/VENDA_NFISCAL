@@ -2,7 +2,7 @@ object frmRelProVenda: TfrmRelProVenda
   Left = 0
   Top = 0
   Caption = 'Relat'#243'rio de Venda'
-  ClientHeight = 781
+  ClientHeight = 749
   ClientWidth = 825
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,7 +14,7 @@ object frmRelProVenda: TfrmRelProVenda
   TextHeight = 13
   object Relatorio: TRLReport
     Left = -8
-    Top = 8
+    Top = 0
     Width = 794
     Height = 1123
     DataSource = dtsVendas
@@ -32,9 +32,9 @@ object frmRelProVenda: TfrmRelProVenda
       object RLLabel1: TRLLabel
         Left = 3
         Top = 14
-        Width = 77
+        Width = 141
         Height = 24
-        Caption = 'VENDA'
+        Caption = 'OR'#199'AMENTO'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -21
@@ -53,7 +53,7 @@ object frmRelProVenda: TfrmRelProVenda
     end
     object Rodape: TRLBand
       Left = 38
-      Top = 222
+      Top = 228
       Width = 718
       Height = 36
       BandType = btFooter
@@ -132,11 +132,11 @@ object frmRelProVenda: TfrmRelProVenda
         Width = 718
         Height = 25
         BandType = btHeader
-        Color = clSilver
+        Color = 3175687
         ParentColor = False
         Transparent = False
         object RLDBText5: TRLDBText
-          Left = 55
+          Left = 77
           Top = 3
           Width = 68
           Height = 16
@@ -155,9 +155,9 @@ object frmRelProVenda: TfrmRelProVenda
         object RLLabel8: TRLLabel
           Left = 3
           Top = 4
-          Width = 53
+          Width = 68
           Height = 16
-          Caption = 'Venda: '
+          Caption = 'NUM DAV:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -172,22 +172,21 @@ object frmRelProVenda: TfrmRelProVenda
         Top = 25
         Width = 718
         Height = 21
-        object RLDBText3: TRLDBText
-          Left = 625
-          Top = 2
-          Width = 55
+        object RLDBText2: TRLDBText
+          Left = 66
+          Top = 3
+          Width = 57
           Height = 16
-          Alignment = taRightJustify
-          DataField = 'EMISAO'
+          DataField = 'CLIENTE'
           DataSource = dtsVendas
           Text = ''
         end
-        object RLLabel7: TRLLabel
-          Left = 582
-          Top = 2
-          Width = 37
+        object RLLabel5: TRLLabel
+          Left = 3
+          Top = 3
+          Width = 57
           Height = 16
-          Caption = 'Data:'
+          Caption = 'Cliente: '
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -196,69 +195,29 @@ object frmRelProVenda: TfrmRelProVenda
           ParentFont = False
           Transparent = False
         end
-        object RLDBText1: TRLDBText
-          Left = 13
-          Top = 1
-          Width = 67
+        object RLLabel7: TRLLabel
+          Left = 535
+          Top = 2
+          Width = 70
           Height = 16
-          Alignment = taRightJustify
-          DataField = 'PRODUTO'
+          Caption = 'Vendedor:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
           Font.Name = 'Arial'
-          Font.Style = []
+          Font.Style = [fsBold]
           ParentFont = False
-          Text = ''
           Transparent = False
         end
-        object RLDBText6: TRLDBText
-          Left = 440
-          Top = 0
-          Width = 87
+        object RLDBText3: TRLDBText
+          Left = 638
+          Top = 3
+          Width = 77
           Height = 16
           Alignment = taRightJustify
-          DataField = 'QUANTIDADE'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          ParentFont = False
+          DataField = 'VENDEDOR'
+          DataSource = dtsVendas
           Text = ''
-          Transparent = False
-        end
-        object RLDBText7: TRLDBText
-          Left = 511
-          Top = 0
-          Width = 114
-          Height = 16
-          Alignment = taRightJustify
-          DataField = 'VALOR_UNITARIO'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          ParentFont = False
-          Text = ''
-          Transparent = False
-        end
-        object RLDBText8: TRLDBText
-          Left = 620
-          Top = 0
-          Width = 95
-          Height = 16
-          Alignment = taRightJustify
-          DataField = 'VALOR_TOTAL'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          ParentFont = False
-          Text = ''
-          Transparent = False
         end
       end
       object RLSubDetail1: TRLSubDetail
@@ -266,18 +225,19 @@ object frmRelProVenda: TfrmRelProVenda
         Top = 46
         Width = 718
         Height = 43
+        DataSource = dtsVendasItens
         object RLBand3: TRLBand
           Left = 0
           Top = 0
           Width = 718
           Height = 21
           BandType = btColumnHeader
-          Color = clInfoBk
+          Color = 14545112
           ParentColor = False
           Transparent = False
           object RLLabel4: TRLLabel
-            Left = 12
-            Top = 3
+            Left = 3
+            Top = 4
             Width = 54
             Height = 16
             Caption = 'Produto'
@@ -290,8 +250,8 @@ object frmRelProVenda: TfrmRelProVenda
             Transparent = False
           end
           object RLLabel10: TRLLabel
-            Left = 449
-            Top = 3
+            Left = 387
+            Top = -1
             Width = 78
             Height = 16
             Alignment = taRightJustify
@@ -305,8 +265,8 @@ object frmRelProVenda: TfrmRelProVenda
             Transparent = False
           end
           object RLLabel11: TRLLabel
-            Left = 533
-            Top = 3
+            Left = 504
+            Top = 6
             Width = 92
             Height = 16
             Alignment = taRightJustify
@@ -321,7 +281,7 @@ object frmRelProVenda: TfrmRelProVenda
           end
           object RLLabel12: TRLLabel
             Left = 625
-            Top = 3
+            Top = 2
             Width = 90
             Height = 16
             Alignment = taRightJustify
@@ -340,10 +300,42 @@ object frmRelProVenda: TfrmRelProVenda
           Top = 21
           Width = 718
           Height = 32
-          object RLLabel9: TRLLabel
+          object RLDBText1: TRLDBText
             Left = 3
             Top = 3
-            Width = 40
+            Width = 57
+            Height = 16
+            DataField = 'ID_PRODUTO'
+            DataSource = dtsVendasItens
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = []
+            ParentFont = False
+            Text = ''
+            Transparent = False
+          end
+          object RLDBText4: TRLDBText
+            Left = 79
+            Top = 3
+            Width = 44
+            Height = 16
+            DataField = 'NOME'
+            DataSource = dtsVendasItens
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = []
+            ParentFont = False
+            Text = ''
+            Transparent = False
+          end
+          object RLLabel9: TRLLabel
+            Left = 63
+            Top = 3
+            Width = 10
             Height = 16
             Caption = '-'
             Font.Charset = DEFAULT_CHARSET
@@ -354,6 +346,59 @@ object frmRelProVenda: TfrmRelProVenda
             ParentFont = False
             Transparent = False
           end
+          object RLDBText6: TRLDBText
+            Left = 378
+            Top = 3
+            Width = 87
+            Height = 16
+            DataField = 'QUANTIDADE'
+            DataSource = dtsVendasItens
+            DisplayMask = '0.00'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = []
+            ParentFont = False
+            Text = ''
+            Transparent = False
+          end
+          object RLDBText7: TRLDBText
+            Left = 482
+            Top = 3
+            Width = 114
+            Height = 16
+            Alignment = taRightJustify
+            DataField = 'VALOR_UNITARIO'
+            DataSource = dtsVendasItens
+            DisplayMask = 'R$ #,##0.00'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = []
+            ParentFont = False
+            Text = ''
+            Transparent = False
+          end
+          object RLDBText8: TRLDBText
+            Left = 620
+            Top = 3
+            Width = 95
+            Height = 16
+            Alignment = taRightJustify
+            DataField = 'VALOR_TOTAL'
+            DataSource = dtsVendasItens
+            DisplayMask = 'R$ #,##0.00'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = []
+            ParentFont = False
+            Text = ''
+            Transparent = False
+          end
           object RLDraw4: TRLDraw
             Left = 12
             Top = 16
@@ -362,29 +407,6 @@ object frmRelProVenda: TfrmRelProVenda
             DrawKind = dkLine
             HoldStyle = hsHorizontally
           end
-          object RLDBText2: TRLDBText
-            Left = 66
-            Top = 6
-            Width = 57
-            Height = 16
-            DataField = 'CLIENTE'
-            DataSource = dtsVendas
-            Text = ''
-          end
-          object RLLabel5: TRLLabel
-            Left = 3
-            Top = 3
-            Width = 57
-            Height = 16
-            Caption = 'Cliente: '
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -13
-            Font.Name = 'Arial'
-            Font.Style = [fsBold]
-            ParentFont = False
-            Transparent = False
-          end
         end
       end
     end
@@ -392,22 +414,23 @@ object frmRelProVenda: TfrmRelProVenda
       Left = 38
       Top = 180
       Width = 718
-      Height = 42
+      Height = 48
       BandType = btSummary
       object RLDBResult1: TRLDBResult
-        Left = 579
+        Left = 570
         Top = 24
-        Width = 136
+        Width = 145
         Height = 16
         Alignment = taRightJustify
-        DataField = 'TOTAL_VENDA'
+        DataField = 'VALOR_LIQUIDO'
         DataSource = dtsVendas
+        DisplayMask = 'R$ ,0.00'
         Info = riSum
         Text = ''
         Transparent = False
       end
       object RLLabel6: TRLLabel
-        Left = 472
+        Left = 504
         Top = 24
         Width = 101
         Height = 16
@@ -435,30 +458,72 @@ object frmRelProVenda: TfrmRelProVenda
       'ortes Inform'#225'tica'
     FileName = 'C:\Users\VIRTUAL\Documents\Teste.pdf'
     DisplayName = 'Documento PDF'
-    Left = 88
-    Top = 320
+    Left = 656
+    Top = 288
   end
   object QryVendas: TZQuery
     SQL.Strings = (
-      ''
-      '')
-    Params = <>
-    Left = 520
-    Top = 344
+      'SELECT '
+      '    VENDA.ID_VENDA,'
+      '    VENDA.ID_CLIENTE,'
+      '    CLIENTE.NOME AS CLIENTE,'
+      '    FUNCIONARIO.NOME AS VENDEDOR,'
+      '    VENDA.EMISAO,'
+      '    VENDA.VALOR_TOTAL,'
+      '    VENDA.VALOR_DESC,'
+      '    VENDA.VALOR_LIQUIDO,'
+      '    VENDA.STATUS'
+      'FROM VENDA'
+      'INNER JOIN CLIENTE '
+      '    ON CLIENTE.ID_CLIENTE = VENDA.ID_CLIENTE'
+      'LEFT JOIN FUNCIONARIO'
+      '    ON FUNCIONARIO.ID_FUNCIONARIO = VENDA.ID_VENDEDOR'
+      'WHERE VENDA.ID_VENDA = :ID_VENDA'
+      'ORDER BY VENDA.EMISAO, VENDA.ID_CLIENTE;')
+    Params = <
+      item
+        Name = 'ID_VENDA'
+      end>
+    Left = 496
+    Top = 280
+    ParamData = <
+      item
+        Name = 'ID_VENDA'
+      end>
   end
   object dtsVendas: TDataSource
     DataSet = QryVendas
-    Left = 600
+    Left = 552
+    Top = 280
+  end
+  object dtsVendasItens: TDataSource
+    DataSet = QryVendaItens
+    Left = 552
     Top = 344
   end
-  object RLXLSXFilter1: TRLXLSXFilter
-    DisplayName = 'Planilha Excel'
-    Left = 88
-    Top = 368
-  end
-  object RLXLSFilter1: TRLXLSFilter
-    DisplayName = 'Planilha Excel 97-2013'
-    Left = 88
-    Top = 424
+  object QryVendaItens: TZQuery
+    SQL.Strings = (
+      'SELECT '
+      '    ITEM_VENDA.ID_VENDA,'
+      '    ITEM_VENDA.ID_PRODUTO,'
+      '    PRODUTO.NOME,'
+      '    ITEM_VENDA.QUANTIDADE,'
+      '    ITEM_VENDA.VALOR_UNITARIO,'
+      '    ITEM_VENDA.VALOR_TOTAL'
+      'FROM ITEM_VENDA'
+      'INNER JOIN PRODUTO '
+      '    ON PRODUTO.ID_PRODUTO = ITEM_VENDA.ID_PRODUTO'
+      'WHERE ITEM_VENDA.ID_VENDA = :ID_VENDA'
+      'ORDER BY ITEM_VENDA.ID_PRODUTO;')
+    Params = <
+      item
+        Name = 'ID_VENDA'
+      end>
+    Left = 496
+    Top = 344
+    ParamData = <
+      item
+        Name = 'ID_VENDA'
+      end>
   end
 end

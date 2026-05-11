@@ -14,6 +14,7 @@ type
     function Inserir(Produto: TProdutoModel): Boolean;
     function Atualizar(Produto: TProdutoModel): Boolean;
     function Apagar(Id: Integer): Boolean;
+    procedure AdicionarEstoque(Id: Integer;Quant: Currency);
    end;
 
 implementation

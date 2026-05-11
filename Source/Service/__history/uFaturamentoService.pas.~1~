@@ -1,0 +1,26 @@
+unit uFaturamentoService;
+
+interface
+uses
+  iVendaService, iVendaDAO, uVendaModel,System.Generics.Collections,
+  ZConnection, uException,ZDataset, IProdutoService, uProdutoService,
+  uUsuarioModel, iItemVendaService, uItemVendaModel,uAppServiceConexao,System.SysUtils, iFaturamentoService;
+type
+   TFaturamentoService = class(TInterfacedObject, IFaturamentoServiceInterface)
+   private
+     FVendaServive : IVendaServiceInterface;
+     FProdutoService: IProdutoServiceInterface;
+     FItemVendaService: IItemVendaServiceInterface;
+   public
+     procedure CancelarVenda(IdVenda: Integer);
+     procedure ListarNaTelaGridVenda(Q: TZQuery; IdVenda: Integer);
+     function  BuscarVendaPoId(IdVenda: Integer): TVendaModel;
+
+     procedure ListarNaTelaGridItemVenda(Q: TZQuery; IdVenda: Integer);
+   end;
+
+implementation
+
+
+
+end.

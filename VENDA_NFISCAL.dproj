@@ -223,16 +223,30 @@
         <DCCReference Include="Source\Interface\IRepositorio\iFormaPagDAO.pas"/>
         <DCCReference Include="Source\Service\uFormaPagService.pas"/>
         <DCCReference Include="Source\Interface\IService\iFormaPagService.pas"/>
-        <DCCReference Include="Source\UI\Relatorios\uRelProVenda.pas">
-            <Form>frmRelProVenda</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="Source\UI\DialogosPersonalizados\uDialogoValor.pas">
             <Form>frmDialogoValor</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Source\UI\uPlanoPagamentoUI.pas">
             <Form>frmPlanoPagamento</Form>
+        </DCCReference>
+        <DCCReference Include="Source\UI\Relatorios\uRelProVenda.pas">
+            <Form>frmRelProVenda</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Source\Utils\uRelatorioShow.pas"/>
+        <DCCReference Include="Source\UI\uFaturamentoUI.pas">
+            <Form>frmFaturamento</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Source\Interface\IService\iFaturamentoService.pas"/>
+        <DCCReference Include="Source\Service\uFaturamentoService.pas"/>
+        <DCCReference Include="Source\UI\uLojaUI.pas">
+            <Form>frmLoja</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Source\UI\Relatorios\uRelCadProdutos.pas">
+            <Form>frmRelCadProdutos</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Base">

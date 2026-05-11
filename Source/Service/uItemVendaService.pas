@@ -13,6 +13,7 @@ type
      procedure InserirItem(AItem: TItemVendaModel);
      constructor Create(AItemVendaDao: IItemVendaDAO);
      procedure RemoverItemDaVenda(Quant: Currency; ItemVenda: TItemVendaModel);
+     function  ListarProdutosPorVenda(IdVenda: Integer): TObjectList<TItemVendaModel>;
    end;
 implementation
 
@@ -44,6 +45,12 @@ begin
   finally
     ItemExistente.Free;
   end;
+end;
+
+function TItemVendaService.ListarProdutosPorVenda(
+  IdVenda: Integer): TObjectList<TItemVendaModel>;
+begin
+   Result := FItemVendaDAO.ListarProdutosPorVenda(IdVenda);
 end;
 
 procedure TItemVendaService.ListarProdutoVenda(Q: TZQuery; IdVenda: Integer);

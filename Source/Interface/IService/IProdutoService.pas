@@ -10,6 +10,7 @@ type
     function BuscarPorId(ID: Integer): TProdutoModel;
     procedure ListarPorNomeTela(Q: TZQuery; Nome: string);
     procedure BaixarEstoque(id: integer; quant :Currency);
+    procedure AdicionarEstoque(Id: Integer;Quant: Currency);
    end;
 
 implementation

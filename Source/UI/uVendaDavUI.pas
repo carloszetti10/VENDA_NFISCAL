@@ -14,7 +14,7 @@ uses
    uPagamentoUI, uPagamentoVendaModel,
   iPagamentoVendaDAO, uPagamentoVendaDao,
   iPagamentoVendaService, uPagamentoVendaService, Vcl.Mask, RxToolEdit,
-  RxCurrEdit, uControlUtils, uPlanoPagamentoUI, uVendaModel, uSession;
+  RxCurrEdit, uControlUtils, uPlanoPagamentoUI, uVendaModel, uSession,uRelatorioShow, iFaturamentoService, uFaturamentoService;
 type
   TModoTela = (svIniciada, svNaoIniciada);
   TGridProdShow =(sgProdVenda, sgProdEstoque);
@@ -85,6 +85,7 @@ type
     FCliente: TClienteModel;
     FVendedor: TFuncionarioModel;
     FGridProd: TGridProdShow;
+    FServiFaturamento: IFaturamentoServiceInterface;
 
     FService: IVendaServiceInterface;
     FProdutoService: IProdutoServiceInterface;
@@ -92,7 +93,7 @@ type
     procedure   AlternaPainel(PainelVisivel: TPanel; PainelOculto: TPanel);
     procedure   PreencherGrildProdutosEstoque(NomeProd: string);
     procedure   AdicionarProdutoSelecionado;
-    constructor Create(AOwner: TComponent; AService: IVendaServiceInterface);
+    constructor Create(AOwner: TComponent; AService: IVendaServiceInterface; AServiFaturamento: IFaturamentoServiceInterface);
     procedure   IniciarTela;
     procedure   IniciarVenda;
     procedure   CancelarVenda;
@@ -107,7 +108,7 @@ type
     procedure   LimparTelaVenda;
     procedure   HabilitarCampos(Habilitar: Boolean);
     procedure   InativarEditValorAltomatico;
-    procedure  GridShow(Painel: TPanel);
+    procedure   GridShow(Painel: TPanel);
     procedure   RemoverItemVenda;
 
   end;
@@ -123,10 +124,11 @@ uses
 
 
 { ================== CONSTRUTOR ================== }
-constructor TfrmVendaDav.Create(AOwner: TComponent; AService: IVendaServiceInterface);
+constructor TfrmVendaDav.Create(AOwner: TComponent; AService: IVendaServiceInterface; AServiFaturamento: IFaturamentoServiceInterface);
 begin
   inherited Create(AOwner);
   FService:= AService;
+  FServiFaturamento := AServiFaturamento;
 end;
 
 
@@ -267,11 +269,18 @@ begin
      FService.AtualizarValorVenda(Venda);
      GravaVenda(Venda);
      FService.AlterarStatusVenda(Venda.IdVenda, TStatusVenda.svDav);
+
+      if TDialogo.Confirmar('Deseja imprimir o orçamento?') then
+       begin
+          TRelatorioShow.VisualizarTelatorioVendaPorId(Venda.IdVenda);
+       end;
+
      if TSession.GetUsuario.TemPermissao('CAD_FATURAMENTO') then
      begin
        if TDialogo.Confirmar('Deseja Faturar a Venda?') then
        begin
-          TDialogo.Sucesso('Fatutando......');
+          FServiFaturamento.FaturarVenda(Venda.IdVenda);
+          TDialogo.Sucesso('Venda faturada.');
        end;
      end;
     finally

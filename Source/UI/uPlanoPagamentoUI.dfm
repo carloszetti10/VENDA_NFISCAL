@@ -20,10 +20,6 @@ object frmPlanoPagamento: TfrmPlanoPagamento
     Height = 354
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 224
-    ExplicitTop = 128
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object pnlInferior: TPanel
       Left = 1
       Top = 312
@@ -121,13 +117,19 @@ object frmPlanoPagamento: TfrmPlanoPagamento
         Height = 264
         Align = alClient
         DataSource = dtsPlano
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
         Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+        ParentFont = False
         TabOrder = 1
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
-        TitleFont.Height = -12
+        TitleFont.Height = -11
         TitleFont.Name = 'Segoe UI'
-        TitleFont.Style = []
+        TitleFont.Style = [fsBold]
         Columns = <
           item
             Expanded = False
@@ -162,7 +164,6 @@ object frmPlanoPagamento: TfrmPlanoPagamento
       Height = 311
       Align = alClient
       TabOrder = 2
-      ExplicitLeft = 190
       object Panel1: TPanel
         Left = 1
         Top = 1
@@ -268,8 +269,6 @@ object frmPlanoPagamento: TfrmPlanoPagamento
         Height = 124
         Align = alClient
         TabOrder = 1
-        ExplicitTop = 72
-        ExplicitHeight = 197
         object DBGrid1: TDBGrid
           Left = 1
           Top = 1
@@ -277,13 +276,19 @@ object frmPlanoPagamento: TfrmPlanoPagamento
           Height = 122
           Align = alClient
           DataSource = dtsPagamentoVenda
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
           Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+          ParentFont = False
           TabOrder = 0
           TitleFont.Charset = DEFAULT_CHARSET
           TitleFont.Color = clWindowText
-          TitleFont.Height = -12
+          TitleFont.Height = -11
           TitleFont.Name = 'Segoe UI'
-          TitleFont.Style = []
+          TitleFont.Style = [fsBold]
           Columns = <
             item
               Expanded = False
@@ -328,7 +333,6 @@ object frmPlanoPagamento: TfrmPlanoPagamento
         Height = 129
         Align = alBottom
         TabOrder = 2
-        ExplicitTop = 176
         object Label10: TLabel
           Left = 17
           Top = 63
@@ -410,7 +414,7 @@ object frmPlanoPagamento: TfrmPlanoPagamento
           Left = 16
           Top = 84
           Width = 130
-          Height = 25
+          Height = 26
           Ctl3D = False
           Enabled = False
           Font.Charset = DEFAULT_CHARSET
@@ -427,7 +431,7 @@ object frmPlanoPagamento: TfrmPlanoPagamento
           Left = 152
           Top = 84
           Width = 130
-          Height = 25
+          Height = 26
           Ctl3D = False
           Enabled = False
           Font.Charset = DEFAULT_CHARSET
@@ -444,7 +448,7 @@ object frmPlanoPagamento: TfrmPlanoPagamento
           Left = 288
           Top = 84
           Width = 130
-          Height = 25
+          Height = 26
           Ctl3D = False
           Enabled = False
           Font.Charset = DEFAULT_CHARSET

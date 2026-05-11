@@ -391,10 +391,10 @@ object frmVendaDav: TfrmVendaDav
       TabOrder = 3
     end
     object btnDesconto: TBitBtn
-      Left = 438
-      Top = 25
-      Width = 140
-      Height = 33
+      Left = 424
+      Top = 32
+      Width = 100
+      Height = 26
       Caption = 'DESCONTO'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -603,10 +603,6 @@ object frmVendaDav: TfrmVendaDav
           Height = 195
           Align = alClient
           TabOrder = 0
-          ExplicitLeft = 14
-          ExplicitTop = 6
-          ExplicitWidth = 243
-          ExplicitHeight = 160
           object dbProdEsqtque: TDBGrid
             Left = 1
             Top = 17
@@ -624,16 +620,16 @@ object frmVendaDav: TfrmVendaDav
             TabOrder = 0
             TitleFont.Charset = DEFAULT_CHARSET
             TitleFont.Color = clWindowText
-            TitleFont.Height = -12
+            TitleFont.Height = -11
             TitleFont.Name = 'Segoe UI'
-            TitleFont.Style = []
+            TitleFont.Style = [fsBold]
             OnKeyPress = dbProdEsqtqueKeyPress
             Columns = <
               item
                 Expanded = False
                 FieldName = 'ID_PRODUTO'
                 Title.Caption = 'CODIGO'
-                Width = 51
+                Width = 58
                 Visible = True
               end
               item
@@ -679,7 +675,6 @@ object frmVendaDav: TfrmVendaDav
             Font.Style = [fsBold]
             ParentFont = False
             TabOrder = 1
-            ExplicitWidth = 241
           end
         end
         object painelVenda: TPanel
@@ -705,15 +700,15 @@ object frmVendaDav: TfrmVendaDav
             TabOrder = 0
             TitleFont.Charset = DEFAULT_CHARSET
             TitleFont.Color = clWindowText
-            TitleFont.Height = -12
+            TitleFont.Height = -11
             TitleFont.Name = 'Segoe UI'
-            TitleFont.Style = []
+            TitleFont.Style = [fsBold]
             Columns = <
               item
                 Expanded = False
                 FieldName = 'ID_PRODUTO'
                 Title.Caption = 'CODIGO'
-                Width = 51
+                Width = 54
                 Visible = True
               end
               item
@@ -765,9 +760,6 @@ object frmVendaDav: TfrmVendaDav
             Font.Style = [fsBold]
             ParentFont = False
             TabOrder = 1
-            ExplicitLeft = 17
-            ExplicitTop = 9
-            ExplicitWidth = 254
           end
         end
       end

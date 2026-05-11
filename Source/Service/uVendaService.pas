@@ -29,7 +29,10 @@ type
      {===== CANCELAR VENDA ====}
      procedure CancelarVenda(IdVenda: Integer);
 
-     procedure FaturarVenda(IdVenda: Integer; vlrTot, vlrLiqui,vlrDesc : Currency);
+
+     {===== FATURAMENTO ====}
+
+     procedure ListarNaTelaGridVendaFaturamento(Q: TZQuery; DataInicial, DataFinal: TDate; Status: TStatusVenda);
    end;
 
 implementation
@@ -61,6 +64,7 @@ procedure TVendaService.ListarNaTelaGridVenda(Q: TZQuery; IdVenda: Integer);
 begin
   FItemVendaService.ListarProdutoVenda(Q, IdVenda);
 end;
+
 
 procedure TVendaService.RemoverItemVenda(Quant: Currency;
   ItemVenda: TItemVendaModel);
@@ -117,71 +121,11 @@ begin
   FVendaDAO.UpdateStatus(IdVenda, svCancelado);
 end;
 
-procedure TVendaService.FaturarVenda(IdVenda: Integer; vlrTot, vlrLiqui, vlrDesc: Currency);
-var
-  Q: TZQuery;
-  Con: TZConnection;
+{===== FATURAMENTO ====}
+procedure TVendaService.ListarNaTelaGridVendaFaturamento(Q: TZQuery;
+  DataInicial, DataFinal: TDate; Status: TStatusVenda);
 begin
-  Con := AppServiceConexao.getConexao;
-
-  Q := TZQuery.Create(nil);
-  try
-    Q.Connection := Con;
-    Con.StartTransaction;
-
-    try
-      Q.SQL.Text :=
-        'SELECT ID_PRODUTO, QUANTIDADE ' +
-        'FROM ITEM_VENDA ' +
-        'WHERE ID_VENDA = :ID';
-
-      Q.ParamByName('ID').AsInteger := IdVenda;
-      Q.Open;
-
-      if Q.IsEmpty then
-        raise EAppException.Create('Venda sem itens');
-
-      while not Q.Eof do
-      begin
-        FProdutoService.BaixarEstoque(
-          Q.FieldByName('ID_PRODUTO').AsInteger,
-          Q.FieldByName('QUANTIDADE').AsCurrency
-        );
-
-        Q.Next;
-      end;
-
-      Q.Close;
-
-      Q.SQL.Text :=
-        'UPDATE VENDA SET ' +
-        'VALOR_TOTAL = :TOTAL, ' +
-        'VALOR_LIQUIDO = :LIQUIDO, ' +
-        'VALOR_DESC = :DESCONTO ' +
-        'WHERE ID_VENDA = :ID';
-
-      Q.ParamByName('TOTAL').AsCurrency := vlrTot;
-      Q.ParamByName('LIQUIDO').AsCurrency := vlrLiqui;
-      Q.ParamByName('DESCONTO').AsCurrency := vlrDesc;
-      Q.ParamByName('ID').AsInteger := IdVenda;
-
-      Q.ExecSQL;
-
-      FVendaDAO.UpdateStatus(IdVenda, svFaturada);
-
-      Con.Commit;
-
-    except
-      on E: Exception do
-      begin
-        Con.Rollback;
-        raise;
-      end;
-    end;
-
-  finally
-    Q.Free;
-  end;
+  FVendaDAO.ListarPorPeriodoStatus(Q,DataInicial, DataFinal, Ord(Status));
 end;
 
 
