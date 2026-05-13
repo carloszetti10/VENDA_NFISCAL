@@ -205,7 +205,7 @@ var
   Dao: IItemVendaDAO;
 begin
   Dao := TItemVendaDao.Create(FConn);
-  Result := TItemVendaService.Create(Dao);
+  Result := TItemVendaService.Create(Dao, CriarProdutoService);
 end;
 
 function TfrmTelaPrincipal.CriarPlanoPagtoService: IPagamentoVendaIntefaceService;

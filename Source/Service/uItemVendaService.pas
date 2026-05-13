@@ -8,20 +8,23 @@ type
    TItemVendaService = class(TInterfacedObject, IItemVendaServiceInterface)
    private
      FItemVendaDao: IItemVendaDAO;
+     FProdService: IProdutoServiceInterface;
    public
      procedure ListarProdutoVenda(Q: TZQuery; IdVenda: Integer);
      procedure InserirItem(AItem: TItemVendaModel);
-     constructor Create(AItemVendaDao: IItemVendaDAO);
+     constructor Create(AItemVendaDao: IItemVendaDAO; AProdService: IProdutoServiceInterface);
      procedure RemoverItemDaVenda(Quant: Currency; ItemVenda: TItemVendaModel);
      function  ListarProdutosPorVenda(IdVenda: Integer): TObjectList<TItemVendaModel>;
    end;
 implementation
 
+
 { TVendaService }
 
-constructor TItemVendaService.Create(AItemVendaDao: IItemVendaDAO);
+constructor TItemVendaService.Create(AItemVendaDao: IItemVendaDAO; AProdService: IProdutoServiceInterface);
 begin
-  FItemVendaDao:= AItemVendaDao;
+  FItemVendaDao := AItemVendaDao;
+  FProdService  := AProdService;
 end;
 
 procedure TItemVendaService.InserirItem(AItem: TItemVendaModel);
@@ -33,6 +36,9 @@ begin
     if Assigned(ItemExistente) then
     begin
       AItem.Quantidade := ItemExistente.Quantidade + AItem.Quantidade;
+      //verificar se a quant bate
+      If FProdService.BuscarPorId(AItem.IdProduto).Estoque < AItem.Quantidade then
+        raise EAppException.Create('Quantidade informada maior que o estoque.');
     end;
 
     AItem.ValorTotal := (AItem.Quantidade * AItem.ValorUnitario);
@@ -76,5 +82,6 @@ begin
   else
     raise EAppException.Create('Quantidade selecionada maior do que o a quantidade do produto da venda.');
 end;
+
 
 end.

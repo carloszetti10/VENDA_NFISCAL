@@ -100,6 +100,7 @@ begin
   end;
 end;
 
+
 { ================== INSERT ================== }
 procedure TItemVendaDao.Insert(AItem: TItemVendaModel);
 var

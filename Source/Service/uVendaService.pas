@@ -76,8 +76,6 @@ procedure TVendaService.AdicionarItemVenda(Item: TItemVendaModel);
 
 
 begin
-  //ver se ja tem
-
   //inserir
   FItemVendaService.InserirItem(Item);
 end;

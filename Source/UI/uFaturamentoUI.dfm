@@ -1,23 +1,25 @@
 object frmFaturamento: TfrmFaturamento
   Left = 0
   Top = 0
+  Align = alClient
   BorderStyle = bsNone
-  ClientHeight = 476
-  ClientWidth = 796
+  ClientHeight = 456
+  ClientWidth = 728
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
-  Position = poDesktopCenter
+  Position = poMainFormCenter
+  WindowState = wsMaximized
   OnShow = FormShow
   TextHeight = 15
   object pnlBase: TPanel
     Left = 0
     Top = 0
-    Width = 796
-    Height = 476
+    Width = 728
+    Height = 456
     Align = alClient
     BevelOuter = bvNone
     Font.Charset = DEFAULT_CHARSET
@@ -27,13 +29,16 @@ object frmFaturamento: TfrmFaturamento
     Font.Style = []
     ParentFont = False
     TabOrder = 0
+    ExplicitWidth = 796
+    ExplicitHeight = 476
     object pnlPesquisa: TPanel
       Left = 0
       Top = 0
-      Width = 796
+      Width = 728
       Height = 97
       Align = alTop
       TabOrder = 0
+      ExplicitWidth = 796
       object edtDataInicial: TDateTimePicker
         Left = 9
         Top = 66
@@ -87,11 +92,12 @@ object frmFaturamento: TfrmFaturamento
       object pnlSuperior: TPanel
         Left = 1
         Top = 1
-        Width = 794
+        Width = 726
         Height = 40
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 2
+        ExplicitWidth = 794
         object Label2: TLabel
           Left = 8
           Top = 7
@@ -106,7 +112,7 @@ object frmFaturamento: TfrmFaturamento
           ParentFont = False
         end
         object BitBtn4: TBitBtn
-          Left = 719
+          Left = 651
           Top = 0
           Width = 75
           Height = 40
@@ -141,7 +147,7 @@ object frmFaturamento: TfrmFaturamento
             4E6E244E6E244E6E244E6E244E6E244E6E244E6E244E6EFF00FF}
           TabOrder = 0
           OnClick = BitBtn4Click
-          ExplicitTop = 1
+          ExplicitLeft = 719
         end
       end
       object edtDataFinal: TDateTimePicker
@@ -177,11 +183,13 @@ object frmFaturamento: TfrmFaturamento
     end
     object Panel1: TPanel
       Left = 0
-      Top = 424
-      Width = 796
+      Top = 404
+      Width = 728
       Height = 52
       Align = alBottom
       TabOrder = 1
+      ExplicitTop = 424
+      ExplicitWidth = 796
       object Label10: TLabel
         Left = 24
         Top = 6
@@ -272,23 +280,28 @@ object frmFaturamento: TfrmFaturamento
     end
     object Panel2: TPanel
       Left = 0
-      Top = 281
-      Width = 796
-      Height = 143
+      Top = 369
+      Width = 728
+      Height = 35
       Align = alClient
       TabOrder = 2
+      ExplicitTop = 281
+      ExplicitWidth = 796
+      ExplicitHeight = 143
       object pnlGripag: TPanel
-        Left = 584
+        Left = 516
         Top = 1
         Width = 211
-        Height = 141
+        Height = 33
         Align = alRight
         TabOrder = 0
+        ExplicitLeft = 584
+        ExplicitHeight = 141
         object DBGpagto: TDBGrid
           Left = 1
           Top = 19
           Width = 209
-          Height = 121
+          Height = 13
           Align = alClient
           DataSource = DTSFormaPag
           Font.Charset = DEFAULT_CHARSET
@@ -346,12 +359,15 @@ object frmFaturamento: TfrmFaturamento
           Width = 209
           Height = 18
           Align = alTop
+          BevelOuter = bvNone
           Caption = 'PAGAMENTO'
+          Color = 14545112
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -15
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
+          ParentBackground = False
           ParentFont = False
           TabOrder = 1
         end
@@ -359,15 +375,17 @@ object frmFaturamento: TfrmFaturamento
       object Panel4: TPanel
         Left = 1
         Top = 1
-        Width = 583
-        Height = 141
+        Width = 515
+        Height = 33
         Align = alClient
         TabOrder = 1
+        ExplicitWidth = 583
+        ExplicitHeight = 141
         object dbProdVenda: TDBGrid
           Left = 1
           Top = 19
-          Width = 581
-          Height = 121
+          Width = 513
+          Height = 13
           Align = alClient
           DataSource = DTSIntemVenda
           Font.Charset = DEFAULT_CHARSET
@@ -422,54 +440,69 @@ object frmFaturamento: TfrmFaturamento
         object Panel8: TPanel
           Left = 1
           Top = 1
-          Width = 581
+          Width = 513
           Height = 18
           Align = alTop
+          BevelOuter = bvNone
           Caption = 'PRODUTOS DA VENDA'
+          Color = 14545112
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -15
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
+          ParentBackground = False
           ParentFont = False
           TabOrder = 1
+          ExplicitLeft = -3
+          ExplicitTop = 3
         end
       end
     end
     object pnlVendas: TPanel
       Left = 0
       Top = 97
-      Width = 796
-      Height = 184
+      Width = 728
+      Height = 272
       Align = alTop
       TabOrder = 3
+      ExplicitWidth = 796
       object pnlGridVenda: TPanel
         Left = 1
         Top = 1
-        Width = 607
-        Height = 182
+        Width = 515
+        Height = 270
         Align = alClient
         TabOrder = 0
+        ExplicitWidth = 607
+        ExplicitHeight = 182
         object Panel6: TPanel
           Left = 1
           Top = 1
-          Width = 605
+          Width = 513
           Height = 18
           Align = alTop
-          Caption = 'PRODUTOS DA VENDA'
+          BevelOuter = bvNone
+          Caption = 'VENDAS'
+          Color = 14545112
+          Ctl3D = True
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -15
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
+          ParentBackground = False
+          ParentCtl3D = False
           ParentFont = False
           TabOrder = 0
+          ExplicitLeft = 2
+          ExplicitTop = 5
         end
         object DBGVenda: TDBGrid
           Left = 1
           Top = 19
-          Width = 605
-          Height = 162
+          Width = 513
+          Height = 250
           Align = alClient
           DataSource = DTSVenda
           Font.Charset = DEFAULT_CHARSET
@@ -522,12 +555,14 @@ object frmFaturamento: TfrmFaturamento
         end
       end
       object Panel3: TPanel
-        Left = 608
+        Left = 516
         Top = 1
-        Width = 187
-        Height = 182
+        Width = 211
+        Height = 270
         Align = alRight
         TabOrder = 1
+        ExplicitLeft = 584
+        ExplicitHeight = 184
         object btnFaturar: TBitBtn
           Left = 6
           Top = 5

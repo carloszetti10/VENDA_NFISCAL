@@ -549,8 +549,8 @@ begin
     raise EAppException.Create('Informe a quantidade!');
   end;
   ProdutoSelecionado := GetProdutoSelecionadoGridEstoque;
-  if StrToInt(edtQuantidadeProdutoSelecionado.Text) > ProdutoSelecionado.Estoque then
-    raise EAppException.Create('Quantidade insuficiente');
+  if edtQuantidadeProdutoSelecionado.Value > ProdutoSelecionado.Estoque then
+    raise EAppException.Create('Quantidade informada maior que o estoque.');
 
   if not Assigned(ProdutoSelecionado) then Exit;
   Item:= TItemVendaModel.Create;

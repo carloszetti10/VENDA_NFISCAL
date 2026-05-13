@@ -58,8 +58,8 @@ begin
     prod.IdProduto := strToInt(edtID.Text);
   Prod.Nome := mskNome.Text;
   Prod.CodBarra:= mskCodBarra.Text;
-  Prod.Estoque:= StrToCurr(mskQuantidade.Text);
-  Prod.ValorUnitario:= StrToCurr(mskValorUnitario.Text);
+  Prod.Estoque := mskQuantidade.Value;
+  Prod.ValorUnitario := mskValorUnitario.Value;
 
   Result := Prod;
 end;

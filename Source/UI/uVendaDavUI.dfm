@@ -668,11 +668,13 @@ object frmVendaDav: TfrmVendaDav
             Height = 16
             Align = alTop
             Caption = 'PRODUTOS DO ESTOQUE'
+            Color = 14545112
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -15
             Font.Name = 'Segoe UI'
             Font.Style = [fsBold]
+            ParentBackground = False
             ParentFont = False
             TabOrder = 1
           end
@@ -753,11 +755,13 @@ object frmVendaDav: TfrmVendaDav
             Height = 18
             Align = alTop
             Caption = 'PRODUTOS DA VENDA'
+            Color = 14545112
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -15
             Font.Name = 'Segoe UI'
             Font.Style = [fsBold]
+            ParentBackground = False
             ParentFont = False
             TabOrder = 1
           end

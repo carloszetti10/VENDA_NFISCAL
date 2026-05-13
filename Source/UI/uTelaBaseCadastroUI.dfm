@@ -11,7 +11,7 @@ object frmTelaBaseCadastro: TfrmTelaBaseCadastro
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
-  Position = poDesktopCenter
+  Position = poMainFormCenter
   OnCloseQuery = FormCloseQuery
   OnShow = FormShow
   TextHeight = 15
